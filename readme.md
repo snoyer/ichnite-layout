@@ -10,13 +10,13 @@ Main features/goals:
 - one-hand navigation (with inverted T arrows) and system/media keys
 - one-hand numerals and F-keys
 - non-standard shifted punctuation and custom symbol layer grouping related characters on the same keys as follows:
-	| base             | shift               | symbol                 |
-	|------------------|---------------------|------------------------|
-	| `,` (comma)      | `;` (semicolon)     | `:` (colon)            |
-	| `.` (dot/period) | `?` (question mark) | `!` (exclamation mark) |
-	| `/` (slash)      | `\` (backslash)     | `\|` (pipe)            |
-	| `'` (quote)      | `"` (double quote)  | ``` ` ``` (back quote) |
-	| `⎵` (space)      | `-` (dash/minus)    | `_` (underscore)       |
+  | base             | shift               | symbol                 |
+  |------------------|---------------------|------------------------|
+  | `,` (comma)      | `;` (semicolon)     | `:` (colon)            |
+  | `.` (dot/period) | `?` (question mark) | `!` (exclamation mark) |
+  | `/` (slash)      | `\` (backslash)     | `\|` (pipe)            |
+  | `'` (quote)      | `"` (double quote)  | ``` ` ``` (back quote) |
+  | `⎵` (space)      | `-` (dash/minus)    | `_` (underscore)       |
 
 Obviously inspired by [Miryoku](https://github.com/manna-harbour/miryoku) but less principled and without the advanced QMK implementation details.
 
@@ -37,15 +37,13 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 
 #### Custom `shifts`
 
-- `,`, `.`, `/` shift to `;`, `?`, `\` respectively
-- `space` shits to `-`.
-
-
 	|       |       |       |       |       ||       |       |       |       |   "   |
 	|       |       |       |       |       ||       |       |       |       |       |
 	|       |       |       |       |       ||       |       |   ;   |   ?   |   \   |
 	                |       |   -   |       ||       |       |       |                
 
+- `,`, `.`, `/` shift to `;`, `?`, `\` respectively
+- `space` shits to `-`.
 
 #### Home row mods and layers with `tap-hold`
 
@@ -58,20 +56,23 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 
 ### Symbols (`SYM`)
 
+	|   ~   |   $   |   @   |   [   |   ]   ||       |       |       |       |   `   |
+	|   #   |   ^   |   &   |   (   |   )   ||       | SHIFT | CTRL  |  ALT  | SUPER |
+	|   *   |       |   %   |   {   |   }   ||       |       |   :   |   !   | PIPE  |
+	                |   +   |   _   |   =   ||       |  XXX  |       |                
+
 - `:`, `!`, `|`, `` ` `` over base `,`, `.`, `/`, `'`
 - `_` over base `space`
 - `*`, `+` in the same spot as on numerals layer
 - Separate brackets/braces pairs.
 
 
-	|   ~   |   $   |   @   |   [   |   ]   ||       |       |       |       |   `   |
-	|   #   |   ^   |   &   |   (   |   )   ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	|   *   |       |   %   |   {   |   }   ||       |       |   :   |   !   | PIPE  |
-	                |   +   |   _   |   =   ||       |  XXX  |       |                
-
-
-
 ### Numerals (`NUM`)
+
+	|   1   |   2   |   3   |   4   |   5   ||   6   |   7   |   8   |   9   |   0   |
+	| SUPER |  ALT  | CTRL  | SHIFT |       ||   -   |   4   |   5   |   6   |   .   |
+	|   *   |       |       |   <   |   >   ||   0   |   1   |   2   |   3   |   /   |
+					|   +   |   -   |   =   ||  XXX  |       |       |                
 
 - One-hand numpad with extra `.` and `-`
 - `/` in the same spot as on base layer, `*` in mirror position on other hand
@@ -81,28 +82,29 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 - also num-row because why not
 
 
-	|   1   |   2   |   3   |   4   |   5   ||   6   |   7   |   8   |   9   |   0   |
-	| SUPER |  ALT  | CTRL  | SHIFT |       ||   -   |   4   |   5   |   6   |   .   |
-	|   *   |       |       |   <   |   >   ||   0   |   1   |   2   |   3   |   /   |
-	                |   +   |   -   |   =   ||  XXX  |       |       |                
 
 
 
 ### Function keys (`FUN`)
-
-- `F1`-`F9` in the same positions as respective digits in numerals layer
-- `F10`-`F12` on outer column downwards
-- `print scr` on same side for one-hand screenshots
-
 
 	|  F1   |  F2   |  F3   |  F4   |  F5   ||  F6   |  F7   |  F8   |  F9   |  F10  |
 	| SUPER |  ALT  | CTRL  | SHIFT |       || PSCR  |  F4   |  F5   |  F6   |  F11  |
 	|       |       |  INS  | SLCK  | PAUSE ||       |  F1   |  F2   |  F3   |  F12  |
 	                |       |  APP  |       ||       |       |  XXX  |                
 
+- `F1`-`F9` in the same positions as respective digits in numerals layer
+- `F10`-`F12` on outer column downwards
+- `print scr` on same side for one-hand screenshots
+
+
 
 
 ### Navigation (`NAV`)
+
+	| FIND- | HOME  |  UP   |  END  | CUT   ||       |       |       |       |       |
+	| FIND+ | LEFT  | DOWN  | RIGHT | COPY  ||       | SHIFT | CTRL  |  ALT  | SUPER |
+	|       | PG_U  |       | PG_D  | PASTE ||       |       |       |       |       |
+	                |       |  XXX  |       || UNDO  |       | REDO  |                
 
 - inverted T arrows, home/end, page up/down
 - copy/cut/paste on inner column
@@ -110,25 +112,17 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 - undo/redo with other hand
 
 
-	| FIND- | HOME  |  UP   |  END  | CUT   ||       |       |       |       |       |
-	| FIND+ | LEFT  | DOWN  | RIGHT | COPY  ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	|       | PG_U  |       | PG_D  | PASTE ||       |       |       |       |       |
-	                |       |  XXX  |       || UNDO  |       | REDO  |                
-
-
-
 ### System/media keys (`SYS`)
-
-- volume up/down and stop/play over arrows
-- mute below volume down
-- rewind/forward over home/end, previous/next track over page up/down
-- home folder, browser, calculator shortcuts on inner column
-
 
 	| BRI+  |  RWD  | VOL+  |  FFW  |MYCOMP ||       |       |       |       |       |
 	| BRI-  | STOP  | VOL-  | PLAY  |  WWW  ||       | SHIFT | CTRL  |  ALT  | SUPER |
 	|       | PREV  | MUTE  | NEXT  | CALC  ||       |       |       |       |       |
 	                |       |       |  XXX  ||       |       |       |                
+
+- volume up/down and stop/play over arrows
+- mute below volume down
+- rewind/forward over home/end, previous/next track over page up/down
+- home folder, browser, calculator shortcuts on inner column
 
 
 
