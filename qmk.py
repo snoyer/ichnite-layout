@@ -38,8 +38,9 @@ def generate_qmk_code(layers):
     shifts = {c['default']:c['shift'] for c in layers['base']
                                       if isinstance(c, dict) and 'shift' in c and 'default' in c}
 
-    customs = [c for c in chain.from_iterable(qmk_layers.values())
-                 if c.startswith('_')]
+    kcs = chain.from_iterable(qmk_layers.values())
+    customs = list(chain.from_iterable(re.findall(r'(?:\W|^)(_\w+)', kc) for kc in kcs))
+
 
     def format_layer(layer):
         name, keys = layer

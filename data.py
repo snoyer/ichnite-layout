@@ -38,7 +38,7 @@ def layers_from_tables(layer_tables):
                 ai = taphold_layer.index(a)
                 bi = taphold_layer.index(b)
                 layers[a][bi] = make_taphold(layers[a][bi], layer_id)
-                if f in '?,':
+                if f in '+&':
                     layers[b][ai] = make_taphold(layers[b][ai], layer_id)
             except ValueError:
                 pass

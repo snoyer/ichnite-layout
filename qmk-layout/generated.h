@@ -26,10 +26,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_PLUS , LT(NUM_NAV,KC_MINS), KC_EQL  , KC_NO   , KC_NO   , MO(NUM_FUN)
 	),
 	[FUN] = LAYOUT_split_3x5_3(
-		KC_F1   , KC_F2   , KC_F3   , KC_F4   , KC_F5   , KC_F6   , KC_F7   , KC_F8   , KC_F9   , KC_F10  ,
-		KC_LGUI , KC_LALT , KC_LCTL , KC_LSFT , KC_NO   , KC_PSCR , KC_F4   , KC_F5   , KC_F6   , KC_F11  ,
-		KC_NO   , KC_NO   , KC_INS  , KC_SLCK , KC_PAUS , KC_NO   , KC_F1   , KC_F2   , KC_F3   , KC_F12  ,
-		KC_NO   , KC_APP  , KC_NO   , KC_NO   , KC_NO   , KC_NO   
+		KC_F1   , KC_F2   , KC_F3   , KC_F4      , KC_F5   , KC_F6   , KC_F7   , KC_F8   , KC_F9   , KC_F10  ,
+		KC_LGUI , KC_LALT , KC_LCTL , KC_LSFT    , KC_NO   , KC_PSCR , KC_F4   , KC_F5   , KC_F6   , KC_F11  ,
+		KC_NO   , KC_NO   , KC_INS  , KC_SLCK    , KC_PAUS , KC_NO   , KC_F1   , KC_F2   , KC_F3   , KC_F12  ,
+		KC_NO   , KC_APP  , KC_NO   , MO(NUM_FUN), KC_NO   , KC_NO   
 	),
 	[NAV] = LAYOUT_split_3x5_3(
 		_FINDPREV, KC_HOME , KC_UP   , KC_END   , _CUT    , KC_NO   , KC_NO   , KC_NO   , KC_NO   , KC_NO   ,
