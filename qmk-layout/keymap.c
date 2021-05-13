@@ -8,9 +8,9 @@ uint16_t custom_kc(const uint16_t keycode) {
 	const bool is_osx = get_unicode_input_mode() == UC_OSX;
 
 	switch(keycode) {
-		case _COPY : return C(KC_INS);
-		case _CUT  : return S(KC_DEL);
-		case _PASTE: return S(KC_INS);
+		case _COPY : return is_osx ? G(KC_C) : C(KC_C);
+		case _CUT  : return is_osx ? G(KC_X) : C(KC_X);
+		case _PASTE: return is_osx ? G(KC_V) : C(KC_V);
 
 		case _UNDO : return is_osx ?   G(KC_Z)  :   C(KC_Z) ;
 		case _REDO : return is_osx ? S(G(KC_Z)) : S(C(KC_Z));
