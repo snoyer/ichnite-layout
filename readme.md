@@ -72,7 +72,7 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 	|   1   |   2   |   3   |   4   |   5   ||   6   |   7   |   8   |   9   |   0   |
 	| SUPER |  ALT  | CTRL  | SHIFT |       ||   -   |   4   |   5   |   6   |   .   |
 	|   *   |       |       |   <   |   >   ||   0   |   1   |   2   |   3   |   /   |
-					|   +   |   -   |   =   ||  XXX  |       |       |                
+	                |   +   |   -   |   =   ||  XXX  |       |       |                
 
 - One-hand numpad with extra `.` and `-`
 - `/` in the same spot as on base layer, `*` in mirror position on other hand
@@ -165,5 +165,5 @@ Keep firmware stuff out of the way behind a combo that needs two fingers.
 ## Implemtentation
 
 The layout is currently implemented as a basic [QMK](https://qmk.fm/) `split_3x5_3` layout
-(with its [`keymaps`](qmk-layout/generated.h) tables auto-generated from the data in the above section)
+(with its [`keymaps` tables](qmk-layout/generated.h) auto-generated from the data in the above section)
 and can be flashed to any QMK keyboard supporting `split_3x5_3` layouts.
