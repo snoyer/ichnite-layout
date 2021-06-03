@@ -103,12 +103,13 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 
 	| FIND- | HOME  |  UP   |  END  | CUT   ||       |       |       |       |       |
 	| FIND+ | LEFT  | DOWN  | RIGHT | COPY  ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	|       | PG_U  |       | PG_D  | PASTE ||       |       |       |       |       |
+	| ENTER | PG_U  |       | PG_D  | PASTE ||       |       |       |       |       |
 	                |       |  XXX  |       || UNDO  |       | REDO  |                
 
 - inverted T arrows, home/end, page up/down
 - copy/cut/paste on inner column
 - find next/previous on outer column
+- `enter` on outer column for one-hand access
 - undo/redo with other hand
 
 
