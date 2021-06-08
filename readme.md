@@ -45,6 +45,7 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 - `,`, `.`, `/` shift to `;`, `?`, `\` respectively
 - `space` shits to `-`.
 
+
 #### Home row mods and layers with `tap-hold`
 
 	|       |       |       |       |       ||       |       |       |       |       |
@@ -63,25 +64,24 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 
 - `:`, `!`, `|`, `` ` `` over base `,`, `.`, `/`, `'`
 - `_` over base `space`
-- `*`, `+` in the same spot as on numerals layer
+- `*`, `+`, `%` in the same spot as on numerals layer
 - Separate brackets/braces pairs.
+
 
 
 ### Numerals (`NUM`)
 
 	|   1   |   2   |   3   |   4   |   5   ||   6   |   7   |   8   |   9   |   0   |
 	| SUPER |  ALT  | CTRL  | SHIFT |       ||   -   |   4   |   5   |   6   |   .   |
-	|   *   |       |       |   <   |   >   ||   0   |   1   |   2   |   3   |   /   |
+	|   *   |       |   %   |   <   |   >   ||   0   |   1   |   2   |   3   |   /   |
 	                |   +   |   -   |   =   ||  XXX  |       |       |                
 
 - One-hand numpad with extra `.` and `-`
 - `/` in the same spot as on base layer, `*` in mirror position on other hand
 - `-` over `space`, `+` next to `-`,
-- `=` in the same spot as on symbols layer
+- `=`, `%` in the same spot as on symbols layer
 - `<` and `>` aligned with braces on symbol layer
 - also num-row because why not
-
-
 
 
 
@@ -98,7 +98,6 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 
 
 
-
 ### Navigation (`NAV`)
 
 	| FIND- | HOME  |  UP   |  END  | CUT   ||       |       |       |       |       |
@@ -111,6 +110,7 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 - find next/previous on outer column
 - `enter` on outer column for one-hand access
 - undo/redo with other hand
+
 
 
 ### System/media keys (`SYS`)
