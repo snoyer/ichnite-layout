@@ -163,7 +163,7 @@ Keep firmware stuff out of the way behind a combo that needs two fingers.
 
 
 
-## Implemtentation
+## Implementation
 
 The layout is currently implemented as a basic [QMK](https://qmk.fm/) `split_3x5_3` layout
 (with its [`keymaps` tables](qmk-layout/generated.h) auto-generated from the data in the above section)
