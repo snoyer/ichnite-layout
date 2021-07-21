@@ -32,7 +32,7 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 	|   q   |   w   |   f   |   p   |   b   ||   j   |   l   |   u   |   y   |   '   |
 	|   a   |   r   |   s   |   t   |   g   ||   m   |   n   |   e   |   i   |   o   |
 	|   z   |   x   |   c   |   d   |   v   ||   k   |   h   |   ,   |   .   |   /   |
-	                |  ESC  | SPACE |  TAB  || BSPC  | ENTER |  DEL  |                
+	                |  ESC  | SPACE |  TAB  || ENTER | BSPC  |  DEL  |                
 
 
 #### Custom `shifts`
@@ -57,8 +57,8 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 
 ### Symbols (`SYM`)
 
-	|   ~   |   $   |   @   |   [   |   ]   ||       |       |       |       |   `   |
-	|   #   |   ^   |   &   |   (   |   )   ||       | SHIFT | CTRL  |  ALT  | SUPER |
+	|   ~   |   ^   |   &   |   [   |   ]   ||       |       |       |       |   `   |
+	|   #   |   $   |   @   |   (   |   )   ||       | SHIFT | CTRL  |  ALT  | SUPER |
 	|   *   |       |   %   |   {   |   }   ||       |       |   :   |   !   | PIPE  |
 	                |   +   |   _   |   =   ||       |  XXX  |       |                
 
@@ -90,19 +90,20 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 	|  F1   |  F2   |  F3   |  F4   |  F5   ||  F6   |  F7   |  F8   |  F9   |  F10  |
 	| SUPER |  ALT  | CTRL  | SHIFT |       || PSCR  |  F4   |  F5   |  F6   |  F11  |
 	|       |       |  INS  | SLCK  | PAUSE ||       |  F1   |  F2   |  F3   |  F12  |
-	                |       |  APP  |       ||       |       |  XXX  |                
+	                | rCTRL |  APP  |       ||       |       |  XXX  |                
 
 - `F1`-`F9` in the same positions as respective digits in numerals layer
 - `F10`-`F12` on outer column downwards
 - `print scr` on same side for one-hand screenshots
+- right control key to escape virtualbox
 
 
 
 ### Navigation (`NAV`)
 
-	| FIND- | HOME  |  UP   |  END  | CUT   ||       |       |       |       |       |
+	| FIND- | HOME  |  UP   |  END  | CUT   ||       |       |       |       |   "   |
 	| FIND+ | LEFT  | DOWN  | RIGHT | COPY  ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	| ENTER | PG_U  |       | PG_D  | PASTE ||       |       |       |       |       |
+	| ENTER | PG_U  |       | PG_D  | PASTE ||       |       |   ;   |   ?   |   \   |
 	                |       |  XXX  |       || UNDO  |       | REDO  |                
 
 - inverted T arrows, home/end, page up/down
@@ -110,6 +111,7 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 - find next/previous on outer column
 - `enter` on outer column for one-hand access
 - undo/redo with other hand
+- redundant `;`, `?`, `\` in case implementation does not support custom shifting
 
 
 
@@ -138,14 +140,14 @@ Not convinced about full mouse emulation but one-hand scrolling could be useful.
 
 
 
-### Unicode Symbols on `NUM>NAV`
+### Unicode Symbols on `NAV>SYM`
 
 For science?
 
-	|       |   €   |   °   |       |       ||       |   Δ   |   ε   |   μ   |       |
-	|   ∞   |   ×   |   √   |   ²   |   ³   ||       |   α   |   β   |   λ   |       |
-	|   ±   |   ≠   |   ≈   |   ≤   |   ≥   ||       |   φ   |   θ   |   π   |       |
-	                |       |  XXX  |       ||       |       |       |                
+	|       |       |   °   |   √   |       ||       |   μ   |   Δ   |   ε   |       |
+	|   ∞   |   €   |       |   ²   |   ³   ||       |   π   |   φ   |   θ   |       |
+	|   ×   |       |   ≈   |   ≤   |   ≥   ||   λ   |   α   |   β   |   ¿   |   ÷   |
+	                |   ±   |  XXX  |   ≠   ||       |       |  XXX  |                
 
 
 
@@ -154,10 +156,10 @@ For science?
 Keep firmware stuff out of the way behind a combo that needs two fingers.  
 `OSX`, `LINUX`, `WIN` keys should select the mode for OS-specific inputs (such as undo/redo actions or Unicode) according to implementation.
 
-	| RESET |       |       |       |  OSX  ||       |       |       |       |       |
-	| DEBUG |       |       |       | LINUX ||       |       |       |       |       |
+	|       |       |       |       |  OSX  ||       |       |       |       |       |
+	|       |       |       |       | LINUX ||       |       |       |       |       |
 	|       |       |       |       |  WIN  ||       |       |       |       |       |
-	                |       |       |       ||  XXX  |       |  XXX  |                
+	                | RESET |       | DEBUG ||  XXX  |       |  XXX  |                
 
 
 
