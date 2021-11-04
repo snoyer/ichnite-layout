@@ -1,22 +1,21 @@
-# sno36
+# Ichnite Layout
 
-An experimental 36 keys keyboard layout.
+An experimental 40/36 keys keyboard layout.
 
 ![Layout overview](preview.png)
 
 Main features/goals:
 
-- optimized for 3×5+3 split keyboards
+- optimized for 3×5+3 split keyboards with extra 2-key inner columns, but usable as regular 3×5+3
 - one-hand navigation (with inverted T arrows) and system/media keys
-- one-hand numerals and F-keys
+- one-hand numerals and F-keys (same arrangement)
 - non-standard shifted punctuation and custom symbol layer grouping related characters on the same keys as follows:
   | base             | shift               | symbol                 |
   |------------------|---------------------|------------------------|
   | `,` (comma)      | `;` (semicolon)     | `:` (colon)            |
   | `.` (dot/period) | `?` (question mark) | `!` (exclamation mark) |
   | `/` (slash)      | `\` (backslash)     | `\|` (pipe)            |
-  | `'` (quote)      | `"` (double quote)  | ``` ` ``` (back quote) |
-  | `⎵` (space)      | `-` (dash/minus)    | `_` (underscore)       |
+  | `'` (quote)      | `"` (double quote)  | `` ` `` (back quote)   |
 
 Obviously inspired by [Miryoku](https://github.com/manna-harbour/miryoku) but less principled and without the advanced QMK implementation details.
 
@@ -28,40 +27,32 @@ Obviously inspired by [Miryoku](https://github.com/manna-harbour/miryoku) but le
 ### Colemak-DHm `base` layer
 
 Except for quote key in place of semi-colon key (as semicolon and colon are remapped on comma key)
-
-	|   q   |   w   |   f   |   p   |   b   ||   j   |   l   |   u   |   y   |   '   |
-	|   a   |   r   |   s   |   t   |   g   ||   m   |   n   |   e   |   i   |   o   |
-	|   z   |   x   |   c   |   d   |   v   ||   k   |   h   |   ,   |   .   |   /   |
-	                |  ESC  | SPACE |  TAB  || ENTER | BSPC  |  DEL  |                
-
-
-#### Custom `shifts`
-
-	|       |       |       |       |       ||       |       |       |       |   "   |
-	|       |       |       |       |       ||       |       |       |       |       |
-	|       |       |       |       |       ||       |       |   ;   |   ?   |   \   |
-	                |       |   -   |       ||       |       |       |                
-
-- `,`, `.`, `/` shift to `;`, `?`, `\` respectively
-- `space` shits to `-`.
+```
+|   q   |   w   |   f   |   p   |   b   |                   |   j   |   l   |   u   |   y   |  '"   |
+|   a   |   r   |   s   |   t   |   g   |  INS  |   |   -   |   m   |   n   |   e   |   i   |   o   |
+|   z   |   x   |   c   |   d   |   v   | CAPS  |   |   =   |   k   |   h   |  ,;   |  .?   |  /\   |
+|               |  ESC  | SPACE |  TAB  |                   | ENTER | BSPC  |  DEL  |               |
+```
+`,`, `.`, `/` shift to `;`, `?`, `\` respectively
 
 
-#### Home row mods and layers with `tap-hold`
-
-	|       |       |       |       |       ||       |       |       |       |       |
-	| SUPER |  ALT  | CTRL  | SHIFT |       ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	|       |       |       |       |       ||       |       |       |       |       |
-	                |  MWH  |  NAV  |  SYS  ||  NUM  |  SYM  |  FUN  |                
+### Home row mods and layers with `hold-tap`
+```
+|       |       |       |       |       |                    |       |       |       |       |       |
+|  CMD  |  ALT  | CTRL  | SHIFT |       |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
+|       |       |       |       |       |       |    |       |       |       |       |       |       |
+|               |  MWH  |  NAV  |  SYS  |                    |  NUM  |  SYM  |  FUN  |               |
+```
 
 
 
 ### Symbols (`SYM`)
-
-	|   ~   |   ^   |   &   |   [   |   ]   ||       |       |       |       |   `   |
-	|   #   |   $   |   @   |   (   |   )   ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	|   *   |       |   %   |   {   |   }   ||       |       |   :   |   !   | PIPE  |
-	                |   +   |   _   |   =   ||       |  XXX  |       |                
-
+```
+|   ~   |   ^   |   &   |   [   |   ]   |                    |       |       |       |       |   `   |
+|   #   |   $   |   @   |   (   |   )   |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
+|   *   |       |   %   |   {   |   }   |       |    |       |       |       |   :   |   !   | PIPE  |
+|               |   +   |   _   |   =   |                    |       |  XXX  |       |               |
+```
 - `:`, `!`, `|`, `` ` `` over base `,`, `.`, `/`, `'`
 - `_` over base `space`
 - `*`, `+`, `%` in the same spot as on numerals layer
@@ -70,13 +61,13 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 
 
 ### Numerals (`NUM`)
-
-	|   1   |   2   |   3   |   4   |   5   ||   6   |   7   |   8   |   9   |   0   |
-	| SUPER |  ALT  | CTRL  | SHIFT |       ||   -   |   4   |   5   |   6   |   .   |
-	|   *   |       |   %   |   <   |   >   ||   0   |   1   |   2   |   3   |   /   |
-	                |   +   |   -   |   =   ||  XXX  |       |       |                
-
-- One-hand numpad with extra `.` and `-`
+```
+|   1   |   2   |   3   |   4   |   5   |                    |   6   |   7   |   8   |   9   |   0   |
+|  CMD  |  ALT  | CTRL  | SHIFT |       |       |    |  KP+  |  KP-  |   4   |   5   |   6   |  KP.  |
+|  KP*  |       |   %   |   <   |   >   |       |    |  KP*  |   0   |   1   |   2   |   3   |  KP/  |
+|               |  KP+  |   -   |  KP=  |                    |  XXX  |       |       |               |
+```
+- One-hand numpad arrangement with extra `.` and `-`
 - `/` in the same spot as on base layer, `*` in mirror position on other hand
 - `-` over `space`, `+` next to `-`,
 - `=`, `%` in the same spot as on symbols layer
@@ -84,44 +75,55 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 - also num-row because why not
 
 
+#### Keypad numerals (`KP`) on `NUM+SYM` combo
+
+Same as above but with keypad numbers.
+```
+|  KP1  |  KP2  |  KP3  |  KP4  |  KP5  |                    |  KP6  |  KP7  |  KP8  |  KP9  |  KP0  |
+|  CMD  |  ALT  | CTRL  | SHIFT |       |       |    |  KP+  |  KP-  |  KP4  |  KP5  |  KP6  |  KP.  |
+|  KP*  |       |   %   |   <   |   >   |       |    |  KP*  |  KP0  |  KP1  |  KP2  |  KP3  |  KP/  |
+|               |  KP+  |  KP-  |  KP=  |                    |  XXX  |  XXX  |       |               |
+```
+
+
 
 ### Function keys (`FUN`)
-
-	|  F1   |  F2   |  F3   |  F4   |  F5   ||  F6   |  F7   |  F8   |  F9   |  F10  |
-	| SUPER |  ALT  | CTRL  | SHIFT |       || PSCR  |  F4   |  F5   |  F6   |  F11  |
-	|       |       |  INS  | SLCK  | PAUSE ||       |  F1   |  F2   |  F3   |  F12  |
-	                | rCTRL |  APP  |       ||       |       |  XXX  |                
-
+```
+|  F1   |  F2   |  F3   |  F4   |  F5   |                    |  F6   |  F7   |  F8   |  F9   |  F10  |
+|  CMD  |  ALT  | CTRL  | SHIFT | CAPS  |       |    |       | PSCR  |  F4   |  F5   |  F6   |  F11  |
+|       | PSCR  | SLCK  | PAUSE |  INS  |       |    |       |       |  F1   |  F2   |  F3   |  F12  |
+|               | rCTRL |  APP  |       |                    |       |       |  XXX  |               |
+```
 - `F1`-`F9` in the same positions as respective digits in numerals layer
 - `F10`-`F12` on outer column downwards
-- `print scr` on same side for one-hand screenshots
-- right control key to escape virtualbox
+- `print screen` on same side for one-hand screenshots
+- `right control` key to escape Virtualbox
 
 
 
 ### Navigation (`NAV`)
-
-	| FIND- | HOME  |  UP   |  END  | CUT   ||       |       |       |       |   "   |
-	| FIND+ | LEFT  | DOWN  | RIGHT | COPY  ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	| ENTER | PG_U  |       | PG_D  | PASTE ||       |       |   ;   |   ?   |   \   |
-	                |       |  XXX  |       || UNDO  |       | REDO  |                
-
+```
+| FIND- | HOME  |  UP   |  END  |  CUT  |                     |       |       |       |       |   "   |
+| FIND+ | LEFT  | DOWN  | RIGHT | COPY  | UNDO  |    |COMMENT |       | SHIFT | CTRL  |  ALT  |  CMD  |
+| ENTER | PG_UP |       | PG_DN | PASTE | BSPC  |    |        |       |       |   ;   |   ?   |   \   |
+|               |       |  XXX  |       |                     | REDO  | UNDO  |       |               |
+```
 - inverted T arrows, home/end, page up/down
 - copy/cut/paste on inner column
 - find next/previous on outer column
-- `enter` on outer column for one-hand access
-- undo/redo with other hand
+- `undo`/`redo` over `backspace`/`enter`
+- redundant `enter` on outer column for one-hand access
 - redundant `;`, `?`, `\` in case implementation does not support custom shifting
 
 
 
 ### System/media keys (`SYS`)
-
-	| BRI+  |  RWD  | VOL+  |  FFW  |MYCOMP ||       |       |       |       |       |
-	| BRI-  | STOP  | VOL-  | PLAY  |  WWW  ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	|       | PREV  | MUTE  | NEXT  | CALC  ||       |       |       |       |       |
-	                |       |       |  XXX  ||       |       |       |                
-
+```
+| BRI+  |  RWD  | VOL+  |  FFW  | MYCOMP |                    |       |       |       |       |       |
+| BRI-  | STOP  | VOL-  | PLAY  |  WWW   |  F15  |    |  F17  |       | SHIFT | CTRL  |  ALT  |  CMD  |
+|       | PREV  | MUTE  | NEXT  | CALC   |  F16  |    |  F18  |       |       |       |       |       |
+|               |       |       |  XXX   |                    |       |       |       |               |
+```
 - volume up/down and stop/play over arrows
 - mute below volume down
 - rewind/forward over home/end, previous/next track over page up/down
@@ -132,41 +134,61 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 ### Mouse scrolling (`MWH`)
 
 Not convinced about full mouse emulation but one-hand scrolling could be useful.
+```
+|       |       | WH_U  |       |       |                    |       |       |       |       |       |
+|       | WH_L  | WH_D  | WH_R  |       |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
+|       |       |       |       |       |       |    |       |       |       |       |       |       |
+|               |  XXX  |       |       |                    |       |       |       |               |
+```
 
-	|       |       | WH_U  |       |       ||       |       |       |       |       |
-	|       | WH_L  | WH_D  | WH_R  |       ||       | SHIFT | CTRL  |  ALT  | SUPER |
-	|       |       |       |       |       ||       |       |       |       |       |
-	                |  XXX  |       |       ||       |       |       |                
 
 
-
-### Unicode Symbols on `NAV>SYM`
+### Unicode Symbols (`UTF`) on `NAV>SYM`
 
 For science?
+```
+|       |       |   °   |   √   |       |                    |       |   μ   |   Δ   |   ε   |       |
+|   ∞   |   €   |       |   ²   |   ³   |       |    |       |       |   π   |   φ   |   θ   |       |
+|   ×   |       |   ≈   |   ≤   |   ≥   |       |    |       |   λ   |   α   |   β   |   ¿   |   ÷   |
+|               |   ±   |  XXX  |   ≠   |                    |       |       |  XXX  |               |
+```
 
-	|       |       |   °   |   √   |       ||       |   μ   |   Δ   |   ε   |       |
-	|   ∞   |   €   |       |   ²   |   ³   ||       |   π   |   φ   |   θ   |       |
-	|   ×   |       |   ≈   |   ≤   |   ≥   ||   λ   |   α   |   β   |   ¿   |   ÷   |
-	                |   ±   |  XXX  |   ≠   ||       |       |  XXX  |                
 
 
-
-### Firmware on `NUM+FUN` combo
+### Firmware (`FW`) on `NUM+FUN` or `MWH+SYS` combo
 
 Keep firmware stuff out of the way behind a combo that needs two fingers.  
-`OSX`, `LINUX`, `WIN` keys should select the mode for OS-specific inputs (such as undo/redo actions or Unicode) according to implementation.
+```
+|  BT1  |  BT2  |  BT3  |  BT4  |  BT5  |                    |  USB  |       |       |       | BTCLR |
+|       | @WIN  | @MAC  |@LINUX |       | BTCLR |    |       |       |       |       |       |       |
+|       |       |       |       |       |       |    |       |       |       |       |       |       |
+|               | RESET | BOOTL | DEBUG |                    | DEBUG | BOOTL | RESET |               |
+```
+- `@LINUX`, `@MAC`, `@WIN` keys should select the mode for OS-specific inputs (such as undo/redo actions or Unicode) according to implementation.
+- `BT*` should select bluetooth outputs, `USB` should select USB output
 
-	|       |       |       |       |  OSX  ||       |       |       |       |       |
-	|       |       |       |       | LINUX ||       |       |       |       |       |
-	|       |       |       |       |  WIN  ||       |       |       |       |       |
-	                | RESET |       | DEBUG ||  XXX  |       |  XXX  |                
 
+
+## OS specific macros
+
+|         | linux    | mac         | win      |
+|---------|----------|-------------|----------|
+|  COPY   | CTRL+C   | CMD+C       | CTRL+C   |
+|  CUT    | CTRL+X   | CMD+X       | CTRL+X   |
+|  PASTE  | CTRL+V   | CMD+V       | CTRL+V   |
+|  UNDO   | CTRL+Z   | CMD+Z       | CTRL+Z   |
+|  REDO   | CTRL+Y   | CMD+Y       | CTRL+Y   |
+|  FIND+  | F3       | CMD+G       | F3       |
+|  FIND-  | SHIFT+F3 | SHIFT+CMD+G | SHIFT+F3 |
+| COMMENT | CTRL+/   | CMD+/       | CTRL+/   |
 
 
 
 
 ## Implementation
 
-The layout is currently implemented as a basic [QMK](https://qmk.fm/) `split_3x5_3` layout
-(with its [`keymaps` tables](qmk-layout/generated.h) auto-generated from the data in the above section)
-and can be flashed to any QMK keyboard supporting `split_3x5_3` layouts.
+The layout is currently implemented as both ZMK[^zmk] [keymap](impl/zmk-keymap/ichnite.keymap) and a QMK[^qmk] [layout](impl/qmk-layout) generated from the above sections.
+
+
+[^zmk]: https://zmk.dev
+[^qmk]: https://qmk.fm/
