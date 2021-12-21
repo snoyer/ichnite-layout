@@ -222,10 +222,10 @@
 		};
 		UTF_m {
 			bindings = <
-			 &none   &none   &none   &none   &none      &none   &none   &none   &none   &none
-			 &none   &none   &none   &none   &none      &none   &none   &none   &none   &none
-			 &none   &none   &none   &none   &none      &none   &none   &none   &none   &none
-			                 &none   &none   &none      &none   &none   &none
+			 &none      &none      &u00b0_M   &u221a_M   &none         &none      &u03bc_M   &u0394_M   &u03b5_M   &none
+			 &u221e_M   &u20ac_M   &none      &u00b2_M   &u00b3_M      &none      &u03c0_M   &u03c6_M   &u03b8_M   &none
+			 &u00d7_M   &none      &u2248_M   &u2264_M   &u2265_M      &u03bb_M   &u03b1_M   &u03b2_M   &u00bf_M   &u00f7_M
+			                       &u00b1_M   &none      &u2260_M      &none      &none      &none
 			>;
 		};
 		UTF_w {
@@ -262,7 +262,7 @@
 			#binding-cells = <2>;
 			bindings = <&kp>, <&kp>;
 		};
-		comma_semi: comma_semi { /* https://github.com/aumuell/zmk/tree/modmorph */
+		comma_semi: comma_semi { /* https://github.com/snoyer/zmk/tree/masked-mods */
 			compatible = "zmk,behavior-mod-morph";
 			label = "shift-morph COMMA SEMI";
 			#binding-cells = <0>;
@@ -277,7 +277,7 @@
 			bindings = <&kp DOT>, <&kp QMARK>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
-		fslh_bslh: fslh_bslh { /* https://github.com/aumuell/zmk/tree/modmorph */
+		fslh_bslh: fslh_bslh { /* https://github.com/snoyer/zmk/tree/masked-mods */
 			compatible = "zmk,behavior-mod-morph";
 			label = "shift-morph FSLH BSLH";
 			#binding-cells = <0>;
@@ -422,6 +422,152 @@
 			label = "Linux ≠ macro";
 			#binding-cells = <0>;
 			bindings = <&kp LC(LS(U))>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N0>, <&kp SPACE>;
+		};
+		u00b0_M: u00b0_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ° macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N0>;
+		};
+		sk4: sk4 { /* https://github.com/snoyer/zmk/tree/stickier-keys */
+			compatible = "zmk,behavior-sticky-key";
+			label = "STICKY_KEY x4";
+			#binding-cells = <1>;
+			release-after-ms = <200>;
+			count = <4>;
+			bindings = <&kp>;
+		};
+		u221a_M: u221a_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac √ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N1>, <&kp A>;
+		};
+		u03bc_M: u03bc_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac μ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp C>;
+		};
+		u0394_M: u0394_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac Δ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp N9>, <&kp N4>;
+		};
+		u03b5_M: u03b5_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ε macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N5>;
+		};
+		u221e_M: u221e_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ∞ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N1>, <&kp E>;
+		};
+		u20ac_M: u20ac_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac € macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N2>, <&kp N0>, <&kp A>, <&kp C>;
+		};
+		u00b2_M: u00b2_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ² macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N2>;
+		};
+		u00b3_M: u00b3_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ³ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N3>;
+		};
+		u03c0_M: u03c0_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac π macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp C>, <&kp N0>;
+		};
+		u03c6_M: u03c6_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac φ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp C>, <&kp N6>;
+		};
+		u03b8_M: u03b8_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac θ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N8>;
+		};
+		u00d7_M: u00d7_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac × macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp D>, <&kp N7>;
+		};
+		u2248_M: u2248_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ≈ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N4>, <&kp N8>;
+		};
+		u2264_M: u2264_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ≤ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N4>;
+		};
+		u2265_M: u2265_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ≥ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N5>;
+		};
+		u03bb_M: u03bb_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac λ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp B>;
+		};
+		u03b1_M: u03b1_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac α macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N1>;
+		};
+		u03b2_M: u03b2_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac β macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N2>;
+		};
+		u00bf_M: u00bf_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ¿ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp F>;
+		};
+		u00f7_M: u00f7_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ÷ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp F>, <&kp N7>;
+		};
+		u00b1_M: u00b1_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ± macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N1>;
+		};
+		u2260_M: u2260_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+			compatible = "zmk,behavior-macro";
+			label = "Mac ≠ macro";
+			#binding-cells = <0>;
+			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N0>;
 		};
 		u00b0_W: u00b0_W { /* https://github.com/okke-formsma/zmk/tree/macros */
 			compatible = "zmk,behavior-macro";

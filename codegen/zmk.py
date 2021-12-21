@@ -96,7 +96,7 @@ def generate_zmk_code(
     aliases_by_os = {os:{**aliases, **os_aliases} for os,os_aliases in os_specific_aliases.items()}
     for os,macro in (
         ('linux', utf8_linux_macro_node),
-        # ('mac'  , utf8_mac_macro_node),
+        ('mac'  , utf8_mac_macro_node),
         ('win'  , utf8_win_macro_node),
     ):
         aliases_by_os[os][r'[\u0080-\uffff]$'] = macro
@@ -321,16 +321,26 @@ def utf8_linux_macro_node(char: str) -> Node:
         ],
     )
 
-def utf8_mac_macro_node(char: str) -> Node:
+def utf8_mac_macro_node(char: str) -> ZmkBinding:
     hexstr = '%04x' % ord(char)
-    return macro_node(f'u{hexstr}_M', 
+    node = macro_node(f'u{hexstr}_M', 
         label = f'Mac {char} macro',
         behaviors = [
-            '&kh U -1',
+            '&sk4 LALT',
             *(d.upper() if d in 'abcdef' else 'N'+d for d in hexstr),
-            '&kh U 0',
         ],
     )
+    sk4_node = Node('sk4', label='sk4', properties={
+            'compatible': "zmk,behavior-sticky-key",
+            'label': "STICKY_KEY x4",
+            '#binding-cells': 1,
+            'release-after-ms': 200,
+            'count': 4,
+            'bindings': Raw('<&kp>'),
+        },
+        comment = 'https://github.com/snoyer/zmk/tree/stickier-keys'
+    )
+    return ZmkBinding(node, extra_nodes=[sk4_node])
 
 def utf8_win_macro_node(char: str) -> Node:
     hexstr = '%04x' % ord(char)
@@ -360,7 +370,7 @@ def shiftmorph_node(default: str, shifted: str, zmk_keycodes: 'ZmkKeycodes') -> 
             'masked_mods': Raw('<(MOD_LSFT|MOD_RSFT)>') if is_custom_shift else None,
         }, 
         # comment = 'wont work because mod-morph doesnt clear modifiers :(' if is_custom_shift else ''
-        comment = 'https://github.com/aumuell/zmk/tree/modmorph' if is_custom_shift else ''
+        comment = 'https://github.com/snoyer/zmk/tree/masked-mods' if is_custom_shift else ''
     )
 
 
