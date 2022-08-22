@@ -101,7 +101,7 @@ void tapdance_TDLT_reset(qk_tap_dance_state_t *state, void *user_data){
 }
 
 #define ACTION_TAP_DANCE_LT(layer, keycode) { \
-	.fn = {NULL, tapdance_TDLT_finished, tapdance_TDLT_reset},	\
+	.fn = {NULL, tapdance_TDLT_finished, tapdance_TDLT_reset}, \
 	.user_data = (void*)&((tdlt_data){ layer, keycode }), \
 }
 

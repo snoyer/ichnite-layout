@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, Iterable, List, Optional, Union
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Union, cast
 
 NodeOrComment = Union['Node','Comment']
 
@@ -12,11 +12,11 @@ class Node:
     address: Optional[int] = None
     comment: Optional[str] = None
 
-    def __str__(self):
+    def format_dt(self):
         return '\n'.join(format_dtnode(self))
-
+    
     def __iadd__(self, node: Union[NodeOrComment, Iterable[NodeOrComment]]):
-        if isinstance(node, NodeOrComment):
+        if isinstance(node, (Node, Comment)):
             self.children.append(node)
         else:
             try:
@@ -35,29 +35,44 @@ class Raw(str): pass
 class Comment(str): pass
 
 
-def format_dtproperty(k: str, v: Any):
+def format_value(v: Any):
+    if hasattr(v, 'format_dt'):
+        return v.format_dt()
+    
     if isinstance(v, Raw):
-        return f'{k} = {v};'
+        return str(v)
 
     if isinstance(v, PHandle):
-        return f'{k} = <{v}>;'
+        return str(v)
+    
+    if isinstance(v, int):
+        return f'<{v}>' if v >=0 else f'<({v})>'
+    
+    if isinstance(v, str):
+        return f'"{v}"'
 
-    if isinstance(v, PHandles):
-        return f'{k} = <{" ".join(v)}>;'
+    return repr(v)
 
 
+def format_dtproperty(k: str, v: Any):
+
+    if hasattr(v, 'format_dt'):
+        return f'{k} = {v.format_dt()};'
 
     if isinstance(v, bool):
         if v == True:
             return f'{k};'
         else:
             return f'/* {k} = false */';
-    if isinstance(v, int):
-        return f'{k} = <{v}>;'
+    
     if isinstance(v, str):
-        return f'{k} = "{v}";'
-
-    return f'{k} = {v};'
+        return f'{k} = {format_value(v)};'
+    
+    if isinstance(v, Sequence):
+        v = cast(Sequence[Any], v)
+        return f'{k} = <{" ".join(map(format_value, v))}>;'
+    
+    return f'{k} = {format_value(v)};'
 
 
 
@@ -67,10 +82,10 @@ def format_dtnode(node: Node, depth: int=0, indentation: str='\t') -> Iterable[s
 
     name = node.name
     if node.label:
-        name = node.label + ': ' + name
+        name = f'{node.label}: {name}'
     if node.address != None:
-        name += '@%x' % node.address
-     
+        name += f'@{node.address:x}'
+
     if node.comment:
         comment_lines = f'/* {node.comment} */'.splitlines()
         yield indent(name + ' { ' + comment_lines[0])

@@ -1,7 +1,8 @@
 import re
+from collections import Counter
 from dataclasses import dataclass
 from typing import (Any, Callable, Dict, Generic, Iterable, Iterator, List,
-                    Sequence, Tuple, TypeVar, Union)
+                    Optional, Sequence, Set, Tuple, TypeVar, Union)
 
 
 class Span:
@@ -11,12 +12,22 @@ class Span:
     def __bool__(self):
         return False
 
+
 @dataclass(frozen=True)
 class Index:
-    row: int 
-    col: int 
+    row: int
+    col: int
     colspan: int = 1
-    rowspan: int = 1 
+    rowspan: int = 1
+
+
+@dataclass(frozen=True)
+class Shape:
+    row_count: int
+    col_count: int
+    spans: Set[Tuple[int,int]]
+    voids: Set[Tuple[int,int]]
+
 
 
 T = TypeVar('T')
@@ -25,22 +36,38 @@ T3 = TypeVar('T3')
 
 
 class Table(Generic[T]):
-    def __init__(self, rows: List[List[Union[T,None,Span]]]):
+    def __init__(self, rows: List[List[Union[Optional[T],Span]]]):
         self.rows = rows
-    
 
-    def map(self, f: Callable[[T], T2]) -> 'Table[T2]':
-        def g(c: Union[T, None ,Span]) -> Union[T2, None,Span]:
-            return f(c) if not (c is None or isinstance(c, Span)) else c
-        new_rows = [[g(cell) for cell in row]  for row in self.rows]
-        return Table(new_rows)
+    @property
+    def shape(self):
+        spans: Set[Tuple[int,int]] = set()
+        empties: Set[Tuple[int,int]] = set()
+
+        for i,row in enumerate(self.rows):
+            for j,cell in enumerate(row):
+                if cell is None:
+                    empties.add((i,j))
+                if isinstance(cell, Span):
+                    spans.add((i,j))
+
+        return Shape(self.row_count, self.col_count, spans, empties)
 
 
-    def map2(self, f: Callable[[T,T2], T3], other: 'Table[T2]') -> 'Table[T3]':
-        def g(c1: Union[T, None, Span], c2: Union[T2, None, Span]) -> Union[T3, None, Span]:
-            return f(c1,c2) if not (c1 is None or isinstance(c1, Span)) else c1
-        new_rows = [[g(c1,c2) for c1,c2 in zip(r1,r2)]  for r1,r2 in zip(self.rows, other.rows)]
-        return Table(new_rows)
+    def copy(self, new_cells: Iterable[T2]) -> 'Table[T2]':
+        return Table.Shape(new_cells, self.shape)
+
+
+    @classmethod
+    def Shape(cls, data: Iterable[Optional[T]], shape: Shape) -> 'Table[T]':
+        it = iter(data)
+
+        def f(ij: Tuple[int,int]):
+            if ij in shape.spans: return Span()
+            if ij in shape.voids: return None
+            return next(it)
+
+        return cls([[f((i,j)) for j in range(shape.col_count)] for i in range(shape.row_count)])
 
 
     @property
@@ -50,25 +77,18 @@ class Table(Generic[T]):
     @property
     def col_count(self):
         return len(self.rows[0])
-    
-    
-    def indices(self, predicate_or_value: Union[T, Callable[[T],bool]]) -> Iterable[Tuple[int,int]]:
-        def predicate(c:T):
-            if callable(predicate_or_value):
-                return predicate_or_value(c)
-            else:
-                return predicate_or_value == c
-        
-        for i,row in enumerate(self.rows):
-            for j,cell in enumerate(row):
-                if not isinstance(cell,Span) and cell != None and predicate(cell):
-                    yield i,j
 
-    
-    def cells(self) -> Iterator[T]:
-        for _,cell in self.indexed_cells():
-            yield cell
-    
+
+    @property
+    def cells(self) -> List[T]:
+        return [cell for _,cell in self.indexed_cells()]
+
+    @cells.setter
+    def cells(self, cells: Sequence[T]):
+        it = iter(cells)
+        for i,_ in self.indexed_cells():
+            self.rows[i.row][i.col] = next(it)
+
 
     def indexed_cells(self) -> Iterator[Tuple[Index, T]]:
         for i,row in enumerate(self.rows):
@@ -81,11 +101,12 @@ class Table(Generic[T]):
     def __str__(self) -> str:
         return format_table(self)
 
+
     @classmethod
     def Parse(cls, lines: Union[str, Sequence[str]], separator: str='|', strip: bool=True) -> 'Table[str]':
         if isinstance(lines, str):
             lines = lines.splitlines()
-        
+
         lines = [line.rstrip('\n\r') for line in lines]
 
         limits = sorted(set(i for line in lines for i,c in enumerate(line) if c==separator))
@@ -177,7 +198,7 @@ def _find_border(nesw: Tuple[int,int,int,int]) -> str:
 def _colspans_width(table:Table[Any], sep_width: int=1, pad_width: int=1):
 
     total_pad = pad_width*2 + sep_width
-   
+
     ncol = table.row_count
 
     widths = {(i,i+1): 1 for i in range(ncol)}
@@ -246,14 +267,11 @@ BORDERS_PATTERNS = '''
 ├1110 ┝1210 ┞2110 ┟1120 ┠2120 ┡2210 ┢1220 ┣2220 ╞1310 ╟3130 ╠3330
 ┤1011 ┥1012 ┦2011 ┧1021 ┨2021 ┩2012 ┪1022 ┫2022 ╡1013 ╢3031 ╣3033
 ┴1101 ┵1102 ┶1201 ┷1202 ┸2101 ┹2102 ┺2201 ┻2202 ╧1303 ╨3101 ╩3303
-┼1111 ┽1112 ┾1211 ┿1212 ╀2111 ╁1121 ╂2121 ╃2112 ╄2211 ╅1122 
+┼1111 ┽1112 ┾1211 ┿1212 ╀2111 ╁1121 ╂2121 ╃2112 ╄2211 ╅1122
 ╆1221 ╇2212 ╈1222 ╉2122 ╊2221 ╋2222 ╪1313 ╫3131 ╬3333
-'''.strip()
+'''
 
 BORDERS = dict(sorted(
-    ((token[1:], token[0]) for line in BORDERS_PATTERNS.splitlines()
-                           for token in line.split()),
-    key=lambda kv:len([c for c in kv[0] if c=='.'])
+    ((token[1:], token[0]) for token in BORDERS_PATTERNS.strip().split()),
+    key = lambda kv: Counter(kv[0]).get('.', 0)
 ))
-
-
