@@ -79,21 +79,21 @@
 			>;
 		};
 		/* Numerals
-		┌───────┬───────┬───────┬───────┬───────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│   1   │   2   │   3   │   4   │   5   │                  │   6   │   7   │   8   │   9   │   0   │
-		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│  CMD  │  ALT  │ CTRL  │ SHIFT │       │       │  │  KP+  │  KP-  │   4   │   5   │   6   │  KP.  │
-		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│  KP*  │       │   %   │   <   │   >   │       │  │  KP*  │   0   │   1   │   2   │   3   │  KP/  │
-		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │  KP+  │   -   │  KP=  │                  │       │  ⇩KP  │  ⇩FW  │                
-		                └───────┴───────┴───────┘                  └───────┴───────┴───────┘                 */
+		┌───────┬───────┬───────┬───────┬───────┐                  ┌───────┬───────┬───────────┬───────┬───────┐
+		│   1   │   2   │   3   │   4   │   5   │                  │   6   │   7   │     8     │   9   │   0   │
+		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────────┼───────┼───────┤
+		│  CMD  │  ALT  │ CTRL  │ SHIFT │       │       │  │   +   │   -   │   4   │     5     │   6   │   .   │
+		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────────┼───────┼───────┤
+		│   *   │       │   %   │   <   │   >   │       │  │   *   │   0   │   1   │     2     │   3   │   /   │
+		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────────┼───────┴───────┘
+		                │   +   │   -   │   =   │                  │       │  ⇩KP  │ NLOCK ⇩FW │                
+		                └───────┴───────┴───────┘                  └───────┴───────┴───────────┘                 */
 		NUM {
 			bindings = <
-			 &kp N1            &kp N2     &kp N3        &kp N4      &kp N5                                      &kp N6         &kp N7   &kp N8   &kp N9   &kp N0
-			 &kp LGUI          &kp LALT   &kp LCTRL     &kp LSHFT   &none          &none      &kp KP_PLUS       &kp KP_MINUS   &kp N4   &kp N5   &kp N6   &kp KP_DOT
-			 &kp KP_MULTIPLY   &none      &kp PRCNT     &kp LT      &kp GT         &none      &kp KP_MULTIPLY   &kp N0         &kp N1   &kp N2   &kp N3   &kp KP_SLASH
-			                              &kp KP_PLUS   &kp MINUS   &kp KP_EQUAL                                &none          &mo KP   &mo FW
+			 &kp N1     &kp N2     &kp N3      &kp N4      &kp N5                            &kp N6      &kp N7   &kp N8          &kp N9   &kp N0
+			 &kp LGUI   &kp LALT   &kp LCTRL   &kp LSHFT   &none       &none      &kp PLUS   &kp MINUS   &kp N4   &kp N5          &kp N6   &kp DOT
+			 &kp STAR   &none      &kp PRCNT   &kp LT      &kp GT      &none      &kp STAR   &kp N0      &kp N1   &kp N2          &kp N3   &kp FSLH
+			                       &kp PLUS    &kp MINUS   &kp EQUAL                         &none       &mo KP   &lt FW KP_NUM
 			>;
 		};
 		/* Keypad numerals on `NUM+SYM` combo
@@ -120,7 +120,7 @@
 		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
 		│  CMD  │  ALT  │ CTRL  │ SHIFT │ CAPS  │       │  │       │ PSCR  │  F4   │  F5   │  F6   │  F11  │
 		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │ PSCR  │ SLCK  │ PAUSE │  INS  │       │  │       │       │  F1   │  F2   │  F3   │  F12  │
+		│       │ PSCR  │ SLOCK │ PAUSE │  INS  │       │  │       │       │  F1   │  F2   │  F3   │  F12  │
 		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
 		                │ rCTRL │  APP  │       │                  │  ⇩FW  │       │       │                
 		                └───────┴───────┴───────┘                  └───────┴───────┴───────┘                 */
@@ -168,9 +168,9 @@
 		};
 		/* System/media keys
 		┌───────┬───────┬───────┬───────┬────────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│ BRI+  │  RWD  │ VOL+  │  FFW  │ MYCOMP │                  │       │       │       │       │       │
+		│ BRI+  │  RWD  │ VOL+  │  FFW  │  WWW   │                  │       │       │       │       │       │
 		├───────┼───────┼───────┼───────┼────────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│ BRI-  │ STOP  │ VOL-  │ PLAY  │  WWW   │  F15  │  │  F17  │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
+		│ BRI-  │ STOP  │ VOL-  │ PLAY  │ MYCOMP │  F15  │  │  F17  │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
 		├───────┼───────┼───────┼───────┼────────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
 		│       │ PREV  │ MUTE  │ NEXT  │ CALC   │  F16  │  │  F18  │       │       │       │       │       │
 		└───────┴───────┼───────┼───────┼────────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
@@ -178,8 +178,8 @@
 		                └───────┴───────┴────────┘                  └───────┴───────┴───────┘                 */
 		SYS {
 			bindings = <
-			 &kp C_BRI_UP   &kp C_RW     &kp C_VOL_UP   &kp C_FF     &kp C_AL_MY_COMPUTER                          &none   &none       &none       &none      &none
-			 &kp C_BRI_DN   &kp C_STOP   &kp C_VOL_DN   &kp C_PP     &kp C_AL_WWW           &kp F15      &kp F17   &none   &kp LSHFT   &kp LCTRL   &kp LALT   &kp LGUI
+			 &kp C_BRI_UP   &kp C_RW     &kp C_VOL_UP   &kp C_FF     &kp C_AL_WWW                                  &none   &none       &none       &none      &none
+			 &kp C_BRI_DN   &kp C_STOP   &kp C_VOL_DN   &kp C_PP     &kp C_AL_MY_COMPUTER   &kp F15      &kp F17   &none   &kp LSHFT   &kp LCTRL   &kp LALT   &kp LGUI
 			 &none          &kp C_PREV   &kp C_MUTE     &kp C_NEXT   &kp C_AL_CALC          &kp F16      &kp F18   &none   &none       &none       &none      &none
 			                             &mo FW         &none        &none                                         &none   &none       &none
 			>;
@@ -240,18 +240,18 @@
 		┌───────┬───────┬───────┬────────┬───────┐                  ┌───────┬───────┬───────┬───────┬───────┐
 		│  BT1  │  BT2  │  BT3  │  BT4   │  BT5  │                  │  USB  │       │       │       │ BTCLR │
 		├───────┼───────┼───────┼────────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │ @WIN  │ @MAC  │ @LINUX │       │ BTCLR │  │       │       │       │       │       │       │
+		│       │ @win  │ @mac  │ @linux │       │ BTCLR │  │       │       │       │       │       │       │
 		├───────┼───────┼───────┼────────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
 		│       │       │       │        │       │       │  │       │       │       │       │       │       │
 		└───────┴───────┼───────┼────────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │ RESET │ BOOTL  │ DEBUG │                  │ DEBUG │ BOOTL │ RESET │                
+		                │ DEBUG │ RESET  │ BOOTL │                  │ BOOTL │ RESET │ DEBUG │                
 		                └───────┴────────┴───────┘                  └───────┴───────┴───────┘                 */
 		FW {
 			bindings = <
-			 &bt1    &bt2         &bt3         &bt4          &bt5                            &out OUT_USB   &none         &none    &none   &bt BT_CLR
-			 &none   &to BASE_w   &to BASE_m   &to BASE_l    &none   &bt BT_CLR      &none   &none          &none         &none    &none   &none
-			 &none   &none        &none        &none         &none   &none           &none   &none          &none         &none    &none   &none
-			                      &reset       &bootloader   &none                           &none          &bootloader   &reset
+			 &bt1    &bt2         &bt3         &bt4         &bt5                                  &out OUT_USB   &none    &none   &none   &bt BT_CLR
+			 &none   &to BASE_w   &to BASE_m   &to BASE_l   &none         &bt BT_CLR      &none   &none          &none    &none   &none   &none
+			 &none   &none        &none        &none        &none         &none           &none   &none          &none    &none   &none   &none
+			                      &none        &reset       &bootloader                           &bootloader    &reset   &none
 			>;
 		};
 	};
@@ -285,457 +285,541 @@
 			mods = <(MOD_LSFT|MOD_RSFT)>;
 			masked_mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
-		u00b0_L: u00b0_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b0_L: u00b0_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ° macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N0>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N0 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u221a_L: u221a_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u221a_L: u221a_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux √ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N2>, <&kp N2>, <&kp N1>, <&kp A>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N1 &kp A &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u03bc_L: u03bc_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03bc_L: u03bc_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux μ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp B>, <&kp C>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp C &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u0394_L: u0394_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u0394_L: u0394_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux Δ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp N9>, <&kp N4>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp N9 &kp N4 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u03b5_L: u03b5_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b5_L: u03b5_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ε macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N5>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N5 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u221e_L: u221e_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u221e_L: u221e_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ∞ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N2>, <&kp N2>, <&kp N1>, <&kp E>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N1 &kp E &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u20ac_L: u20ac_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u20ac_L: u20ac_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux € macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N2>, <&kp N0>, <&kp A>, <&kp C>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N0 &kp A &kp C &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u00b2_L: u00b2_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b2_L: u00b2_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ² macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N2>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N2 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u00b3_L: u00b3_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b3_L: u00b3_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ³ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N3>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N3 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u03c0_L: u03c0_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03c0_L: u03c0_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux π macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp C>, <&kp N0>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp C &kp N0 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u03c6_L: u03c6_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03c6_L: u03c6_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux φ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp C>, <&kp N6>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp C &kp N6 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u03b8_L: u03b8_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b8_L: u03b8_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux θ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N8>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N8 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u00d7_L: u00d7_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00d7_L: u00d7_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux × macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N0>, <&kp D>, <&kp N7>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp D &kp N7 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u2248_L: u2248_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2248_L: u2248_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ≈ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N2>, <&kp N2>, <&kp N4>, <&kp N8>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N4 &kp N8 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u2264_L: u2264_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2264_L: u2264_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ≤ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N4>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N4 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u2265_L: u2265_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2265_L: u2265_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ≥ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N5>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N5 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u03bb_L: u03bb_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03bb_L: u03bb_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux λ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp B>, <&kp B>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp B &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u03b1_L: u03b1_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b1_L: u03b1_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux α macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N1>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N1 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u03b2_L: u03b2_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b2_L: u03b2_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux β macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N2>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N2 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u00bf_L: u00bf_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00bf_L: u00bf_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ¿ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N0>, <&kp B>, <&kp F>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp F &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u00f7_L: u00f7_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00f7_L: u00f7_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ÷ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N0>, <&kp F>, <&kp N7>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp F &kp N7 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u00b1_L: u00b1_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b1_L: u00b1_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ± macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N1>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N1 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u2260_L: u2260_L { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2260_L: u2260_L {
 			compatible = "zmk,behavior-macro";
 			label = "Linux ≠ macro";
 			#binding-cells = <0>;
-			bindings = <&kp LC(LS(U))>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N0>, <&kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N0 &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
 		};
-		u00b0_M: u00b0_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b0_M: u00b0_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ° macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N0>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N0>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		sk4: sk4 { /* https://github.com/snoyer/zmk/tree/stickier-keys */
-			compatible = "zmk,behavior-sticky-key";
-			label = "STICKY_KEY x4";
-			#binding-cells = <1>;
-			release-after-ms = <200>;
-			count = <4>;
-			bindings = <&kp>;
-		};
-		u221a_M: u221a_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u221a_M: u221a_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac √ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N1>, <&kp A>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N1 &kp A>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u03bc_M: u03bc_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03bc_M: u03bc_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac μ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp C>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp C>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u0394_M: u0394_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u0394_M: u0394_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac Δ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp N9>, <&kp N4>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp N9 &kp N4>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u03b5_M: u03b5_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b5_M: u03b5_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ε macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N5>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N5>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u221e_M: u221e_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u221e_M: u221e_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ∞ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N1>, <&kp E>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N1 &kp E>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u20ac_M: u20ac_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u20ac_M: u20ac_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac € macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N2>, <&kp N0>, <&kp A>, <&kp C>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N0 &kp A &kp C>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u00b2_M: u00b2_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b2_M: u00b2_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ² macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N2>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N2>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u00b3_M: u00b3_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b3_M: u00b3_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ³ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N3>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N3>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u03c0_M: u03c0_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03c0_M: u03c0_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac π macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp C>, <&kp N0>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp C &kp N0>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u03c6_M: u03c6_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03c6_M: u03c6_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac φ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp C>, <&kp N6>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp C &kp N6>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u03b8_M: u03b8_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b8_M: u03b8_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac θ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N8>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N8>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u00d7_M: u00d7_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00d7_M: u00d7_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac × macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp D>, <&kp N7>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp D &kp N7>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u2248_M: u2248_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2248_M: u2248_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ≈ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N4>, <&kp N8>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N4 &kp N8>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u2264_M: u2264_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2264_M: u2264_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ≤ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N4>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N4>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u2265_M: u2265_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2265_M: u2265_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ≥ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N5>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N5>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u03bb_M: u03bb_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03bb_M: u03bb_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac λ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp B>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp B>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u03b1_M: u03b1_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b1_M: u03b1_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac α macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N1>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N1>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u03b2_M: u03b2_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b2_M: u03b2_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac β macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N2>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N2>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u00bf_M: u00bf_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00bf_M: u00bf_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ¿ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp F>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp F>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u00f7_M: u00f7_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00f7_M: u00f7_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ÷ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp F>, <&kp N7>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp F &kp N7>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u00b1_M: u00b1_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b1_M: u00b1_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ± macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N1>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N1>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u2260_M: u2260_M { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2260_M: u2260_M {
 			compatible = "zmk,behavior-macro";
 			label = "Mac ≠ macro";
 			#binding-cells = <0>;
-			bindings = <&sk4 LALT>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N0>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N0>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
 		};
-		u00b0_W: u00b0_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b0_W: u00b0_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ° macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N0>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N0 &kp RET>;
 		};
-		u221a_W: u221a_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u221a_W: u221a_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose √ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N2>, <&kp N2>, <&kp N1>, <&kp A>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N1 &kp A &kp RET>;
 		};
-		u03bc_W: u03bc_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03bc_W: u03bc_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose μ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp B>, <&kp C>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp C &kp RET>;
 		};
-		u0394_W: u0394_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u0394_W: u0394_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose Δ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp N9>, <&kp N4>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp N9 &kp N4 &kp RET>;
 		};
-		u03b5_W: u03b5_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b5_W: u03b5_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ε macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N5>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N5 &kp RET>;
 		};
-		u221e_W: u221e_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u221e_W: u221e_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ∞ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N2>, <&kp N2>, <&kp N1>, <&kp E>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N1 &kp E &kp RET>;
 		};
-		u20ac_W: u20ac_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u20ac_W: u20ac_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose € macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N2>, <&kp N0>, <&kp A>, <&kp C>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N0 &kp A &kp C &kp RET>;
 		};
-		u00b2_W: u00b2_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b2_W: u00b2_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ² macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N2>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N2 &kp RET>;
 		};
-		u00b3_W: u00b3_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b3_W: u00b3_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ³ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N3>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N3 &kp RET>;
 		};
-		u03c0_W: u03c0_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03c0_W: u03c0_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose π macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp C>, <&kp N0>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp C &kp N0 &kp RET>;
 		};
-		u03c6_W: u03c6_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03c6_W: u03c6_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose φ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp C>, <&kp N6>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp C &kp N6 &kp RET>;
 		};
-		u03b8_W: u03b8_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b8_W: u03b8_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose θ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N8>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N8 &kp RET>;
 		};
-		u00d7_W: u00d7_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00d7_W: u00d7_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose × macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N0>, <&kp D>, <&kp N7>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp D &kp N7 &kp RET>;
 		};
-		u2248_W: u2248_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2248_W: u2248_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ≈ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N2>, <&kp N2>, <&kp N4>, <&kp N8>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N4 &kp N8 &kp RET>;
 		};
-		u2264_W: u2264_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2264_W: u2264_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ≤ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N4>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N4 &kp RET>;
 		};
-		u2265_W: u2265_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2265_W: u2265_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ≥ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N5>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N5 &kp RET>;
 		};
-		u03bb_W: u03bb_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03bb_W: u03bb_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose λ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp B>, <&kp B>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp B &kp RET>;
 		};
-		u03b1_W: u03b1_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b1_W: u03b1_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose α macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N1>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N1 &kp RET>;
 		};
-		u03b2_W: u03b2_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u03b2_W: u03b2_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose β macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N3>, <&kp B>, <&kp N2>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N2 &kp RET>;
 		};
-		u00bf_W: u00bf_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00bf_W: u00bf_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ¿ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N0>, <&kp B>, <&kp F>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp F &kp RET>;
 		};
-		u00f7_W: u00f7_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00f7_W: u00f7_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ÷ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N0>, <&kp F>, <&kp N7>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp F &kp N7 &kp RET>;
 		};
-		u00b1_W: u00b1_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u00b1_W: u00b1_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ± macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N0>, <&kp N0>, <&kp B>, <&kp N1>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N1 &kp RET>;
 		};
-		u2260_W: u2260_W { /* https://github.com/okke-formsma/zmk/tree/macros */
+		u2260_W: u2260_W {
 			compatible = "zmk,behavior-macro";
 			label = "Wincompose ≠ macro";
 			#binding-cells = <0>;
-			bindings = <&kp RALT>, <&kp U>, <&kp N2>, <&kp N2>, <&kp N6>, <&kp N0>, <&kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N0 &kp RET>;
 		};
-		bt1: bt1 { /* https://github.com/okke-formsma/zmk/tree/macros */
+		bt1: bt1 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt1";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 0>, <&out OUT_BLE>;
+			bindings = <&bt BT_SEL 0>, <&out OUT_BLE>, <&to (-1)>;
 		};
-		bt2: bt2 { /* https://github.com/okke-formsma/zmk/tree/macros */
+		bt2: bt2 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt2";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 1>, <&out OUT_BLE>;
+			bindings = <&bt BT_SEL 1>, <&out OUT_BLE>, <&to (-1)>;
 		};
-		bt3: bt3 { /* https://github.com/okke-formsma/zmk/tree/macros */
+		bt3: bt3 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt3";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 2>, <&out OUT_BLE>;
+			bindings = <&bt BT_SEL 2>, <&out OUT_BLE>, <&to (-1)>;
 		};
-		bt4: bt4 { /* https://github.com/okke-formsma/zmk/tree/macros */
+		bt4: bt4 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt4";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 3>, <&out OUT_BLE>;
+			bindings = <&bt BT_SEL 3>, <&out OUT_BLE>, <&to (-1)>;
 		};
-		bt5: bt5 { /* https://github.com/okke-formsma/zmk/tree/macros */
+		bt5: bt5 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt5";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 4>, <&out OUT_BLE>;
+			bindings = <&bt BT_SEL 4>, <&out OUT_BLE>, <&to (-1)>;
 		};
 	};
 };
@@ -751,3 +835,4 @@
 	tapping-term-ms = <150>;
 	quick-tap-ms = <200>;
 };
+

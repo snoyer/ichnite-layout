@@ -1,8 +1,8 @@
 
 
 enum td_keycodes {
-	LT_UTF_LGUI_Z,
-	LT_UTF_LCTL_Z
+	LT_UTF_LCTL_Z,
+	LT_UTF_LGUI_Z
 };
 
 
@@ -69,20 +69,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		                   KC_PLUS, KC_UNDS, KC_EQL,   MO(KP), KC_NO,   KC_NO
 	),
 	/* Numerals
-	┌───────┬───────┬───────┬───────┬───────┐  ┌───────┬───────┬───────┬───────┬───────┐
-	│   1   │   2   │   3   │   4   │   5   │  │   6   │   7   │   8   │   9   │   0   │
-	├───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┤
-	│  CMD  │  ALT  │ CTRL  │ SHIFT │       │  │  KP-  │   4   │   5   │   6   │  KP.  │
-	├───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┤
-	│  KP*  │       │   %   │   <   │   >   │  │   0   │   1   │   2   │   3   │  KP/  │
-	└───────┴───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┴───────┘
-	                │  KP+  │   -   │  KP=  │  │       │  ⇩KP  │  ⇩FW  │                
-	                └───────┴───────┴───────┘  └───────┴───────┴───────┘                 */
+	┌───────┬───────┬───────┬───────┬───────┐  ┌───────┬───────┬───────────┬───────┬───────┐
+	│   1   │   2   │   3   │   4   │   5   │  │   6   │   7   │     8     │   9   │   0   │
+	├───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────────┼───────┼───────┤
+	│  CMD  │  ALT  │ CTRL  │ SHIFT │       │  │   -   │   4   │     5     │   6   │   .   │
+	├───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────────┼───────┼───────┤
+	│   *   │       │   %   │   <   │   >   │  │   0   │   1   │     2     │   3   │   /   │
+	└───────┴───────┼───────┼───────┼───────┤  ├───────┼───────┼───────────┼───────┴───────┘
+	                │   +   │   -   │   =   │  │       │  ⇩KP  │ NLOCK ⇩FW │                
+	                └───────┴───────┴───────┘  └───────┴───────┴───────────┘                 */
 	[NUM] = LAYOUT_split_3x5_3(
-		 KC_1,    KC_2,    KC_3,    KC_4,    KC_5,     KC_6,    KC_7,   KC_8,   KC_9, KC_0,
-		 KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, KC_NO,    KC_PMNS, KC_4,   KC_5,   KC_6, KC_PDOT,
-		 KC_PAST, KC_NO,   KC_PERC, KC_LT,   KC_GT,    KC_0,    KC_1,   KC_2,   KC_3, KC_PSLS,
-		                   KC_PPLS, KC_MINS, KC_PEQL,  KC_NO,   MO(KP), MO(FW)
+		 KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,   KC_8,           KC_9, KC_0,
+		 KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, KC_NO,   KC_MINS, KC_4,   KC_5,           KC_6, KC_DOT,
+		 KC_ASTR, KC_NO,   KC_PERC, KC_LT,   KC_GT,   KC_0,    KC_1,   KC_2,           KC_3, KC_SLSH,
+		                   KC_PLUS, KC_MINS, KC_EQL,  KC_NO,   MO(KP), LT(FW,KC_NLCK)
 	),
 	/* Keypad numerals on `NUM+SYM` combo
 	┌───────┬───────┬───────┬───────┬───────┐  ┌───────┬───────┬───────┬───────┬───────┐
@@ -106,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	├───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┤
 	│  CMD  │  ALT  │ CTRL  │ SHIFT │ CAPS  │  │ PSCR  │  F4   │  F5   │  F6   │  F11  │
 	├───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┤
-	│       │ PSCR  │ SLCK  │ PAUSE │  INS  │  │       │  F1   │  F2   │  F3   │  F12  │
+	│       │ PSCR  │ SLOCK │ PAUSE │  INS  │  │       │  F1   │  F2   │  F3   │  F12  │
 	└───────┴───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┴───────┘
 	                │ rCTRL │  APP  │       │  │  ⇩FW  │       │       │                
 	                └───────┴───────┴───────┘  └───────┴───────┴───────┘                 */
@@ -140,17 +140,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	),
 	/* System/media keys
 	┌───────┬───────┬───────┬───────┬────────┐  ┌───────┬───────┬───────┬───────┬───────┐
-	│ BRI+  │  RWD  │ VOL+  │  FFW  │ MYCOMP │  │       │       │       │       │       │
+	│ BRI+  │  RWD  │ VOL+  │  FFW  │  WWW   │  │       │       │       │       │       │
 	├───────┼───────┼───────┼───────┼────────┤  ├───────┼───────┼───────┼───────┼───────┤
-	│ BRI-  │ STOP  │ VOL-  │ PLAY  │  WWW   │  │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
+	│ BRI-  │ STOP  │ VOL-  │ PLAY  │ MYCOMP │  │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
 	├───────┼───────┼───────┼───────┼────────┤  ├───────┼───────┼───────┼───────┼───────┤
 	│       │ PREV  │ MUTE  │ NEXT  │ CALC   │  │       │       │       │       │       │
 	└───────┴───────┼───────┼───────┼────────┤  ├───────┼───────┼───────┼───────┴───────┘
 	                │  ⇩FW  │       │        │  │       │       │       │                
 	                └───────┴───────┴────────┘  └───────┴───────┴───────┘                 */
 	[SYS] = LAYOUT_split_3x5_3(
-		 KC_BRIU, KC_MRWD, KC_VOLU, KC_MFFD, KC_MYCM,  KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
-		 KC_BRID, KC_MSTP, KC_VOLD, KC_MPLY, KC_WHOM,  KC_NO, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI,
+		 KC_BRIU, KC_MRWD, KC_VOLU, KC_MFFD, KC_WHOM,  KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
+		 KC_BRID, KC_MSTP, KC_VOLD, KC_MPLY, KC_MYCM,  KC_NO, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI,
 		 KC_NO,   KC_MPRV, KC_MUTE, KC_MNXT, KC_CALC,  KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
 		                   MO(FW),  KC_NO,   KC_NO,    KC_NO, KC_NO,   KC_NO
 	),
@@ -190,17 +190,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	┌───────┬───────┬───────┬────────┬───────┐  ┌───────┬───────┬───────┬───────┬───────┐
 	│  BT1  │  BT2  │  BT3  │  BT4   │  BT5  │  │  USB  │       │       │       │ BTCLR │
 	├───────┼───────┼───────┼────────┼───────┤  ├───────┼───────┼───────┼───────┼───────┤
-	│       │ @WIN  │ @MAC  │ @LINUX │       │  │       │       │       │       │       │
+	│       │ @win  │ @mac  │ @linux │       │  │       │       │       │       │       │
 	├───────┼───────┼───────┼────────┼───────┤  ├───────┼───────┼───────┼───────┼───────┤
 	│       │       │       │        │       │  │       │       │       │       │       │
 	└───────┴───────┼───────┼────────┼───────┤  ├───────┼───────┼───────┼───────┴───────┘
-	                │ RESET │ BOOTL  │ DEBUG │  │ DEBUG │ BOOTL │ RESET │                
+	                │ DEBUG │ RESET  │ BOOTL │  │ BOOTL │ RESET │ DEBUG │                
 	                └───────┴────────┴───────┘  └───────┴───────┴───────┘                 */
 	[FW] = LAYOUT_split_3x5_3(
 		 KC_NO, KC_NO,      KC_NO,      KC_NO,      KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
 		 KC_NO, TO(BASE_w), TO(BASE_m), TO(BASE_l), KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
 		 KC_NO, KC_NO,      KC_NO,      KC_NO,      KC_NO,  KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,
-		                    RESET,      RESET,      DEBUG,  DEBUG, RESET, RESET
+		                    DEBUG,      RESET,      RESET,  RESET, RESET, DEBUG
 	)
 };
 
@@ -218,15 +218,15 @@ void change_os_mode_for_base_layer(layer_state_t state) {
 
 
 
-const key_override_t KC_QUOT_KC_DQUO_shift_override = ko_make_basic(MOD_MASK_SHIFT, KC_QUOT, KC_DQUO);
-const key_override_t KC_DOT_KC_QUES_shift_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, KC_QUES);
 const key_override_t KC_COMM_KC_SCLN_shift_override = ko_make_basic(MOD_MASK_SHIFT, KC_COMM, KC_SCLN);
+const key_override_t KC_DOT_KC_QUES_shift_override = ko_make_basic(MOD_MASK_SHIFT, KC_DOT, KC_QUES);
+const key_override_t KC_QUOT_KC_DQUO_shift_override = ko_make_basic(MOD_MASK_SHIFT, KC_QUOT, KC_DQUO);
 const key_override_t KC_SLSH_KC_BSLS_shift_override = ko_make_basic(MOD_MASK_SHIFT, KC_SLSH, KC_BSLS);
 
 const key_override_t **key_overrides = (const key_override_t *[]){
-	&KC_QUOT_KC_DQUO_shift_override,
-	&KC_DOT_KC_QUES_shift_override,
 	&KC_COMM_KC_SCLN_shift_override,
+	&KC_DOT_KC_QUES_shift_override,
+	&KC_QUOT_KC_DQUO_shift_override,
 	&KC_SLSH_KC_BSLS_shift_override,
 	NULL
 };
@@ -280,11 +280,11 @@ void tapdance_TDLT_reset(qk_tap_dance_state_t *state, void *user_data){
 }
 
 #define ACTION_TAP_DANCE_LT(layer, keycode) { \
-	.fn = {NULL, tapdance_TDLT_finished, tapdance_TDLT_reset},	\
+	.fn = {NULL, tapdance_TDLT_finished, tapdance_TDLT_reset}, \
 	.user_data = (void*)&((tdlt_data){ layer, keycode }), \
 }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-	[LT_UTF_LGUI_Z] = ACTION_TAP_DANCE_LT(UTF, LGUI(KC_Z)),
-	[LT_UTF_LCTL_Z] = ACTION_TAP_DANCE_LT(UTF, LCTL(KC_Z))
+	[LT_UTF_LCTL_Z] = ACTION_TAP_DANCE_LT(UTF, LCTL(KC_Z)),
+	[LT_UTF_LGUI_Z] = ACTION_TAP_DANCE_LT(UTF, LGUI(KC_Z))
 };

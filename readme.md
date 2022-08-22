@@ -6,7 +6,7 @@ An experimental 40/36 keys keyboard layout.
 
 Main features/goals:
 
-- optimized for 3×5+3 split keyboards with extra 2-key inner columns, but usable as regular 3×5+3
+- optimized for 3×5+3 split keyboards with extra (optional) 2-key inner columns
 - one-hand navigation (with inverted T arrows) and system/media keys
 - one-hand numerals and F-keys (same arrangement)
 - non-standard shifted punctuation and custom symbol layer grouping related characters on the same keys as follows:
@@ -63,9 +63,9 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 ### Numerals (`NUM`)
 ```
 |   1   |   2   |   3   |   4   |   5   |                    |   6   |   7   |   8   |   9   |   0   |
-|  CMD  |  ALT  | CTRL  | SHIFT |       |       |    |  KP+  |  KP-  |   4   |   5   |   6   |  KP.  |
-|  KP*  |       |   %   |   <   |   >   |       |    |  KP*  |   0   |   1   |   2   |   3   |  KP/  |
-|               |  KP+  |   -   |  KP=  |                    |  XXX  |       |       |               |
+|  CMD  |  ALT  | CTRL  | SHIFT |       |       |    |   +   |   -   |   4   |   5   |   6   |   .   |
+|   *   |       |   %   |   <   |   >   |       |    |   *   |   0   |   1   |   2   |   3   |   /   |
+|               |   +   |   -   |    =  |                    |  XXX  |       | NLOCK |               |
 ```
 - One-hand numpad arrangement with extra `.` and `-`
 - `/` in the same spot as on base layer, `*` in mirror position on other hand
@@ -91,7 +91,7 @@ Same as above but with keypad numbers.
 ```
 |  F1   |  F2   |  F3   |  F4   |  F5   |                    |  F6   |  F7   |  F8   |  F9   |  F10  |
 |  CMD  |  ALT  | CTRL  | SHIFT | CAPS  |       |    |       | PSCR  |  F4   |  F5   |  F6   |  F11  |
-|       | PSCR  | SLCK  | PAUSE |  INS  |       |    |       |       |  F1   |  F2   |  F3   |  F12  |
+|       | PSCR  | SLOCK | PAUSE |  INS  |       |    |       |       |  F1   |  F2   |  F3   |  F12  |
 |               | rCTRL |  APP  |       |                    |       |       |  XXX  |               |
 ```
 - `F1`-`F9` in the same positions as respective digits in numerals layer
@@ -103,10 +103,10 @@ Same as above but with keypad numbers.
 
 ### Navigation (`NAV`)
 ```
-| FIND- | HOME  |  UP   |  END  |  CUT  |                     |       |       |       |       |   "   |
-| FIND+ | LEFT  | DOWN  | RIGHT | COPY  | UNDO  |    |COMMENT |       | SHIFT | CTRL  |  ALT  |  CMD  |
-| ENTER | PG_UP |       | PG_DN | PASTE | BSPC  |    |        |       |       |   ;   |   ?   |   \   |
-|               |       |  XXX  |       |                     | REDO  | UNDO  |       |               |
+| FIND- | HOME  |  UP   |  END  |  CUT  |                    |       |       |       |       |   "   |
+| FIND+ | LEFT  | DOWN  | RIGHT | COPY  | UNDO  |    |COMMENT|       | SHIFT | CTRL  |  ALT  |  CMD  |
+| ENTER | PG_UP |       | PG_DN | PASTE | BSPC  |    |       |       |       |   ;   |   ?   |   \   |
+|               |       |  XXX  |       |                    | REDO  | UNDO  |       |               |
 ```
 - inverted T arrows, home/end, page up/down
 - copy/cut/paste on inner column
@@ -119,8 +119,8 @@ Same as above but with keypad numbers.
 
 ### System/media keys (`SYS`)
 ```
-| BRI+  |  RWD  | VOL+  |  FFW  | MYCOMP |                    |       |       |       |       |       |
-| BRI-  | STOP  | VOL-  | PLAY  |  WWW   |  F15  |    |  F17  |       | SHIFT | CTRL  |  ALT  |  CMD  |
+| BRI+  |  RWD  | VOL+  |  FFW  |  WWW   |                    |       |       |       |       |       |
+| BRI-  | STOP  | VOL-  | PLAY  | MYCOMP |  F15  |    |  F17  |       | SHIFT | CTRL  |  ALT  |  CMD  |
 |       | PREV  | MUTE  | NEXT  | CALC   |  F16  |    |  F18  |       |       |       |       |       |
 |               |       |       |  XXX   |                    |       |       |       |               |
 ```
@@ -157,14 +157,14 @@ For science?
 
 ### Firmware (`FW`) on `NUM+FUN` or `MWH+SYS` combo
 
-Keep firmware stuff out of the way behind a combo that needs two fingers.  
+Keep firmware stuff out of the way behind a combo that needs two fingers.
 ```
 |  BT1  |  BT2  |  BT3  |  BT4  |  BT5  |                    |  USB  |       |       |       | BTCLR |
-|       | @WIN  | @MAC  |@LINUX |       | BTCLR |    |       |       |       |       |       |       |
+|       | @win  | @mac  |@linux |       | BTCLR |    |       |       |       |       |       |       |
 |       |       |       |       |       |       |    |       |       |       |       |       |       |
-|               | RESET | BOOTL | DEBUG |                    | DEBUG | BOOTL | RESET |               |
+|               | DEBUG | RESET | BOOTL |                    | BOOTL | RESET | DEBUG |               |
 ```
-- `@LINUX`, `@MAC`, `@WIN` keys should select the mode for OS-specific inputs (such as undo/redo actions or Unicode) according to implementation.
+- `@linux`, `@mac`, `@win` keys should select the mode for OS-specific inputs (such as undo/redo actions or Unicode) according to implementation.
 - `BT*` should select bluetooth outputs, `USB` should select USB output
 
 
