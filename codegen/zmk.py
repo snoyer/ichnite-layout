@@ -10,7 +10,7 @@ from typing import (Any, Callable, Dict, Iterable, List, Optional, Sequence,
                     Tuple, Union)
 
 from dt import Comment, Node, NodeOrComment, Raw, format_value
-from source import (UNSHIFTED, Layer, SourceBinding, extract_layers_from_md,
+from source import (Layer, SourceBinding, extract_layers_from_md,
                     extract_os_specifics_from_md, format_layer, split_combo)
 from tables import Shape, Table, format_table
 from translation import TranslatedLayer, Translator, make_os_specific_layers
@@ -369,7 +369,6 @@ def bt_macro(i: int) -> Node:
 def shiftmorph_node(default: str, shifted: str, zmk_keycodes: 'ZmkKeycodes') -> Node:
     a = zmk_keycodes[default]
     b = zmk_keycodes[shifted]
-    is_custom_shift = not shifted in UNSHIFTED
 
     return Node(f'{a.lower()}_{b.lower()}', label=f'{a.lower()}_{b.lower()}',
         properties={
@@ -378,9 +377,7 @@ def shiftmorph_node(default: str, shifted: str, zmk_keycodes: 'ZmkKeycodes') -> 
             '#binding-cells': 0,
             'bindings': Raw(f'<&kp {a}>, <&kp {b}>'),
             'mods': Raw('<(MOD_LSFT|MOD_RSFT)>'),
-            'masked_mods': Raw('<(MOD_LSFT|MOD_RSFT)>') if is_custom_shift else None,
         },
-        comment = 'https://github.com/snoyer/zmk/tree/masked-mods' if is_custom_shift else ''
     )
 
 

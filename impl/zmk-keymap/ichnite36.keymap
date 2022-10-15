@@ -262,13 +262,12 @@
 			#binding-cells = <2>;
 			bindings = <&kp>, <&kp>;
 		};
-		comma_semi: comma_semi { /* https://github.com/snoyer/zmk/tree/masked-mods */
+		comma_semi: comma_semi {
 			compatible = "zmk,behavior-mod-morph";
 			label = "shift-morph COMMA SEMI";
 			#binding-cells = <0>;
 			bindings = <&kp COMMA>, <&kp SEMI>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
-			masked_mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
 		dot_qmark: dot_qmark {
 			compatible = "zmk,behavior-mod-morph";
@@ -277,13 +276,12 @@
 			bindings = <&kp DOT>, <&kp QMARK>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
-		fslh_bslh: fslh_bslh { /* https://github.com/snoyer/zmk/tree/masked-mods */
+		fslh_bslh: fslh_bslh {
 			compatible = "zmk,behavior-mod-morph";
 			label = "shift-morph FSLH BSLH";
 			#binding-cells = <0>;
 			bindings = <&kp FSLH>, <&kp BSLH>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
-			masked_mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
 		u00b0_L: u00b0_L {
 			compatible = "zmk,behavior-macro";
