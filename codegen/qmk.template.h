@@ -1,12 +1,11 @@
-
-/*% if custom_LTs */
+/*%- if custom_LTs -*/
 enum td_keycodes {
 /*%- for o in custom_LTs */
 	/*= o.identifier */
 	/*=- '' if loop.last else ',' */
 /*%- endfor */
 };
-/*% endif */
+/*%- endif */
 
 
 enum layers {
@@ -25,17 +24,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* needs to be called from `layer_state_set_user` in keymap code */
 void change_os_mode_for_base_layer(layer_state_t state) {
+	/*%- if uc_modes */
 	switch (get_highest_layer(state)) {
 		/*%- for k,v in uc_modes */
 		case /*= k */: set_unicode_input_mode(/*= v */); break;
 		/*%- endfor */
 	}
+	/*%- endif */
 }
 
 
 
-
-/*% if custom_shifts -*/
+/*%- if custom_shifts -*/
 
 /*% for s in custom_shifts */
 const key_override_t /*= s.normal */_/*= s.shifted */_shift_override = ko_make_basic(MOD_MASK_SHIFT, /*= s.normal */, /*= s.shifted */);
@@ -48,13 +48,12 @@ const key_override_t **key_overrides = (const key_override_t *[]){
 	NULL
 };
 
-/*%- endif */
+/*%- endif -*/
 
 
 
 
-
-/*% if custom_LTs -*/
+/*%- if custom_LTs */
 
 typedef enum {
 	TD_NONE,

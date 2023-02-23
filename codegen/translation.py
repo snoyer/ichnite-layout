@@ -1,229 +1,130 @@
-
-
-
-
 import re
 from collections import defaultdict
-from dataclasses import dataclass, replace
-from functools import reduce
-from typing import (Any, Callable, Dict, Generic, Iterable, List, Mapping, Optional,
-                    Sequence, Set, Tuple, TypeVar, Union)
+from typing import Callable, Generic, Sequence, TypeVar
 
-from source import (SourceBinding, Layer, LayerTap, ModTap, ToLayer,
-                    split_common_prefix)
-from tables import Table
+from .source import Key, split_common_prefix
 
 T = TypeVar('T')
 
-
-@dataclass(frozen=True)
-class TranslatedLayer(Generic[T]):
-    name : str
-    new_table : Table[T]
-    src_table : Table[SourceBinding]
-    title : str
+ValueOrCallable = T | Callable[[re.Match[str]], T]
 
 
 class Translator(Generic[T]):
     def __init__(self):
-        self.aliases: Dict[str, str] = dict()
-        self.aliases_callables: Dict[str, Callable[[str], Union[str,SourceBinding,T]]] = dict()
+        self.exact_aliases: dict[str, str] = {}
+        self.match_aliases: list[tuple[str, Callable[[re.Match[str]], str]]] = []
+        
+        self.exact_translations: dict[str, T] = {}
+        self.match_translations: list[tuple[str, Callable[[re.Match[str]], T]]] = []
 
-    def _register_aliases(self, aliases: Dict[str,Any]):
+    def register_aliases(self, aliases: dict[str, str | Callable[[re.Match[str]], str]]):
         for k,v in aliases.items():
             if callable(v):
-                self.aliases_callables[k] = v
+                self.match_aliases.append((k, v))
             else:
-                self.aliases[k] = v
+                self.exact_aliases[k] = v
 
+    def register_translations(self, translations: dict[str, T | Callable[[re.Match[str]], T]]):
+        for k,v in translations.items():
+            if callable(v):
+                self.match_translations.append((k, v))
+            else:
+                self.exact_translations[k] = v
 
-    def _alias_lookup(self, y: str) -> Union[str, SourceBinding, T]:
-        def lookup1(x: str) -> Union[str, SourceBinding, T]:
-            if x in self.aliases:
-                return self.aliases[x]
+    def _translation_lookup(self, x: str) -> T:
+        try:
+            return self.exact_translations[x]
+        except KeyError:
+            for pattern,func in self.match_translations:
+                if m := re.match(pattern, x):
+                    return func(m)
+        raise KeyError(x)
 
-            for k,v in self.aliases_callables.items():
-                if re.match(k, x):
-                    y = v(x)
-                    if not y is None:
-                        return y
-
+    def _alias_lookup(self, y: str) -> str:
+        def lookup1(x: str):
+            try:
+                return self.exact_aliases[x]
+            except KeyError:
+                for pattern,func in self.match_aliases:
+                    if m := re.match(pattern, x):
+                        return func(m)
             raise KeyError(x)
 
         seen: Set[str] = set()
         x = y
         try:
-            while isinstance(x, str) and not x in seen:
+            while not x in seen:
                 seen.add(x)
                 x = lookup1(x)
         except KeyError:
             pass
         return x
 
-    def _base_translate(self, k: SourceBinding) -> T:
-        raise NotImplementedError()
-
-    def replace_layer_ids(self, binding: T, f: Callable[[str], str]) -> T:
-        raise NotImplementedError()
-
-    def make_layertap(self, layer: str, tap: Optional[T]) -> T:
-        raise NotImplementedError()
-
-    def make_modtap(self, mod: T, tap: T) -> T:
-        raise NotImplementedError()
-
-    def make_tolayer(self, layer: str) -> T:
-        raise NotImplementedError()
-
-
-    def translate(self, x:SourceBinding) -> T:
-        k: Union[str, SourceBinding, T] = x
-        if isinstance(k, str):
-            k = self._alias_lookup(k)
-
-        if isinstance(k, LayerTap):
-            if k.tap:
-                tap = self.translate(k.tap)
-                return self.make_layertap(k.hold, tap)
-            else:
-                return self.make_layertap(k.hold, None)
-
-        elif isinstance(k, ModTap):
-            mod = self.translate(k.hold)
-            tap = self.translate(k.tap)
-            return self.make_modtap(mod, tap)
-
-        elif isinstance(k, ToLayer):
-            return self.make_tolayer(k.layer)
-
-        else:
-            return self._base_translate(k) #type: ignore
-
-
-    def translate_layer(self, layer:Layer[SourceBinding]):
-        new_table = layer.table.copy(map(self.translate, layer.table.cells))
-        return TranslatedLayer(
-            name = layer.name,
-            new_table = new_table,
-            src_table = layer.table,
-            title = layer.title,
-        )
-
-
-    def map_layer_names(self,
-        layer: TranslatedLayer[T],
-        f: Callable[[str], str],
-        exclude: Optional[Sequence[str]]=None
-    ) -> TranslatedLayer[T]:
-        exclude2: Set[str] = set(exclude) if exclude else set()
-        def g(name: str):
-            return name if name in exclude2 else f(name)
-
-        new_layer = replace(layer,
-            name = g(layer.name),
-            new_table = layer.new_table.copy(map(lambda c: self.replace_layer_ids(c, g), layer.new_table.cells)),
-        )
-        return new_layer
-
-
-
-
-Q = TypeVar('Q')
-def make_os_specific_layers(
-    layers: Sequence[Layer[SourceBinding]],
-    translators_by_os: Mapping[str, Translator[Q]],
-    optimize: bool = True,
-    shorten_names: bool = True,
-) -> Tuple[
-    List[TranslatedLayer[Q]],
-    Dict[str, str]
-]:
-    translators_by_os = dict(translators_by_os)
-    os_ids = translators_by_os.keys()
-
-    def f(l: str, os: str):
-        return f'{l.upper()}_{os}'
-    
-    base = layers[0].name
-    os_layers_codes = {
-        f'@{os}': ToLayer(f(base,os)) for os in os_ids
-    }
-
-    bases_by_os = {os:f(base,os) for os in os_ids}
-    base_ids = list(bases_by_os.values())
-
-    def translate_layers():
-        def fix_os_bindings(k: SourceBinding):
-            return os_layers_codes.get(k, k) if isinstance(k, str) else k
+    def translate_all(self, keys: Sequence[Key], is_layer_name: Callable[[str], bool]) -> list[T]:
+        return [self.translate(key, is_layer_name=is_layer_name) for key in keys]
         
-        for layer in layers:
-            layer2 = layer.map_table(fix_os_bindings)
-            for os, translator in translators_by_os.items():
-                translated_layer = translator.translate_layer(layer2)
-                translated_layer = replace(translated_layer,
-                                           src_table=layer.table)
-                yield translator.map_layer_names(translated_layer, lambda l: f(l, os), exclude=base_ids), translator
-    translated_layers = list(translate_layers())
-
-    if optimize:
-        translated_layers = optimize_translated_layers(translated_layers, dont_merge=base_ids)
-
-    if shorten_names:
-        replacements = [
-            ('_' + ''.join(os_ids), ''),
-            *[(os, os[:1]) for os in os_ids],
-        ]
-        def shorten_layer_name(s: str):
-            return reduce(lambda a, kv: a.replace(*kv), replacements, s)
-
-        translated_layers = [(translator.map_layer_names(layer, shorten_layer_name), translator)
-                             for layer, translator in translated_layers]
-        bases_by_os = {os:shorten_layer_name(base) for os,base in bases_by_os.items()}
+    def translate(self, key: Key, is_layer_name: Callable[[str], bool]) -> T:
+        raise NotImplementedError()
+    
+    @classmethod
+    def map_layer_names(cls, f: Callable[[str], str], binding: T) -> T:
+        raise NotImplementedError()
 
 
-    return [layer for layer,_ in translated_layers], bases_by_os
+
+def translate_multi_os_layers(
+    layers: dict[str, list[Key]],
+    translator_for_os: Callable[[str], Translator[T]],
+    os_from_layer_name: Callable[[str], str]
+) -> dict[str, list[T]]:
+    layer_to_os = {layer:os_from_layer_name(layer) for layer in layers}
+    translator_by_os = {os: translator_for_os(os) for os in set(layer_to_os.values())}
+    return {name: translator_by_os[layer_to_os[name]].translate_all(keys, is_layer_name=layers.__contains__)
+            for name,keys in layers.items()}
 
 
-TranslatedAndTranslator = Tuple[TranslatedLayer[T], Translator[T]]
+def shorten_layers_names(
+    layers: dict[str, list[T]],
+    update_layer_names:Callable[[Callable[[str], str], T], T],
+    shorten_layer_name: Callable[[str], str]
+):
+    return {shorten_layer_name(k):[update_layer_names(shorten_layer_name, b) for b in bindings] for k,bindings in layers.items()}
 
 
-def optimize_translated_layers(
-    layers: Iterable[TranslatedAndTranslator[T]],
-    dont_merge: Optional[Sequence[str]] = None
-) -> List[TranslatedAndTranslator[T]]:
-    layers_by_id = {layer.name: (i, layer, translator)
-                    for i, (layer, translator) in enumerate(layers)}
+def dedup_keymaps_layers(
+    layers: dict[str, list[T]],
+    update_layer_names:Callable[[Callable[[str], str], T], T],
+    ignore: Callable[[str], bool] | None = None,
+):
 
     def combine_names(names: Sequence[str]) -> str:
         prefix, suffixes = split_common_prefix(names)
-        return prefix + ''.join(suffixes)
+        return prefix + ','.join(sorted(suffixes))
+
+    tmp_bindings: dict[tuple[int, str], list[T]] = {(i,name):bindings for i,(name,bindings) in enumerate(layers.items())}
 
     while True:
-        new_ids: Dict[str, str] = {}
+        new_ids: dict[str, str] = {}
 
-        duplicates: Dict[Tuple[str, ...],
-                         List[Tuple[int, str, Translator[T]]]] = defaultdict(list)
-        for layer_id, (i, layer, translator) in layers_by_id.items():
-            hashable = tuple(map(str, layer.new_table.cells))
-            duplicates[hashable].append((i, layer_id, translator))
-        duplicates2 = [xs for xs in duplicates.values() if len(xs) > 1]
-
-        for indexed_names in duplicates2:
-            names = [name for _, name, _ in indexed_names]
-            if not dont_merge or not any(name in dont_merge for name in names):
-                new_name = combine_names(names)
-
-                layers_by_id[new_name] = layers_by_id[names[0]]
-                for name in names:
-                    new_ids[name] = new_name
-                    del layers_by_id[name]
+        grouped: dict[tuple[str, ...], list[tuple[int,str]]] = defaultdict(list)
+        for (i,name),bindings in tmp_bindings.items():
+            if not callable(ignore) or not ignore(name):
+                hashable = tuple(map(repr, bindings))
+            else:
+                hashable = tuple(str(id(bindings)),)
+            grouped[hashable].append((i,name))
+        duplicates = [xs for xs in grouped.values() if len(xs) > 1]
+        
+        for indexed_names in duplicates:
+            new_name = combine_names([name for _i,name in indexed_names])
+            tmp_bindings[(indexed_names[0][0], new_name)] = tmp_bindings[indexed_names[0]]
+            for name in indexed_names:
+                new_ids[name[1]] = new_name
+                del tmp_bindings[name]
 
         if new_ids:
-            for name, (i, layer, translator) in layers_by_id.items():
-                newlayer = translator.map_layer_names(layer,
-                                                      lambda l: new_ids.get(l, l))
-                layers_by_id[name] = i, newlayer, translator
+            tmp_bindings = {k:[update_layer_names(lambda l: new_ids.get(l, l), b) for b in bindings] for k,bindings in tmp_bindings.items()}
         else:
             break
-
-    return [(layer, translator) for _, layer, translator in sorted(layers_by_id.values())]
+    
+    return {name:bindings for (_i,name),bindings in sorted(tmp_bindings.items())}

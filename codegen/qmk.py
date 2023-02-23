@@ -1,58 +1,25 @@
-import argparse
 import logging
 import re
 from dataclasses import dataclass, replace
 from itertools import chain, groupby
 from os.path import abspath, dirname
 from os.path import join as path_join
-from typing import Any, Callable, Dict, List, Optional, Sequence, Set, Union
+from typing import Callable, Optional, Union
 
 from jinja2 import Environment, FileSystemLoader
 
-from source import (SourceBinding, Layer,
-                    extract_layers_from_md, extract_os_specifics_from_md,
-                    format_layer, split_combo)
-from tables import format_table
-from translation import TranslatedLayer, Translator, make_os_specific_layers
+from .asciitables import Table, format_table
+from .source import Key, Keymap, format_layer, split_layer_name, split_mods
+from .translation import Translator
 
 logger = logging.getLogger(__name__)
 
 
-def main():
-    parser = argparse.ArgumentParser(description='generate QMK keymap code from markdown tables')
 
-    parser.add_argument('readme',
-        metavar='README.MD', help='readme markdown filename')
-    parser.add_argument('output', nargs='?',
-        metavar='OUTPUT.H', help='output .h filename')
-    parser.add_argument('--3x5', action='store_true', dest='is_3x5',
-        help='discard extra keys and make 3x5+3 layout')
-    parser.add_argument('--layout', default='LAYOUT',
-        metavar='NAME', help='QMK layout macro name')
-
-    args = parser.parse_args()
-
-    layers = extract_layers_from_md(open(args.readme), make_3x5=args.is_3x5)
-    os_specific_aliases = dict(extract_os_specifics_from_md(open(args.readme)))
-
-    layout_name = 'LAYOUT_split_3x5_3' if args.is_3x5 else args.layout
-
-    if args.output:
-        with open(args.output, 'w') as f:
-            f.write(generate_qmk_code(layers, os_specific_aliases, layout_name))
-    else:
-        print(generate_qmk_code(layers, os_specific_aliases, layout_name))
-
-
-
-def generate_qmk_code(
-    layers: Sequence[Layer[SourceBinding]],
-    os_specific_aliases: Dict[str, Dict[str, str]],
-    layout_name: str,
-) -> str:
-
-    QMK_KEYCODES = QmkKeycodes()
-    aliases: Dict[str, Any] = {
+def qmk_translator_for_os(os: str):
+    translator = QmkTranslator(QmkKeycodes())
+    
+    translator.register_aliases({
         'PLAY': 'MPLY',
         'STOP': 'MSTP',
         'MUTE': 'MUTE',
@@ -68,53 +35,55 @@ def generate_qmk_code(
         'PG_UP': 'PGUP',
         'PG_DN': 'PGDOWN',
 
-        'SLOCK': 'KC_SLCK',
-        'NLOCK': 'KC_NLCK',
+        'SLOCK': 'KC_SCRL',
+        'NLOCK': 'KC_NUM_LOCK',
 
         'MYCOMP': 'MYCM',
         'CALC'  : 'CALC',
         'WWW'   : 'WHOM',
 
-        'RESET': 'RESET',
-        'BOOTL': 'RESET',
-        'DEBUG': 'DEBUG',
+        'RESET': 'QK_BOOT',
+        'BOOTL': 'QK_REBOOT',
+        'DEBUG': 'DB_TOGG',
 
-        '\'"': CustomShift('KC_QUOT', 'KC_DQUO'),
-        ',;' : CustomShift('KC_COMM', 'KC_SCLN'),
-        '.?' : CustomShift('KC_DOT', 'KC_QUES'),
-        '/\\': CustomShift('KC_SLSH', 'KC_BSLS'),
+        'XXXXX': 'XXX',
+    })
 
-        r'[\u0080-\uffff]$': lambda k: QmkKey('UC', '0x%04x'%ord(k)), #type: ignore
-    }
+    def unicode_binding(m: re.Match[str]):
+        return QmkKey('UC', '0x%04x'%ord(m.group(1)))
+    
+    translator.register_translations({
+        r'([\u0080-\uffff])$': unicode_binding,
+    })
 
-    translator_by_os = {os:QmkTranslator(QMK_KEYCODES, {**aliases, **os_aliases})
-                        for os, os_aliases in os_specific_aliases.items()}
+    return translator
 
-    translated_layers, bases_by_os = make_os_specific_layers(layers, translator_by_os)
+def generate_qmk_code(
+    translated_layers: dict[str, list['QmkBinding']],
+    source_keymap: Keymap[Key],
+    layout_name: Optional[str] = 'LAYOUT',
+    uc_modes_by_base: Optional[dict[str, str]] = None
+) -> str:
+    table_shape = source_keymap.table_shape
 
-    uc_modes_by_os = {
-        'mac'  : 'UC_OSX',
-        'linux': 'UC_LNX',
-        'win'  : 'UC_WIN',
-    }
-    uc_modes = {base:uc_modes_by_os[os] for os,base in bases_by_os.items()}
-
-    def format_qmk_layer(layer: TranslatedLayer[QmkBinding]) -> str:
-        bindings = format_table(layer.new_table.copy(map(lambda s: (str(s)+',') if s else s, layer.new_table.cells)), sep=' ', pad='', just=str.ljust)
+    def format_qmk_layer(name: str, bindings: list[QmkBinding]) -> str:
+        bindings_str = format_table(Table.Shape(table_shape, [f'{QmkTranslator.map_layer_names(fix_c_name, s)},' for s in bindings], ''), sep=' ', pad='', just=str.ljust)
         args = indent_lines(
-            '\n'.join(l.rstrip() for l in bindings.splitlines()).rstrip(' ,'),
+            '\n'.join(l.rstrip() for l in bindings_str.splitlines()).rstrip(' ,'),
             '\t'
         )
-        return f'[{layer.name}] = {layout_name}(\n{args}\n)'
+        return f'[{fix_c_name(name)}] = {layout_name}(\n{args}\n)'
 
     def make_layer_blocks():
-        for comment,layers in groupby(translated_layers, key=lambda x:x.title + '\n' + format_layer(x.src_table)):
-            layer = next(layers)
-            yield  layer.name, f'/* {comment} */\n' + format_qmk_layer(layer)
-            for layer in layers:
-                yield layer.name, format_qmk_layer(layer)
+        for src,layers in groupby(translated_layers.items(), key=lambda kv:split_layer_name(kv[0])[0]):
+            table = Table.Shape(table_shape, source_keymap.layers[src], '')
+            first_layer, *next_layers = layers
+            comment = source_keymap.titles[src] + '\n' + format_layer(table)
+            yield fix_c_name(first_layer[0]), f'/* {comment} */\n' + format_qmk_layer(*first_layer)
+            for name,bindings in next_layers:
+                yield fix_c_name(name), format_qmk_layer(name, bindings)
 
-    all_keycodes = set(filter(None, chain.from_iterable(l.new_table.cells for l in translated_layers)))
+    all_keycodes = set(filter(None, chain.from_iterable(translated_layers.values())))
     customLTs = set(k for k in all_keycodes if isinstance(k, CustomLT))
     customShifts = set(k for k in all_keycodes if isinstance(k,CustomShift))
 
@@ -125,7 +94,7 @@ def generate_qmk_code(
     template = env.get_template("qmk.template.h")
     return template.render(
         layer_blocks = dict(make_layer_blocks()),
-        uc_modes = sorted(uc_modes.items()),
+        uc_modes = sorted((fix_c_name(k),v) for k,v in uc_modes_by_base.items()) if uc_modes_by_base else [],
         custom_shifts = sorted(customShifts),
         custom_LTs = sorted(customLTs),
     )
@@ -203,51 +172,65 @@ class CustomLT(QmkLT):
 QmkBinding = Union[QmkKey, QmkLT, QmkMO, QmkTO, CustomShift]
 
 class QmkTranslator(Translator[QmkBinding]):
-
-    def __init__(self, qmk_keycodes: 'QmkKeycodes', aliases: Any):
+    def __init__(self, qmk_keycodes: 'QmkKeycodes'):
         super().__init__()
         self.native_keycodes = qmk_keycodes
-        self._register_aliases(aliases)
 
-
-
-    def _base_translate(self, k: SourceBinding) -> QmkBinding:
-        if not k:
-            return QmkKey('KC_TRNS')
-        elif isinstance(k, (QmkKey, QmkLT, QmkMO, QmkTO, CustomShift)):
-            return k
-        elif isinstance(k, str):
+    def translate(self, key: Key, is_layer_name: Callable[[str], bool]) -> QmkBinding:
+        def f(s: str):
+            t = self._alias_lookup(s)
             try:
-                return QmkKey(self.native_keycodes[k])
+                return self.native_keycodes[t]
             except KeyError:
-                logger.warning(f'not implemented {k!r}')
-                return QmkKey('KC_NO')
-        else:
-            raise ValueError(f'cannot make binding for {k!r}')
+                return t
+        
+        def g(s: str):
+            t = self._alias_lookup(s)
+            try:
+                return self._translation_lookup(t)
+            except KeyError:
+                try:
+                    return QmkKey(self.native_keycodes[t])
+                except KeyError:
+                    logger.warning(f'not implemented {t!r}')
+                    return QmkKey('KC_NO')
 
+        if key.hold:
+            if is_layer_name(key.hold):
+                layer = key.hold
+                if key.tap:
+                    tap = g(key.tap)
+                    if isinstance(tap, QmkKey):
+                        if not self.native_keycodes.is_simple_keycode(tap.value):
+                            return CustomLT(layer, tap.value)
+                        else:
+                            return QmkLT(layer, tap.value)
+                else:
+                    return QmkMO(layer)
+                
+                raise ValueError(f'cannot make LT for {layer}, {key.tap}')
+            
+            hold = f(key.hold)
+            if re.match(r'KC_[LR]?(GUI|ALT|CTR?L|SH?I?FT)', hold):
+                if key.tap:
+                    tap = g(key.tap)
+                    if isinstance(tap, QmkKey):
+                        return QmkModtap(self.native_keycodes.MODTAPS[hold], tap.value)
+                    raise ValueError(f'cannot nodtap for {hold}, {tap}')
+                else:
+                    return QmkKey(hold)
+        
+        
+        if key.tap and is_layer_name(key.tap.removeprefix('@')):
+            return QmkTO(key.tap.removeprefix('@'))
+        
+        if key.tap and not key.hold:
+            return g(key.tap)
+        
+        return QmkKey('KC_NO')
 
-    def make_layertap(self, layer: str, tap: Optional[QmkBinding]) -> QmkBinding:
-        if tap is None:
-            return QmkMO(layer)
-        if isinstance(tap, QmkKey):
-            if not self.native_keycodes.is_simple_keycode(tap.value):
-                return CustomLT(layer, tap.value)
-            return QmkLT(layer, tap.value)
-        raise ValueError(f'cannot make LT for {layer}, {tap}')
-
-
-    def make_modtap(self, mod: QmkBinding, tap: QmkBinding) -> QmkBinding:
-        if isinstance(mod, QmkKey) and isinstance(tap, QmkKey):
-            return QmkModtap(self.native_keycodes.MODTAPS[mod.value], tap.value)
-        else:
-            raise ValueError(f'cannot nodtap for {mod}, {tap}')
-
-
-    def make_tolayer(self, layer: str) -> QmkBinding:
-        return QmkTO(layer)
-
-
-    def replace_layer_ids(self, binding: QmkBinding, f: Callable[[str], str]) -> QmkBinding:
+    @classmethod
+    def map_layer_names(cls, f: Callable[[str], str], binding: QmkBinding) -> QmkBinding:
         if isinstance(binding, (QmkMO, QmkLT, QmkTO)):
             return replace(binding, layer=f(binding.layer))
         else:
@@ -256,8 +239,8 @@ class QmkTranslator(Translator[QmkBinding]):
 
 class QmkKeycodes:
     def __init__(self, fn: str = path_join(dirname(__file__), 'qmk-keycodes.txt')):
-        self.basic_keycodes: Set[str] = set()
-        self.mapping: Dict[str, str] = dict()
+        self.basic_keycodes: set[str] = set()
+        self.mapping: dict[str, str] = dict()
 
         section = ''
 
@@ -304,7 +287,7 @@ class QmkKeycodes:
         return kc in self.basic_keycodes
 
 
-    def split_modified(self, k: str) -> List[str]:
+    def split_modified(self, k: str) -> list[str]:
         if m := self.MODIFIERS_RE.match(k):
             return [m.group(1), *self.split_modified(m.group(2))]
         else:
@@ -321,7 +304,7 @@ class QmkKeycodes:
 
     def lookup(self, k: str) -> str:
         try:
-            mods, kc = split_combo(k)
+            mods, kc = split_mods(k)
             kc = self._base_lookup(kc)
             mods = [self.MODIFIERS.get(self._base_lookup(mod)) for mod in mods]
             return '('.join(map(str, (*mods, kc))) + ')'*len(mods)
@@ -334,8 +317,3 @@ class QmkKeycodes:
 
     def __getitem__(self, k: str) -> str:
         return self.lookup(k)
-
-
-
-if __name__ == '__main__':
-    main()

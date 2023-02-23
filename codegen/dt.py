@@ -1,13 +1,13 @@
 from dataclasses import dataclass, field
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Union, cast
+from typing import Any, Iterable, Optional, Sequence, Union, cast
 
 NodeOrComment = Union['Node','Comment']
 
 @dataclass
 class Node:
     name: str
-    children: List[NodeOrComment] = field(default_factory=list)
-    properties: Dict[str,Any] = field(default_factory=dict)
+    children: list[NodeOrComment] = field(default_factory=list)
+    properties: dict[str,Any] = field(default_factory=dict)
     label: Optional[str] = None
     address: Optional[int] = None
     comment: Optional[str] = None
@@ -30,7 +30,7 @@ class Node:
 
 
 class PHandle(str): pass
-class PHandles(List[str]): pass
+class PHandles(list[str]): pass
 class Raw(str): pass
 class Comment(str): pass
 

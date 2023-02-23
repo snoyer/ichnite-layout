@@ -1,4 +1,3 @@
-import argparse
 import logging
 import re
 from dataclasses import dataclass, replace
@@ -6,108 +5,22 @@ from functools import cache
 from itertools import groupby
 from os.path import dirname
 from os.path import join as path_join
-from typing import (Any, Callable, Dict, Iterable, List, Optional, Sequence,
-                    Tuple, Union)
+from typing import Any, Callable, Iterable, Optional, Sequence, Union
 
-from dt import Comment, Node, NodeOrComment, Raw, format_value
-from source import (Layer, SourceBinding, extract_layers_from_md,
-                    extract_os_specifics_from_md, format_layer, split_combo)
-from tables import Shape, Table, format_table
-from translation import TranslatedLayer, Translator, make_os_specific_layers
+from .asciitables import Table, format_table
+from .dt import Comment, Node, NodeOrComment, Raw, format_value
+from .source import Key, Keymap, format_layer, split_layer_name, split_mods
+from .translation import Translator
 
 logger = logging.getLogger(__name__)
 
 
-def main():
-    parser = argparse.ArgumentParser(description='generate ZMK keymap code from markdown tables')
-
-    parser.add_argument('readme',
-        metavar='README.MD', help='readme markdown filename')
-    parser.add_argument('output', nargs='?',
-        metavar='OUTPUT.keymap', help='output .keymap filename')
-    parser.add_argument('--3x5', action='store_true', dest='is_3x5',
-        help='discard extra keys and make 3x5+3 layout')
-    parser.add_argument('--transform', default='default_transform',
-        metavar='NAME', help='ZMK transform name')
-
-    args = parser.parse_args()
-
-    layers = extract_layers_from_md(open(args.readme), make_3x5=args.is_3x5)
-    os_specific_codes = dict(extract_os_specifics_from_md(open(args.readme)))
-
-    if args.output:
-        with open(args.output, 'w') as f:
-            f.write(generate_zmk_code(layers, os_specific_codes, args.transform))
-            f.write('\n')
-    else:
-        print(generate_zmk_code(layers, os_specific_codes, args.transform))
-
-
-
-
 def generate_zmk_code(
-    layers: Sequence[Layer[SourceBinding]],
-    os_specific_aliases: Dict[str, Dict[str, str]],
-    transform_name: str,
-) -> str:
-
-    ZMK_KEYCODES = ZmkKeycodes()
-    aliases: Dict[str, Any] = {
-        'PSCR': 'PRINTSCREEN',
-        'SLOCK': 'SCROLLLOCK',
-        'NLOCK': 'KP_NUMLOCK',
-        'PAUSE': 'PAUSE_BREAK',
-        'APP': 'K_APP',
-
-        'PLAY': 'C_PLAY_PAUSE',
-        'STOP': 'C_STOP',
-        'PAUSE': 'C_PAUSE',
-        'PREV': 'C_PREV',
-        'NEXT': 'C_NEXT',
-        'FFW' : 'C_FF',
-        'RWD' : 'C_RW',
-        'VOL+': 'C_VOL_UP',
-        'VOL-': 'C_VOL_DN',
-        'MUTE': 'C_MUTE',
-
-        'BRI+': 'C_BRI_UP',
-        'BRI-': 'C_BRI_DN',
-
-        'MYCOMP': 'C_AL_MY_COMPUTER',
-        'WWW'   : 'C_AL_WWW',
-        'CALC'  : 'C_AL_CALCULATOR',
-
-        'RESET': binding('reset'),
-        'BOOTL': binding('bootloader'),
-
-        r'BT[0-5]$': lambda x: bt_macro(int(x[2:])), #type: ignore
-        'BTCLR': binding('bt', 'BT_CLR'),
-        'USB': binding('out', 'OUT_USB'),
-
-        '\'"': "'",
-        ',;' : shiftmorph_node(',', ';', ZMK_KEYCODES),
-        '.?' : shiftmorph_node('.', '?', ZMK_KEYCODES),
-        '/\\': shiftmorph_node('/', '\\', ZMK_KEYCODES),
-
-        'XXX': binding('none'),
-        '___': binding('trans'),
-    }
-
-
-    aliases_by_os = {os:{**aliases, **os_aliases} for os,os_aliases in os_specific_aliases.items()}
-    for os,macro in (
-        ('linux', utf8_linux_macro_node),
-        ('mac'  , utf8_mac_macro_node),
-        ('win'  , utf8_win_macro_node),
-    ):
-        aliases_by_os[os][r'[\u0080-\uffff]$'] = macro
-    
-    translator_by_os = {os:ZmkTranslator(ZMK_KEYCODES, aliases)
-                        for os,aliases in aliases_by_os.items()}
-
-    translated_layers, _ = make_os_specific_layers(layers, translator_by_os)
-
-    layer_nodes, behavior_nodes, headers = make_zmk_layers(translated_layers)
+    translated_layers: dict[str, list['Binding']],
+    source_keymap: Keymap[Key],
+    transform_name: Optional[str] = 'default_transform',
+):
+    layer_nodes, behavior_nodes, defines = make_zmk_layers(translated_layers, source_keymap)
 
     def find_includes():
         dt_bindings = {
@@ -125,7 +38,7 @@ def generate_zmk_code(
     return join_lines((
         join_lines(f'#include {include}' for include in includes),
 
-        join_lines(headers),
+        join_lines(defines),
 
         Node('/', [
             Node('chosen', properties={
@@ -151,6 +64,63 @@ def generate_zmk_code(
     ), 2) + '\n'
 
 
+def zmk_translator_for_os(os: str):
+    translator = ZmkTranslator(ZmkKeycodes())
+
+    translator.register_aliases({
+        'PSCR': 'PRINTSCREEN',
+        'SLOCK': 'SCROLLLOCK',
+        'NLOCK': 'KP_NUMLOCK',
+        'PAUSE': 'PAUSE_BREAK',
+        'APP': 'K_APP',
+        
+        'PLAY': 'C_PLAY_PAUSE',
+        'STOP': 'C_STOP',
+        'PAUSE': 'C_PAUSE',
+        'PREV': 'C_PREV',
+        'NEXT': 'C_NEXT',
+        'FFW' : 'C_FF',
+        'RWD' : 'C_RW',
+
+        'MUTE': 'C_MUTE',
+        'VOL+': 'C_VOL_UP',
+        'VOL-': 'C_VOL_DN',
+        
+        'BRI+': 'C_BRI_UP',
+        'BRI-': 'C_BRI_DN',
+
+        'MYCOMP': 'C_AL_MY_COMPUTER',
+        'WWW'   : 'C_AL_WWW',
+        'CALC'  : 'C_AL_CALCULATOR',
+    })
+    
+    def make_bt(m: re.Match[str]):
+        return Binding(bt_macro(int(m.group(1))))
+    
+    translator.register_translations({
+        'RESET': make_binding('reset'),
+        'BOOTL': make_binding('bootloader'),
+
+        r'BT(\d+)': make_bt,
+        'BTCLR': make_binding('bt', 'BT_CLR'),
+        'USB': make_binding('out', 'OUT_USB'),
+
+        '___': make_binding('trans'),
+        'XXX': make_binding('none'),
+    })
+
+    utf8_macros = {
+        'linux': utf8_linux_macro_node,
+        'mac': utf8_mac_macro_node,
+        'win': utf8_win_macro_node,
+    }
+    if os in utf8_macros:
+        def make_unicode(m: re.Match[str]):
+            return Binding(utf8_macros[os](m.group(1)))
+        translator.register_translations({r'([\u0080-\uffff])$': make_unicode})
+
+    return translator
+
 
 @dataclass(frozen=True)
 class Binding:
@@ -165,19 +135,19 @@ class Binding:
         return ' '.join(map(format_value, filter(None, (self.behavior, self.param1, self.param2))))
 
 
-class Bindings(List[Binding]):
+class Bindings(list[Binding]):
     def format_dt(self):
         values_str = ' '.join(map(format_value, self))
         return f'<{values_str}>'
 
 
-class NestedBindings(List[Bindings]):
+class NestedBindings(list[Bindings]):
     def format_dt(self):
         return ', '.join(map(format_value, self))
 
 
 def reference_nodes_in_properties(node: Node):
-    referenced_nodes: Dict[str,Node] = {}
+    referenced_nodes: dict[str,Node] = {}
 
     def replace_node_by_ref(node: Union[Node,Raw]):
         if isinstance(node, Node):
@@ -205,42 +175,40 @@ def reference_nodes_in_properties(node: Node):
 
 
 def make_zmk_layers(
-    translated_layers: Iterable[TranslatedLayer['Binding']]
-) -> Tuple[List[NodeOrComment], List[Node], List[str]]:
+    translated_layers: dict[str, list[Binding]],
+    source_keymap: Keymap[Key],
+) -> tuple[list[NodeOrComment], list[Node], list[str]]:
+    table_shape = source_keymap.table_shape
 
-    def make_comment(layer: TranslatedLayer['Binding']) -> str:
-        return layer.title + '\n' + format_layer(layer.src_table)
-    
-    def format_bindings(layer_node: Node, shape: Shape):
-        bindings = [b.format_dt() for b in layer_node.properties['bindings']]
-        formated = format_table(Table.Shape(bindings, shape), sep=' ', pad=' ', just=str.ljust)
+    def format_bindings(layer_node: Node):
+        bindings = [str(b.format_dt()) for b in layer_node.properties['bindings']]
+        formated = format_table(Table.Shape(table_shape, bindings, ''), sep='', pad=' ', just=str.ljust)
         formated = '\n'.join(l.rstrip() for l in formated.splitlines())
         layer_node.properties['bindings'] = Raw(f'<\n{formated}\n>')
 
-    headers = [f'#define {layer.name} {i}' for i,layer in enumerate(translated_layers) if not isinstance(layer.name, int)]
-    layer_nodes: List[NodeOrComment] = []
-    behavior_nodes: Dict[str, Node] = {}
+    defines = [f'#define {fix_layer_name(layer)} {i}' for i,layer in enumerate(translated_layers) if not isinstance(layer, int)]
+    layer_nodes: list[NodeOrComment] = []
+    behavior_nodes: dict[str, Node] = {}
 
-    for comment,layers in groupby(translated_layers, key=make_comment):
-        layer_nodes.append(Comment(comment))
+    for src,layers in groupby(translated_layers.items(), key=lambda kv:split_layer_name(kv[0])[0]):
+        table = Table.Shape(table_shape, map(str, source_keymap.layers[src]), '')
+        layer_nodes.append(Comment(source_keymap.titles[src] + '\n' + format_layer(table)))
 
-        for layer in layers:
-            layer_node = Node(f'{layer.name}',
+        for name,bindings in layers:
+            layer_node = Node(f'{fix_layer_name(name)}',
                 properties = {
-                    'bindings': Bindings(layer.new_table.cells),
+                    'bindings': Bindings([ZmkTranslator.map_layer_names(fix_layer_name, b) for b in bindings]),
                 },
             )
 
             new_layer_node, refs = reference_nodes_in_properties(layer_node)
-            format_bindings(new_layer_node, layer.new_table.shape)
+            format_bindings(new_layer_node)
             layer_nodes.append(new_layer_node)
             
             for ref in refs:
                 behavior_nodes[repr(ref)] = ref
 
-    return layer_nodes, list(behavior_nodes.values()), headers
-
-
+    return layer_nodes, list(behavior_nodes.values()), defines
 
 
 
@@ -253,7 +221,7 @@ HRM_NODE = Node('modtap', label='hrm', properties={
 })
 
 @cache
-def binding(node_name: str, param1: Optional[str]=None, param2: Optional[str]=None):
+def make_binding(node_name: str, param1: Optional[str]=None, param2: Optional[str]=None):
     return Binding(Node(node_name), Raw(param1) if param1 else None, Raw(param2) if param2 else None)
 
 @cache
@@ -262,51 +230,63 @@ def kp_binding(param1: str):
 
 
 class ZmkTranslator(Translator[Binding]):
-    def __init__(self, zmk_keycodes: 'ZmkKeycodes', aliases: Any):
+    def __init__(self, zmk_keycodes: 'ZmkKeycodes'):
         super().__init__()
         self.native_keycodes = zmk_keycodes
-        self._register_aliases(aliases)
 
-    def _base_translate(self, k: SourceBinding) -> Binding:
-        if not k:
-            return binding('trans')
-        elif isinstance(k, Binding):
-            return k
-        elif isinstance(k, Node):
-            return Binding(k)
-        elif isinstance(k, str):
+    def translate(self, key: Key, is_layer_name: Callable[[str], bool]) -> Binding:
+        def f(s: str):
+            t = self._alias_lookup(s)
             try:
-                return kp_binding(self.native_keycodes[k])
+                return self.native_keycodes[t]
             except KeyError:
-                logger.warning(f'not implemented {k!r}')
-                return binding('none')
-        else:
-            raise ValueError(f'cannot make binding for {k!r}')
+                return t
+        
+        def g(s: str):
+            t = self._alias_lookup(s)
+            try:
+                return self._translation_lookup(t)
+            except KeyError:
+                try:
+                    return kp_binding(self.native_keycodes[t])
+                except KeyError:
+                    logger.warning(f'not implemented {t!r}')
+                    return make_binding('none')
 
-    def make_modtap(self, mod: Binding, tap: Binding) -> Binding:
-        if mod.behavior_is('kp') and tap.behavior_is('kp'):
-            return Binding(HRM_NODE, mod.param1, tap.param1)
-        else:
-            raise ValueError(f'cannot make modtap for {mod}, {tap}')
+        if key.hold:
+            if is_layer_name(key.hold):
+                layer = key.hold
+                if key.tap:
+                    tap = g(key.tap)
+                    return make_binding('lt', layer, tap.param1)
+                else:
+                    return make_binding('mo', layer)
+            
+            hold = f(key.hold)
+            if re.match(r'[LR]?(GUI|ALT|CTRL|SHI?FT)', hold):
+                if key.tap:
+                    tap = g(key.tap)
+                    return Binding(HRM_NODE, Raw(hold), tap.param1)
+                else:
+                    return kp_binding(hold)
+            
+            raise ValueError(f'cannot make hold-tap for {key}')
+        
+        if key.tap and is_layer_name(key.tap.removeprefix('@')):
+            return make_binding('base', key.tap.removeprefix('@'))
+        
+        if key.tap and not key.hold:
+            return g(key.tap)
+        
+        return make_binding('none')
 
-    def make_layertap(self, layer: str, tap: Optional[Binding]) -> Binding:
-        if tap:
-            if tap.behavior_is('kp'):
-                return binding('lt', layer, tap.param1)
-            else:
-                raise ValueError(f'cannot make layertap for {tap}')
-        else:
-            return binding('mo', layer)
 
-    def make_tolayer(self, layer: str) -> Binding:
-        return binding('to', layer)
-
-    def replace_layer_ids(self, binding: Binding, f: Callable[[str], str]) -> Binding:
-        if binding.behavior_is('lt','mo','to') and binding.param1 is not None:
+    @classmethod
+    def map_layer_names(cls, f: Callable[[str], str], binding: Binding) -> Binding:
+        if binding.behavior_is('lt','mo','to','base') and binding.param1 is not None:
             return replace(binding, param1=Raw(f(binding.param1)))
         else:
             return binding
-
 
 
 def macro_node(identifier: str, *behaviors: Sequence[Binding], tap_ms: Optional[int]=None, wait_ms: Optional[int]=None, label: Optional[str]=None) -> Node:
@@ -330,7 +310,7 @@ def utf8_linux_macro_node(char: str) -> Node:
     keycodes = [d.upper() if d in 'abcdef' else f'N{d}' for d in hexstr]
     keycodes = 'LC(LS(U))', *keycodes, 'SPACE'
     return macro_node(f'u{hexstr}_L',
-        [binding('macro_tap'), *map(kp_binding, keycodes)],
+        [make_binding('macro_tap'), *map(kp_binding, keycodes)],
         label = f'Linux {char} macro',
         tap_ms=30,
         wait_ms=0,
@@ -340,9 +320,9 @@ def utf8_mac_macro_node(char: str) -> Node:
     hexstr = '%04x' % ord(char)
     keycodes = [d.upper() if d in 'abcdef' else f'N{d}' for d in hexstr]
     return macro_node(f'u{hexstr}_M',
-        [binding('macro_press'), kp_binding('LALT')],
-        [binding('macro_tap'), *map(kp_binding, keycodes)],
-        [binding('macro_release'),kp_binding('LALT')],
+        [make_binding('macro_press'), kp_binding('LALT')],
+        [make_binding('macro_tap'), *map(kp_binding, keycodes)],
+        [make_binding('macro_release'),kp_binding('LALT')],
         label = f'Mac {char} macro',
         tap_ms=30,
         wait_ms=30,
@@ -353,16 +333,15 @@ def utf8_win_macro_node(char: str) -> Node:
     keycodes = [d.upper() if d in 'abcdef' else f'N{d}' for d in hexstr]
     keycodes = 'RALT', 'U', *keycodes, 'RET'
     return macro_node(f'u{hexstr}_W',
-        [binding('macro_tap'), *map(kp_binding, keycodes)],
+        [make_binding('macro_tap'), *map(kp_binding, keycodes)],
         label = f'Wincompose {char} macro',
     )
 
 
 def bt_macro(i: int) -> Node:
     return macro_node(f'bt{i}',
-        [binding('bt', 'BT_SEL', f'{i-1}')],
-        [binding('out', 'OUT_BLE')], 
-        [binding('to', '(-1)')],
+        [make_binding('bt', 'BT_SEL', f'{i-1}')],
+        [make_binding('out', 'OUT_BLE')],
     )
 
 
@@ -384,7 +363,7 @@ def shiftmorph_node(default: str, shifted: str, zmk_keycodes: 'ZmkKeycodes') -> 
 
 class ZmkKeycodes:
     def __init__(self, fn: str=path_join(dirname(__file__), 'zmk-keycodes.txt')):
-        self.mapping: Dict[str, str] = dict()
+        self.mapping: dict[str, str] = dict()
 
         for line in open(fn):
             line = line.strip()
@@ -413,7 +392,7 @@ class ZmkKeycodes:
         self.MODIFIERS_RE = re.compile(r'^\s*(' + r'|'.join(self.MODIFIERS.values()) + r')\s*\(\s*(.+)\s*\)\s*$')
 
 
-    def split_modified(self, k:str)  -> List[str]:
+    def split_modified(self, k:str)  -> list[str]:
         if m := self.MODIFIERS_RE.match(k):
             return [m.group(1), *self.split_modified(m.group(2))]
         else:
@@ -427,7 +406,7 @@ class ZmkKeycodes:
 
     def lookup(self, k: str) -> str:
         try:
-            mods, kc = split_combo(k)
+            mods, kc = split_mods(k)
             kc = self._base_lookup(kc)
             mods = [self.MODIFIERS.get(self._base_lookup(mod)) for mod in mods]
             return '('.join(map(str, (*mods, kc))) + ')'*len(mods)
@@ -443,10 +422,8 @@ class ZmkKeycodes:
 
 
 
+def fix_layer_name(name: str):
+    return re.sub(r'[^0-9a-zA-Z]', '_', name)
+
 def join_lines(lines: Iterable[Any], n: int=1) -> str:
     return ('\n'*n).join(map(str, lines))
-
-
-
-if __name__ == '__main__':
-    main()
