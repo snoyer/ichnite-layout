@@ -3,22 +3,28 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
 
-#define BASE_l 0
-#define BASE_m 1
-#define BASE_w 2
-#define SYM 3
-#define NUM 4
-#define KP 5
-#define FUN 6
-#define NAV_l 7
-#define NAV_m 8
-#define NAV_w 9
-#define SYS 10
-#define MWH 11
-#define UTF_l 12
-#define UTF_m 13
-#define UTF_w 14
-#define FW 15
+#define base_l 0
+#define base_m 1
+#define base_w 2
+#define SYM_lw 3
+#define SYM_m 4
+#define NUM_lw 5
+#define NUM_m 6
+#define KP_lw 7
+#define KP_m 8
+#define FUN_lw 9
+#define FUN_m 10
+#define NAV_l 11
+#define NAV_m 12
+#define NAV_w 13
+#define SYS_lw 14
+#define SYS_m 15
+#define MWH_lw 16
+#define MWH_m 17
+#define UTF_l 18
+#define UTF_m 19
+#define UTF_w 20
+#define FW 21
 
 / {
 	chosen {
@@ -27,231 +33,279 @@
 	keymap {
 		compatible = "zmk,keymap";
 		/* Colemak-DHm `base` layer
-		┌────────┬────────┬──────────┬────────────┬──────────┐                  ┌────────────┬───────────┬──────────┬────────┬────────┐
-		│   q    │   w    │    f     │     p      │    b     │                  │     j      │     l     │    u     │   y    │  '"    │
-		├────────┼────────┼──────────┼────────────┼──────────┼───────┐  ┌───────┼────────────┼───────────┼──────────┼────────┼────────┤
-		│ a ⇩CMD │ r ⇩ALT │ s ⇩CTRL  │  t ⇩SHIFT  │    g     │  INS  │  │   -   │     m      │ n ⇩SHIFT  │ e ⇩CTRL  │ i ⇩ALT │ o ⇩CMD │
-		├────────┼────────┼──────────┼────────────┼──────────┼───────┤  ├───────┼────────────┼───────────┼──────────┼────────┼────────┤
-		│   z    │   x    │    c     │     d      │    v     │ CAPS  │  │   =   │     k      │     h     │   ,;     │  .?    │  /\    │
-		└────────┴────────┼──────────┼────────────┼──────────┼───────┘  └───────┼────────────┼───────────┼──────────┼────────┴────────┘
-		                  │ ESC ⇩MWH │ SPACE ⇩NAV │ TAB ⇩SYS │                  │ ENTER ⇩NUM │ BSPC ⇩SYM │ DEL ⇩FUN │                  
-		                  └──────────┴────────────┴──────────┘                  └────────────┴───────────┴──────────┘                   */
-		BASE_l {
+		┌────────┬────────┬──────────┬────────────┬──────────┐                 ┌────────────┬───────────┬──────────┬────────┬────────┐
+		│    q   │    w   │     f    │      p     │     b    │                 │      j     │     l     │     u    │    y   │   '"   │
+		├────────┼────────┼──────────┼────────────┼──────────┼───────┐ ┌───────┼────────────┼───────────┼──────────┼────────┼────────┤
+		│ a ▼CMD │ r ▼ALT │  s ▼CTRL │  t ▼SHIFT  │     g    │  INS  │ │   -   │      m     │  n ▼SHIFT │  e ▼CTRL │ i ▼ALT │ o ▼CMD │
+		├────────┼────────┼──────────┼────────────┼──────────┼───────┤ ├───────┼────────────┼───────────┼──────────┼────────┼────────┤
+		│    z   │    x   │     c    │      d     │     v    │ CAPS  │ │   =   │      k     │     h     │    ,;    │   .?   │   /\   │
+		└────────┴────────┼──────────┼────────────┼──────────┼───────┘ └───────┼────────────┼───────────┼──────────┼────────┴────────┘
+		                  │ ESC ▼MWH │ SPACE ▼NAV │ TAB ▼SYS │                 │ ENTER ▼NUM │ BSPC ▼SYM │ DEL ▼FUN │                  
+		                  └──────────┴────────────┴──────────┘                 └────────────┴───────────┴──────────┘                   */
+		base_l {
 			bindings = <
-			 &kp Q         &kp W         &kp F          &kp P             &kp B                                   &kp J         &kp L          &kp U          &kp Y         &kp SQT
-			 &hrm LGUI A   &hrm LALT R   &hrm LCTRL S   &hrm LSHFT T      &kp G         &kp INS       &kp MINUS   &kp M         &hrm LSHFT N   &hrm LCTRL E   &hrm LALT I   &hrm LGUI O
-			 &kp Z         &kp X         &kp C          &kp D             &kp V         &kp CAPS      &kp EQUAL   &kp K         &kp H          &comma_semi    &dot_qmark    &fslh_bslh
-			                             &lt MWH ESC    &lt NAV_l SPACE   &lt SYS TAB                             &lt NUM RET   &lt SYM BSPC   &lt FUN DEL
+			&kp Q        &kp W        &kp F           &kp P            &kp B                                 &kp J           &kp L            &kp U           &kp Y        &kp SQT
+			&hrm LGUI A  &hrm LALT R  &hrm LCTRL S    &hrm LSHFT T     &kp G           &kp INS    &kp MINUS  &kp M           &hrm LSHFT N     &hrm LCTRL E    &hrm LALT I  &hrm LGUI O
+			&kp Z        &kp X        &kp C           &kp D            &kp V           &kp CAPS   &kp EQUAL  &kp K           &kp H            &comma_semi     &dot_qmark   &fslh_bslh
+			                          &lt MWH_lw ESC  &lt NAV_l SPACE  &lt SYS_lw TAB                        &lt NUM_lw RET  &lt SYM_lw BSPC  &lt FUN_lw DEL
 			>;
 		};
-		BASE_m {
+		base_m {
 			bindings = <
-			 &kp Q         &kp W         &kp F          &kp P             &kp B                                   &kp J         &kp L          &kp U          &kp Y         &kp SQT
-			 &hrm LGUI A   &hrm LALT R   &hrm LCTRL S   &hrm LSHFT T      &kp G         &kp INS       &kp MINUS   &kp M         &hrm LSHFT N   &hrm LCTRL E   &hrm LALT I   &hrm LGUI O
-			 &kp Z         &kp X         &kp C          &kp D             &kp V         &kp CAPS      &kp EQUAL   &kp K         &kp H          &comma_semi    &dot_qmark    &fslh_bslh
-			                             &lt MWH ESC    &lt NAV_m SPACE   &lt SYS TAB                             &lt NUM RET   &lt SYM BSPC   &lt FUN DEL
+			&kp Q         &kp W        &kp F          &kp P            &kp B                                &kp J          &kp L           &kp U          &kp Y        &kp SQT
+			&hrm LCTRL A  &hrm LALT R  &hrm LGUI S    &hrm LSHFT T     &kp G          &kp INS    &kp MINUS  &kp M          &hrm LSHFT N    &hrm LGUI E    &hrm LALT I  &hrm LCTRL O
+			&kp Z         &kp X        &kp C          &kp D            &kp V          &kp CAPS   &kp EQUAL  &kp K          &kp H           &comma_semi    &dot_qmark   &fslh_bslh
+			                           &lt MWH_m ESC  &lt NAV_m SPACE  &lt SYS_m TAB                        &lt NUM_m RET  &lt SYM_m BSPC  &lt FUN_m DEL
 			>;
 		};
-		BASE_w {
+		base_w {
 			bindings = <
-			 &kp Q         &kp W         &kp F          &kp P             &kp B                                   &kp J         &kp L          &kp U          &kp Y         &kp SQT
-			 &hrm LGUI A   &hrm LALT R   &hrm LCTRL S   &hrm LSHFT T      &kp G         &kp INS       &kp MINUS   &kp M         &hrm LSHFT N   &hrm LCTRL E   &hrm LALT I   &hrm LGUI O
-			 &kp Z         &kp X         &kp C          &kp D             &kp V         &kp CAPS      &kp EQUAL   &kp K         &kp H          &comma_semi    &dot_qmark    &fslh_bslh
-			                             &lt MWH ESC    &lt NAV_w SPACE   &lt SYS TAB                             &lt NUM RET   &lt SYM BSPC   &lt FUN DEL
+			&kp Q        &kp W        &kp F           &kp P            &kp B                                 &kp J           &kp L            &kp U           &kp Y        &kp SQT
+			&hrm LGUI A  &hrm LALT R  &hrm LCTRL S    &hrm LSHFT T     &kp G           &kp INS    &kp MINUS  &kp M           &hrm LSHFT N     &hrm LCTRL E    &hrm LALT I  &hrm LGUI O
+			&kp Z        &kp X        &kp C           &kp D            &kp V           &kp CAPS   &kp EQUAL  &kp K           &kp H            &comma_semi     &dot_qmark   &fslh_bslh
+			                          &lt MWH_lw ESC  &lt NAV_w SPACE  &lt SYS_lw TAB                        &lt NUM_lw RET  &lt SYM_lw BSPC  &lt FUN_lw DEL
 			>;
 		};
-		/* Symbols
-		┌───────┬───────┬───────┬───────┬───────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│   ~   │   ^   │   &   │   [   │   ]   │                  │       │       │       │       │   `   │
-		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│   #   │   $   │   @   │   (   │   )   │       │  │       │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
-		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│   *   │       │   %   │   {   │   }   │       │  │       │       │       │   :   │   !   │ PIPE  │
-		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │   +   │   _   │   =   │                  │  ⇩KP  │       │       │                
-		                └───────┴───────┴───────┘                  └───────┴───────┴───────┘                 */
-		SYM {
+		/* Symbols (`SYM`)
+		┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
+		│   ~   │   ^   │   &   │   [   │   ]   │                 │       │       │       │       │   `   │
+		├───────┼───────┼───────┼───────┼───────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
+		│   @   │   #   │   $   │   (   │   )   │       │ │       │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
+		├───────┼───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
+		│   *   │       │   %   │   {   │   }   │       │ │       │       │       │   :   │   !   │ PIPE  │
+		└───────┴───────┼───────┼───────┼───────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘
+		                │   +   │   _   │   =   │                 │  ▼KP  │  XXX  │       │                
+		                └───────┴───────┴───────┘                 └───────┴───────┴───────┘                 */
+		SYM_lw {
 			bindings = <
-			 &kp TILDE   &kp CARET   &kp AMPS    &kp LBKT    &kp RBKT                       &none    &none       &none       &none      &kp GRAVE
-			 &kp HASH    &kp DLLR    &kp AT      &kp LPAR    &kp RPAR    &none      &none   &none    &kp LSHFT   &kp LCTRL   &kp LALT   &kp LGUI
-			 &kp STAR    &none       &kp PRCNT   &kp LBRC    &kp RBRC    &none      &none   &none    &none       &kp COLON   &kp EXCL   &kp PIPE
-			                         &kp PLUS    &kp UNDER   &kp EQUAL                      &mo KP   &none       &none
+			&kp TILDE  &kp CARET  &kp AMPS   &kp LBKT   &kp RBKT                  &none      &none      &none      &none     &kp GRAVE
+			&kp AT     &kp HASH   &kp DLLR   &kp LPAR   &kp RPAR   &none   &none  &none      &kp LSHFT  &kp LCTRL  &kp LALT  &kp LGUI
+			&kp STAR   &none      &kp PRCNT  &kp LBRC   &kp RBRC   &none   &none  &none      &none      &kp COLON  &kp EXCL  &kp PIPE
+			                      &kp PLUS   &kp UNDER  &kp EQUAL                 &mo KP_lw  &none      &none
 			>;
 		};
-		/* Numerals
-		┌───────┬───────┬───────┬───────┬───────┐                  ┌───────┬───────┬───────────┬───────┬───────┐
-		│   1   │   2   │   3   │   4   │   5   │                  │   6   │   7   │     8     │   9   │   0   │
-		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────────┼───────┼───────┤
-		│  CMD  │  ALT  │ CTRL  │ SHIFT │       │       │  │   +   │   -   │   4   │     5     │   6   │   .   │
-		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────────┼───────┼───────┤
-		│   *   │       │   %   │   <   │   >   │       │  │   *   │   0   │   1   │     2     │   3   │   /   │
-		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────────┼───────┴───────┘
-		                │   +   │   -   │   =   │                  │       │  ⇩KP  │ NLOCK ⇩FW │                
-		                └───────┴───────┴───────┘                  └───────┴───────┴───────────┘                 */
-		NUM {
+		SYM_m {
 			bindings = <
-			 &kp N1     &kp N2     &kp N3      &kp N4      &kp N5                            &kp N6      &kp N7   &kp N8          &kp N9   &kp N0
-			 &kp LGUI   &kp LALT   &kp LCTRL   &kp LSHFT   &none       &none      &kp PLUS   &kp MINUS   &kp N4   &kp N5          &kp N6   &kp DOT
-			 &kp STAR   &none      &kp PRCNT   &kp LT      &kp GT      &none      &kp STAR   &kp N0      &kp N1   &kp N2          &kp N3   &kp FSLH
-			                       &kp PLUS    &kp MINUS   &kp EQUAL                         &none       &mo KP   &lt FW KP_NUM
+			&kp TILDE  &kp CARET  &kp AMPS   &kp LBKT   &kp RBKT                  &none     &none      &none      &none     &kp GRAVE
+			&kp AT     &kp HASH   &kp DLLR   &kp LPAR   &kp RPAR   &none   &none  &none     &kp LSHFT  &kp LGUI   &kp LALT  &kp LCTRL
+			&kp STAR   &none      &kp PRCNT  &kp LBRC   &kp RBRC   &none   &none  &none     &none      &kp COLON  &kp EXCL  &kp PIPE
+			                      &kp PLUS   &kp UNDER  &kp EQUAL                 &mo KP_m  &none      &none
 			>;
 		};
-		/* Keypad numerals on `NUM+SYM` combo
-		┌───────┬───────┬───────┬───────┬───────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│  KP1  │  KP2  │  KP3  │  KP4  │  KP5  │                  │  KP6  │  KP7  │  KP8  │  KP9  │  KP0  │
-		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│  CMD  │  ALT  │ CTRL  │ SHIFT │       │       │  │  KP+  │  KP-  │  KP4  │  KP5  │  KP6  │  KP.  │
-		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│  KP*  │       │   %   │   <   │   >   │       │  │  KP*  │  KP0  │  KP1  │  KP2  │  KP3  │  KP/  │
-		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │  KP+  │  KP-  │  KP=  │                  │       │       │       │                
-		                └───────┴───────┴───────┘                  └───────┴───────┴───────┘                 */
-		KP {
+		/* Numerals (`NUM`)
+		┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────────┬───────┬───────┐
+		│   1   │   2   │   3   │   4   │   5   │                 │   6   │   7   │     8     │   9   │   0   │
+		├───────┼───────┼───────┼───────┼───────┼───────┐ ┌───────┼───────┼───────┼───────────┼───────┼───────┤
+		│  CMD  │  ALT  │ CTRL  │ SHIFT │       │       │ │   +   │   -   │   4   │     5     │   6   │   .   │
+		├───────┼───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────────┼───────┼───────┤
+		│   *   │       │   %   │   <   │   >   │       │ │   *   │   0   │   1   │     2     │   3   │   /   │
+		└───────┴───────┼───────┼───────┼───────┼───────┘ └───────┼───────┼───────┼───────────┼───────┴───────┘
+		                │   +   │   -   │   =   │                 │  XXX  │  ▼KP  │ NLOCK ▼FW │                
+		                └───────┴───────┴───────┘                 └───────┴───────┴───────────┘                 */
+		NUM_lw {
 			bindings = <
-			 &kp KP_N1         &kp KP_N2   &kp KP_N3     &kp KP_N4      &kp KP_N5                                   &kp KP_N6      &kp KP_N7   &kp KP_N8   &kp KP_N9   &kp KP_N0
-			 &kp LGUI          &kp LALT    &kp LCTRL     &kp LSHFT      &none          &none      &kp KP_PLUS       &kp KP_MINUS   &kp KP_N4   &kp KP_N5   &kp KP_N6   &kp KP_DOT
-			 &kp KP_MULTIPLY   &none       &kp PRCNT     &kp LT         &kp GT         &none      &kp KP_MULTIPLY   &kp KP_N0      &kp KP_N1   &kp KP_N2   &kp KP_N3   &kp KP_SLASH
-			                               &kp KP_PLUS   &kp KP_MINUS   &kp KP_EQUAL                                &none          &none       &none
+			&kp N1    &kp N2    &kp N3     &kp N4     &kp N5                       &kp N6     &kp N7     &kp N8         &kp N9  &kp N0
+			&kp LGUI  &kp LALT  &kp LCTRL  &kp LSHFT  &none      &none   &kp PLUS  &kp MINUS  &kp N4     &kp N5         &kp N6  &kp DOT
+			&kp STAR  &none     &kp PRCNT  &kp LT     &kp GT     &none   &kp STAR  &kp N0     &kp N1     &kp N2         &kp N3  &kp FSLH
+			                    &kp PLUS   &kp MINUS  &kp EQUAL                    &none      &mo KP_lw  &lt FW KP_NUM
 			>;
 		};
-		/* Function keys
-		┌───────┬───────┬───────┬───────┬───────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│  F1   │  F2   │  F3   │  F4   │  F5   │                  │  F6   │  F7   │  F8   │  F9   │  F10  │
-		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│  CMD  │  ALT  │ CTRL  │ SHIFT │ CAPS  │       │  │       │ PSCR  │  F4   │  F5   │  F6   │  F11  │
-		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │ PSCR  │ SLOCK │ PAUSE │  INS  │       │  │       │       │  F1   │  F2   │  F3   │  F12  │
-		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │ rCTRL │  APP  │       │                  │  ⇩FW  │       │       │                
-		                └───────┴───────┴───────┘                  └───────┴───────┴───────┘                 */
-		FUN {
+		NUM_m {
 			bindings = <
-			 &kp F1     &kp F2      &kp F3      &kp F4        &kp F5                        &kp F6      &kp F7   &kp F8   &kp F9   &kp F10
-			 &kp LGUI   &kp LALT    &kp LCTRL   &kp LSHFT     &kp CAPS   &none      &none   &kp PSCRN   &kp F4   &kp F5   &kp F6   &kp F11
-			 &none      &kp PSCRN   &kp SLCK    &kp C_PAUSE   &kp INS    &none      &none   &none       &kp F1   &kp F2   &kp F3   &kp F12
-			                        &kp RCTRL   &kp K_APP     &none                         &mo FW      &none    &none
+			&kp N1     &kp N2    &kp N3     &kp N4     &kp N5                       &kp N6     &kp N7    &kp N8         &kp N9  &kp N0
+			&kp LCTRL  &kp LALT  &kp LGUI   &kp LSHFT  &none      &none   &kp PLUS  &kp MINUS  &kp N4    &kp N5         &kp N6  &kp DOT
+			&kp STAR   &none     &kp PRCNT  &kp LT     &kp GT     &none   &kp STAR  &kp N0     &kp N1    &kp N2         &kp N3  &kp FSLH
+			                     &kp PLUS   &kp MINUS  &kp EQUAL                    &none      &mo KP_m  &lt FW KP_NUM
 			>;
 		};
-		/* Navigation
-		┌───────┬───────┬───────┬───────┬───────┐                    ┌───────┬───────────┬───────┬───────┬───────┐
-		│ FIND- │ HOME  │  UP   │  END  │  CUT  │                    │       │           │       │       │   "   │
-		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌─────────┼───────┼───────────┼───────┼───────┼───────┤
-		│ FIND+ │ LEFT  │ DOWN  │ RIGHT │ COPY  │ UNDO  │  │ COMMENT │       │   SHIFT   │ CTRL  │  ALT  │  CMD  │
-		├───────┼───────┼───────┼───────┼───────┼───────┤  ├─────────┼───────┼───────────┼───────┼───────┼───────┤
-		│ ENTER │ PG_UP │       │ PG_DN │ PASTE │ BSPC  │  │         │       │           │   ;   │   ?   │   \   │
-		└───────┴───────┼───────┼───────┼───────┼───────┘  └─────────┼───────┼───────────┼───────┼───────┴───────┘
-		                │       │       │       │                    │ REDO  │ UNDO ⇩UTF │       │                
-		                └───────┴───────┴───────┘                    └───────┴───────────┴───────┘                 */
+		/* Keypad numerals (`KP`) on `NUM+SYM` combo
+		┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
+		│  KP1  │  KP2  │  KP3  │  KP4  │  KP5  │                 │  KP6  │  KP7  │  KP8  │  KP9  │  KP0  │
+		├───────┼───────┼───────┼───────┼───────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
+		│  CMD  │  ALT  │ CTRL  │ SHIFT │       │       │ │  KP+  │  KP-  │  KP4  │  KP5  │  KP6  │  KP.  │
+		├───────┼───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
+		│  KP*  │       │   %   │   <   │   >   │       │ │  KP*  │  KP0  │  KP1  │  KP2  │  KP3  │  KP/  │
+		└───────┴───────┼───────┼───────┼───────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘
+		                │  KP+  │  KP-  │  KP=  │                 │  XXX  │  XXX  │       │                
+		                └───────┴───────┴───────┘                 └───────┴───────┴───────┘                 */
+		KP_lw {
+			bindings = <
+			&kp KP_N1        &kp KP_N2  &kp KP_N3    &kp KP_N4     &kp KP_N5                              &kp KP_N6     &kp KP_N7  &kp KP_N8  &kp KP_N9  &kp KP_N0
+			&kp LGUI         &kp LALT   &kp LCTRL    &kp LSHFT     &none         &none   &kp KP_PLUS      &kp KP_MINUS  &kp KP_N4  &kp KP_N5  &kp KP_N6  &kp KP_DOT
+			&kp KP_MULTIPLY  &none      &kp PRCNT    &kp LT        &kp GT        &none   &kp KP_MULTIPLY  &kp KP_N0     &kp KP_N1  &kp KP_N2  &kp KP_N3  &kp KP_SLASH
+			                            &kp KP_PLUS  &kp KP_MINUS  &kp KP_EQUAL                           &none         &none      &none
+			>;
+		};
+		KP_m {
+			bindings = <
+			&kp KP_N1        &kp KP_N2  &kp KP_N3    &kp KP_N4     &kp KP_N5                              &kp KP_N6     &kp KP_N7  &kp KP_N8  &kp KP_N9  &kp KP_N0
+			&kp LCTRL        &kp LALT   &kp LGUI     &kp LSHFT     &none         &none   &kp KP_PLUS      &kp KP_MINUS  &kp KP_N4  &kp KP_N5  &kp KP_N6  &kp KP_DOT
+			&kp KP_MULTIPLY  &none      &kp PRCNT    &kp LT        &kp GT        &none   &kp KP_MULTIPLY  &kp KP_N0     &kp KP_N1  &kp KP_N2  &kp KP_N3  &kp KP_SLASH
+			                            &kp KP_PLUS  &kp KP_MINUS  &kp KP_EQUAL                           &none         &none      &none
+			>;
+		};
+		/* Function keys (`FUN`)
+		┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
+		│  F1   │  F2   │  F3   │  F4   │  F5   │                 │  F6   │  F7   │  F8   │  F9   │  F10  │
+		├───────┼───────┼───────┼───────┼───────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
+		│  CMD  │  ALT  │ CTRL  │ SHIFT │ CAPS  │       │ │       │ PSCR  │  F4   │  F5   │  F6   │  F11  │
+		├───────┼───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
+		│       │ PSCR  │ SLOCK │ PAUSE │  INS  │       │ │       │       │  F1   │  F2   │  F3   │  F12  │
+		└───────┴───────┼───────┼───────┼───────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘
+		                │ rCTRL │  APP  │       │                 │  ▼FW  │       │  XXX  │                
+		                └───────┴───────┴───────┘                 └───────┴───────┴───────┘                 */
+		FUN_lw {
+			bindings = <
+			&kp F1    &kp F2     &kp F3     &kp F4       &kp F5                   &kp F6     &kp F7  &kp F8  &kp F9  &kp F10
+			&kp LGUI  &kp LALT   &kp LCTRL  &kp LSHFT    &kp CAPS  &none   &none  &kp PSCRN  &kp F4  &kp F5  &kp F6  &kp F11
+			&none     &kp PSCRN  &kp SLCK   &kp C_PAUSE  &kp INS   &none   &none  &none      &kp F1  &kp F2  &kp F3  &kp F12
+			                     &kp RCTRL  &kp K_APP    &none                    &mo FW     &none   &none
+			>;
+		};
+		FUN_m {
+			bindings = <
+			&kp F1     &kp F2     &kp F3     &kp F4       &kp F5                   &kp F6     &kp F7  &kp F8  &kp F9  &kp F10
+			&kp LCTRL  &kp LALT   &kp LGUI   &kp LSHFT    &kp CAPS  &none   &none  &kp PSCRN  &kp F4  &kp F5  &kp F6  &kp F11
+			&none      &kp PSCRN  &kp SLCK   &kp C_PAUSE  &kp INS   &none   &none  &none      &kp F1  &kp F2  &kp F3  &kp F12
+			                      &kp RCTRL  &kp K_APP    &none                    &mo FW     &none   &none
+			>;
+		};
+		/* Navigation (`NAV`)
+		┌───────┬───────┬───────┬───────┬───────┐                   ┌───────┬───────────┬───────┬───────┬───────┐
+		│ FIND- │ HOME  │  UP   │  END  │  CUT  │                   │       │           │       │       │   "   │
+		├───────┼───────┼───────┼───────┼───────┼───────┐ ┌─────────┼───────┼───────────┼───────┼───────┼───────┤
+		│ FIND+ │ LEFT  │ DOWN  │ RIGHT │ COPY  │ UNDO  │ │ COMMENT │       │   SHIFT   │ CTRL  │  ALT  │  CMD  │
+		├───────┼───────┼───────┼───────┼───────┼───────┤ ├─────────┼───────┼───────────┼───────┼───────┼───────┤
+		│ ENTER │ PG_UP │       │ PG_DN │ PASTE │ BSPC  │ │         │       │           │   ;   │   ?   │   \   │
+		└───────┴───────┼───────┼───────┼───────┼───────┘ └─────────┼───────┼───────────┼───────┼───────┴───────┘
+		                │       │  XXX  │       │                   │ REDO  │ UNDO ▼UTF │       │                
+		                └───────┴───────┴───────┘                   └───────┴───────────┴───────┘                 */
 		NAV_l {
 			bindings = <
-			 &kp LS(F3)   &kp HOME    &kp UP     &kp END     &kp LC(X)                                 &none       &none             &none       &none       &kp DQT
-			 &kp F3       &kp LEFT    &kp DOWN   &kp RIGHT   &kp LC(C)   &kp LC(Z)      &kp LC(FSLH)   &none       &kp LSHFT         &kp LCTRL   &kp LALT    &kp LGUI
-			 &kp RET      &kp PG_UP   &none      &kp PG_DN   &kp LC(V)   &kp BSPC       &none          &none       &none             &kp SEMI    &kp QMARK   &kp BSLH
-			                          &none      &none       &none                                     &kp LC(Y)   &lt UTF_l LC(Z)   &none
+			&kp LS(F3)  &kp HOME   &kp UP    &kp END    &kp LC(X)                            &none      &none            &none      &none      &kp DQT
+			&kp F3      &kp LEFT   &kp DOWN  &kp RIGHT  &kp LC(C)  &kp LC(Z)   &kp LC(FSLH)  &none      &kp LSHFT        &kp LCTRL  &kp LALT   &kp LGUI
+			&kp RET     &kp PG_UP  &none     &kp PG_DN  &kp LC(V)  &kp BSPC    &none         &none      &none            &kp SEMI   &kp QMARK  &kp BSLH
+			                       &none     &none      &none                                &kp LC(Y)  &lt UTF_l LC(Z)  &none
 			>;
 		};
 		NAV_m {
 			bindings = <
-			 &kp LS(LG(G))   &kp HOME    &kp UP     &kp END     &kp LG(X)                                 &none       &none             &none       &none       &kp DQT
-			 &kp LG(G)       &kp LEFT    &kp DOWN   &kp RIGHT   &kp LG(C)   &kp LG(Z)      &kp LG(FSLH)   &none       &kp LSHFT         &kp LCTRL   &kp LALT    &kp LGUI
-			 &kp RET         &kp PG_UP   &none      &kp PG_DN   &kp LG(V)   &kp BSPC       &none          &none       &none             &kp SEMI    &kp QMARK   &kp BSLH
-			                             &none      &none       &none                                     &kp LG(Y)   &lt UTF_m LG(Z)   &none
+			&kp LS(LG(G))  &kp HOME   &kp UP    &kp END    &kp LG(X)                            &none      &none            &none     &none      &kp DQT
+			&kp LG(G)      &kp LEFT   &kp DOWN  &kp RIGHT  &kp LG(C)  &kp LG(Z)   &kp LG(FSLH)  &none      &kp LSHFT        &kp LGUI  &kp LALT   &kp LCTRL
+			&kp RET        &kp PG_UP  &none     &kp PG_DN  &kp LG(V)  &kp BSPC    &none         &none      &none            &kp SEMI  &kp QMARK  &kp BSLH
+			                          &none     &none      &none                                &kp LG(Y)  &lt UTF_m LG(Z)  &none
 			>;
 		};
 		NAV_w {
 			bindings = <
-			 &kp LS(F3)   &kp HOME    &kp UP     &kp END     &kp LC(X)                                 &none       &none             &none       &none       &kp DQT
-			 &kp F3       &kp LEFT    &kp DOWN   &kp RIGHT   &kp LC(C)   &kp LC(Z)      &kp LC(FSLH)   &none       &kp LSHFT         &kp LCTRL   &kp LALT    &kp LGUI
-			 &kp RET      &kp PG_UP   &none      &kp PG_DN   &kp LC(V)   &kp BSPC       &none          &none       &none             &kp SEMI    &kp QMARK   &kp BSLH
-			                          &none      &none       &none                                     &kp LC(Y)   &lt UTF_w LC(Z)   &none
+			&kp LS(F3)  &kp HOME   &kp UP    &kp END    &kp LC(X)                            &none      &none            &none      &none      &kp DQT
+			&kp F3      &kp LEFT   &kp DOWN  &kp RIGHT  &kp LC(C)  &kp LC(Z)   &kp LC(FSLH)  &none      &kp LSHFT        &kp LCTRL  &kp LALT   &kp LGUI
+			&kp RET     &kp PG_UP  &none     &kp PG_DN  &kp LC(V)  &kp BSPC    &none         &none      &none            &kp SEMI   &kp QMARK  &kp BSLH
+			                       &none     &none      &none                                &kp LC(Y)  &lt UTF_w LC(Z)  &none
 			>;
 		};
-		/* System/media keys
-		┌───────┬───────┬───────┬───────┬────────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│ BRI+  │  RWD  │ VOL+  │  FFW  │  WWW   │                  │       │       │       │       │       │
-		├───────┼───────┼───────┼───────┼────────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│ BRI-  │ STOP  │ VOL-  │ PLAY  │ MYCOMP │  F15  │  │  F17  │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
-		├───────┼───────┼───────┼───────┼────────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │ PREV  │ MUTE  │ NEXT  │ CALC   │  F16  │  │  F18  │       │       │       │       │       │
-		└───────┴───────┼───────┼───────┼────────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │  ⇩FW  │       │        │                  │       │       │       │                
-		                └───────┴───────┴────────┘                  └───────┴───────┴───────┘                 */
-		SYS {
+		/* System/media keys (`SYS`)
+		┌───────┬───────┬───────┬───────┬────────┐                 ┌───────┬───────┬───────┬───────┬───────┐
+		│ BRI+  │  RWD  │ VOL+  │  FFW  │   WWW  │                 │       │       │       │       │       │
+		├───────┼───────┼───────┼───────┼────────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
+		│ BRI-  │ STOP  │ VOL-  │ PLAY  │ MYCOMP │  F15  │ │  F17  │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
+		├───────┼───────┼───────┼───────┼────────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
+		│       │ PREV  │ MUTE  │ NEXT  │  CALC  │  F16  │ │  F18  │       │       │       │       │       │
+		└───────┴───────┼───────┼───────┼────────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘
+		                │  ▼FW  │       │   XXX  │                 │       │       │       │                
+		                └───────┴───────┴────────┘                 └───────┴───────┴───────┘                 */
+		SYS_lw {
 			bindings = <
-			 &kp C_BRI_UP   &kp C_RW     &kp C_VOL_UP   &kp C_FF     &kp C_AL_WWW                                  &none   &none       &none       &none      &none
-			 &kp C_BRI_DN   &kp C_STOP   &kp C_VOL_DN   &kp C_PP     &kp C_AL_MY_COMPUTER   &kp F15      &kp F17   &none   &kp LSHFT   &kp LCTRL   &kp LALT   &kp LGUI
-			 &none          &kp C_PREV   &kp C_MUTE     &kp C_NEXT   &kp C_AL_CALC          &kp F16      &kp F18   &none   &none       &none       &none      &none
-			                             &mo FW         &none        &none                                         &none   &none       &none
+			&kp C_BRI_UP  &kp C_RW    &kp C_VOL_UP  &kp C_FF    &kp C_AL_WWW                             &none  &none      &none      &none     &none
+			&kp C_BRI_DN  &kp C_STOP  &kp C_VOL_DN  &kp C_PP    &kp C_AL_MY_COMPUTER  &kp F15   &kp F17  &none  &kp LSHFT  &kp LCTRL  &kp LALT  &kp LGUI
+			&none         &kp C_PREV  &kp C_MUTE    &kp C_NEXT  &kp C_AL_CALC         &kp F16   &kp F18  &none  &none      &none      &none     &none
+			                          &mo FW        &none       &none                                    &none  &none      &none
 			>;
 		};
-		/* Mouse scrolling
-		┌───────┬───────┬───────┬───────┬───────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│       │       │ WH_U  │       │       │                  │       │       │       │       │       │
-		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │ WH_L  │ WH_D  │ WH_R  │       │       │  │       │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
-		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │       │       │       │       │       │  │       │       │       │       │       │       │
-		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │       │       │  ⇩FW  │                  │       │       │       │                
-		                └───────┴───────┴───────┘                  └───────┴───────┴───────┘                 */
-		MWH {
+		SYS_m {
 			bindings = <
-			 &none   &none   &none   &none   &none                       &none   &none       &none       &none      &none
-			 &none   &none   &none   &none   &none    &none      &none   &none   &kp LSHFT   &kp LCTRL   &kp LALT   &kp LGUI
-			 &none   &none   &none   &none   &none    &none      &none   &none   &none       &none       &none      &none
-			                 &none   &none   &mo FW                      &none   &none       &none
+			&kp C_BRI_UP  &kp C_RW    &kp C_VOL_UP  &kp C_FF    &kp C_AL_WWW                             &none  &none      &none     &none     &none
+			&kp C_BRI_DN  &kp C_STOP  &kp C_VOL_DN  &kp C_PP    &kp C_AL_MY_COMPUTER  &kp F15   &kp F17  &none  &kp LSHFT  &kp LGUI  &kp LALT  &kp LCTRL
+			&none         &kp C_PREV  &kp C_MUTE    &kp C_NEXT  &kp C_AL_CALC         &kp F16   &kp F18  &none  &none      &none     &none     &none
+			                          &mo FW        &none       &none                                    &none  &none      &none
 			>;
 		};
-		/* Unicode Symbols on `NAV>SYM`
-		┌───────┬───────┬───────┬───────┬───────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│       │       │   °   │   √   │       │                  │       │   μ   │   Δ   │   ε   │       │
-		├───────┼───────┼───────┼───────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│   ∞   │   €   │       │   ²   │   ³   │       │  │       │       │   π   │   φ   │   θ   │       │
-		├───────┼───────┼───────┼───────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│   ×   │       │   ≈   │   ≤   │   ≥   │       │  │       │   λ   │   α   │   β   │   ¿   │   ÷   │
-		└───────┴───────┼───────┼───────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │   ±   │       │   ≠   │                  │       │       │       │                
-		                └───────┴───────┴───────┘                  └───────┴───────┴───────┘                 */
+		/* Mouse scrolling (`MWH`)
+		┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
+		│       │       │ WH_U  │       │       │                 │       │       │       │       │       │
+		├───────┼───────┼───────┼───────┼───────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
+		│       │ WH_L  │ WH_D  │ WH_R  │       │       │ │       │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
+		├───────┼───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
+		│       │       │       │       │       │       │ │       │       │       │       │       │       │
+		└───────┴───────┼───────┼───────┼───────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘
+		                │  XXX  │       │  ▼FW  │                 │       │       │       │                
+		                └───────┴───────┴───────┘                 └───────┴───────┴───────┘                 */
+		MWH_lw {
+			bindings = <
+			&none  &none  &none  &none  &none                  &none  &none      &none      &none     &none
+			&none  &none  &none  &none  &none   &none   &none  &none  &kp LSHFT  &kp LCTRL  &kp LALT  &kp LGUI
+			&none  &none  &none  &none  &none   &none   &none  &none  &none      &none      &none     &none
+			              &none  &none  &mo FW                 &none  &none      &none
+			>;
+		};
+		MWH_m {
+			bindings = <
+			&none  &none  &none  &none  &none                  &none  &none      &none     &none     &none
+			&none  &none  &none  &none  &none   &none   &none  &none  &kp LSHFT  &kp LGUI  &kp LALT  &kp LCTRL
+			&none  &none  &none  &none  &none   &none   &none  &none  &none      &none     &none     &none
+			              &none  &none  &mo FW                 &none  &none      &none
+			>;
+		};
+		/* Unicode Symbols (`UTF`) on `NAV>SYM`
+		┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
+		│       │       │   °   │   √   │       │                 │       │   μ   │   Δ   │   ε   │       │
+		├───────┼───────┼───────┼───────┼───────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
+		│   ∞   │   €   │       │   ²   │   ³   │       │ │       │       │   π   │   φ   │   θ   │       │
+		├───────┼───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
+		│   ×   │       │   ≈   │   ≤   │   ≥   │       │ │       │   λ   │   α   │   β   │   ¿   │   ÷   │
+		└───────┴───────┼───────┼───────┼───────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘
+		                │   ±   │  XXX  │   ≠   │                 │       │       │  XXX  │                
+		                └───────┴───────┴───────┘                 └───────┴───────┴───────┘                 */
 		UTF_l {
 			bindings = <
-			 &none      &none      &u00b0_L   &u221a_L   &none                         &none      &u03bc_L   &u0394_L   &u03b5_L   &none
-			 &u221e_L   &u20ac_L   &none      &u00b2_L   &u00b3_L   &none      &none   &none      &u03c0_L   &u03c6_L   &u03b8_L   &none
-			 &u00d7_L   &none      &u2248_L   &u2264_L   &u2265_L   &none      &none   &u03bb_L   &u03b1_L   &u03b2_L   &u00bf_L   &u00f7_L
-			                       &u00b1_L   &none      &u2260_L                      &none      &none      &none
+			&none     &none     &u00b0_L  &u221a_L  &none                    &none     &u03bc_L  &u0394_L  &u03b5_L  &none
+			&u221e_L  &u20ac_L  &none     &u00b2_L  &u00b3_L  &none   &none  &none     &u03c0_L  &u03c6_L  &u03b8_L  &none
+			&u00d7_L  &none     &u2248_L  &u2264_L  &u2265_L  &none   &none  &u03bb_L  &u03b1_L  &u03b2_L  &u00bf_L  &u00f7_L
+			                    &u00b1_L  &none     &u2260_L                 &none     &none     &none
 			>;
 		};
 		UTF_m {
 			bindings = <
-			 &none      &none      &u00b0_M   &u221a_M   &none                         &none      &u03bc_M   &u0394_M   &u03b5_M   &none
-			 &u221e_M   &u20ac_M   &none      &u00b2_M   &u00b3_M   &none      &none   &none      &u03c0_M   &u03c6_M   &u03b8_M   &none
-			 &u00d7_M   &none      &u2248_M   &u2264_M   &u2265_M   &none      &none   &u03bb_M   &u03b1_M   &u03b2_M   &u00bf_M   &u00f7_M
-			                       &u00b1_M   &none      &u2260_M                      &none      &none      &none
+			&none     &none     &u00b0_M  &u221a_M  &none                    &none     &u03bc_M  &u0394_M  &u03b5_M  &none
+			&u221e_M  &u20ac_M  &none     &u00b2_M  &u00b3_M  &none   &none  &none     &u03c0_M  &u03c6_M  &u03b8_M  &none
+			&u00d7_M  &none     &u2248_M  &u2264_M  &u2265_M  &none   &none  &u03bb_M  &u03b1_M  &u03b2_M  &u00bf_M  &u00f7_M
+			                    &u00b1_M  &none     &u2260_M                 &none     &none     &none
 			>;
 		};
 		UTF_w {
 			bindings = <
-			 &none      &none      &u00b0_W   &u221a_W   &none                         &none      &u03bc_W   &u0394_W   &u03b5_W   &none
-			 &u221e_W   &u20ac_W   &none      &u00b2_W   &u00b3_W   &none      &none   &none      &u03c0_W   &u03c6_W   &u03b8_W   &none
-			 &u00d7_W   &none      &u2248_W   &u2264_W   &u2265_W   &none      &none   &u03bb_W   &u03b1_W   &u03b2_W   &u00bf_W   &u00f7_W
-			                       &u00b1_W   &none      &u2260_W                      &none      &none      &none
+			&none     &none     &u00b0_W  &u221a_W  &none                    &none     &u03bc_W  &u0394_W  &u03b5_W  &none
+			&u221e_W  &u20ac_W  &none     &u00b2_W  &u00b3_W  &none   &none  &none     &u03c0_W  &u03c6_W  &u03b8_W  &none
+			&u00d7_W  &none     &u2248_W  &u2264_W  &u2265_W  &none   &none  &u03bb_W  &u03b1_W  &u03b2_W  &u00bf_W  &u00f7_W
+			                    &u00b1_W  &none     &u2260_W                 &none     &none     &none
 			>;
 		};
-		/* Firmware on `NUM+FUN` or `MWH+SYS` combo
-		┌───────┬───────┬───────┬────────┬───────┐                  ┌───────┬───────┬───────┬───────┬───────┐
-		│  BT1  │  BT2  │  BT3  │  BT4   │  BT5  │                  │  USB  │       │       │       │ BTCLR │
-		├───────┼───────┼───────┼────────┼───────┼───────┐  ┌───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │ @win  │ @mac  │ @linux │       │ BTCLR │  │       │       │       │       │       │       │
-		├───────┼───────┼───────┼────────┼───────┼───────┤  ├───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │       │       │        │       │       │  │       │       │       │       │       │       │
-		└───────┴───────┼───────┼────────┼───────┼───────┘  └───────┼───────┼───────┼───────┼───────┴───────┘
-		                │ DEBUG │ RESET  │ BOOTL │                  │ BOOTL │ RESET │ DEBUG │                
-		                └───────┴────────┴───────┘                  └───────┴───────┴───────┘                 */
+		/* Firmware (`FW`) on `NUM+FUN` or `MWH+SYS` combo
+		┌───────┬───────┬───────┬────────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
+		│  BT1  │  BT2  │  BT3  │   BT4  │  BT5  │                 │  USB  │       │       │       │ BTCLR │
+		├───────┼───────┼───────┼────────┼───────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
+		│       │ @win  │ @mac  │ @linux │       │ BTCLR │ │       │       │       │       │       │       │
+		├───────┼───────┼───────┼────────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
+		│       │       │       │        │       │       │ │       │       │       │       │       │       │
+		└───────┴───────┼───────┼────────┼───────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘
+		                │ DEBUG │  RESET │ BOOTL │                 │ BOOTL │ RESET │ DEBUG │                
+		                └───────┴────────┴───────┘                 └───────┴───────┴───────┘                 */
 		FW {
 			bindings = <
-			 &bt1    &bt2         &bt3         &bt4         &bt5                                  &out OUT_USB   &none    &none   &none   &bt BT_CLR
-			 &none   &to BASE_w   &to BASE_m   &to BASE_l   &none         &bt BT_CLR      &none   &none          &none    &none   &none   &none
-			 &none   &none        &none        &none        &none         &none           &none   &none          &none    &none   &none   &none
-			                      &none        &reset       &bootloader                           &bootloader    &reset   &none
+			&bt1   &bt2          &bt3          &bt4          &bt5                             &out OUT_USB  &none   &none  &none  &bt BT_CLR
+			&none  &base base_w  &base base_m  &base base_l  &none        &bt BT_CLR   &none  &none         &none   &none  &none  &none
+			&none  &none         &none         &none         &none        &none        &none  &none         &none   &none  &none  &none
+			                     &none         &reset        &bootloader                      &bootloader   &reset  &none
 			>;
 		};
 	};
@@ -793,31 +847,31 @@
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt1";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 0>, <&out OUT_BLE>, <&to (-1)>;
+			bindings = <&bt BT_SEL 0>, <&out OUT_BLE>;
 		};
 		bt2: bt2 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt2";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 1>, <&out OUT_BLE>, <&to (-1)>;
+			bindings = <&bt BT_SEL 1>, <&out OUT_BLE>;
 		};
 		bt3: bt3 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt3";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 2>, <&out OUT_BLE>, <&to (-1)>;
+			bindings = <&bt BT_SEL 2>, <&out OUT_BLE>;
 		};
 		bt4: bt4 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt4";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 3>, <&out OUT_BLE>, <&to (-1)>;
+			bindings = <&bt BT_SEL 3>, <&out OUT_BLE>;
 		};
 		bt5: bt5 {
 			compatible = "zmk,behavior-macro";
 			label = "macro_bt5";
 			#binding-cells = <0>;
-			bindings = <&bt BT_SEL 4>, <&out OUT_BLE>, <&to (-1)>;
+			bindings = <&bt BT_SEL 4>, <&out OUT_BLE>;
 		};
 	};
 };

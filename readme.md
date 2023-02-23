@@ -49,7 +49,7 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 ### Symbols (`SYM`)
 ```
 |   ~   |   ^   |   &   |   [   |   ]   |                    |       |       |       |       |   `   |
-|   #   |   $   |   @   |   (   |   )   |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
+|   @   |   #   |   $   |   (   |   )   |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
 |   *   |       |   %   |   {   |   }   |       |    |       |       |       |   :   |   !   | PIPE  |
 |               |   +   |   _   |   =   |                    |       |  XXX  |       |               |
 ```
@@ -65,7 +65,7 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 |   1   |   2   |   3   |   4   |   5   |                    |   6   |   7   |   8   |   9   |   0   |
 |  CMD  |  ALT  | CTRL  | SHIFT |       |       |    |   +   |   -   |   4   |   5   |   6   |   .   |
 |   *   |       |   %   |   <   |   >   |       |    |   *   |   0   |   1   |   2   |   3   |   /   |
-|               |   +   |   -   |    =  |                    |  XXX  |       | NLOCK |               |
+|               |   +   |   -   |   =   |                    |  XXX  |       | NLOCK |               |
 ```
 - One-hand numpad arrangement with extra `.` and `-`
 - `/` in the same spot as on base layer, `*` in mirror position on other hand
@@ -147,9 +147,9 @@ Not convinced about full mouse emulation but one-hand scrolling could be useful.
 
 For science?
 ```
-|       |       |   °   |   √   |       |                    |       |   μ   |   Δ   |   ε   |       |
+|   ≈   |       |       |   √   |       |                    |       |   μ   |   Δ   |   ε   |       |
 |   ∞   |   €   |       |   ²   |   ³   |       |    |       |       |   π   |   φ   |   θ   |       |
-|   ×   |       |   ≈   |   ≤   |   ≥   |       |    |       |   λ   |   α   |   β   |   ¿   |   ÷   |
+|   ×   |       |   °   |   ≤   |   ≥   |       |    |       |   λ   |   α   |   β   |   ¿   |   ÷   |
 |               |   ±   |  XXX  |   ≠   |                    |       |       |  XXX  |               |
 ```
 
@@ -181,6 +181,8 @@ Keep firmware stuff out of the way behind a combo that needs two fingers.
 |  FIND+  | F3       | CMD+G       | F3       |
 |  FIND-  | SHIFT+F3 | SHIFT+CMD+G | SHIFT+F3 |
 | COMMENT | CTRL+/   | CMD+/       | CTRL+/   |
+|  CMD    | CMD      | CTRL        | CMD      |
+|  CTRL   | CTRL     | CMD         | CTRL     |
 
 
 
