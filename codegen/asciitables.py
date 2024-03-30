@@ -1,5 +1,4 @@
 import re
-from operator import __or__
 from typing import (Any, Callable, Generic, Iterable, Mapping, Optional, Set,
                     TypeVar, cast, overload)
 
@@ -74,12 +73,12 @@ class Table(Generic[T]):
 
     def remove_cells(self, predicate: Optional[Callable[[T], bool]]):
         if not callable(predicate):
-            predicate = lambda x: x is None
+            predicate = is_none
 
         empties = set(k for k,v in self._contents.items() if predicate(v))
         return Table(
-            {k:v for k,v in self._contents.items() if not k in empties},
-            {k:v for k,v in self._spans.items() if not k in empties},
+            {k:v for k,v in self._contents.items() if k not in empties},
+            {k:v for k,v in self._spans.items() if k not in empties},
         )
 
 
@@ -136,7 +135,7 @@ class Table(Generic[T]):
                 continue
 
             x1 = x0+1
-            while x1<=w and not (y0,x1) in all_seps:
+            while x1<=w and (y0, x1) not in all_seps:
                 x1 += 1
             if x1 > w:
                 continue
@@ -148,7 +147,7 @@ class Table(Generic[T]):
 
             rects[y0,x0,y1,x1] = [line[x0+1:x1] for line in lines[y0:y1]]
 
-            if not y0 in y2r:
+            if y0 not in y2r:
                 y2r[y0] = len(y2r)
 
         shape: TableShape = {}
@@ -163,6 +162,8 @@ class Table(Generic[T]):
 
         return Table(contents, shape)
 
+def is_none(x:Any):
+    return x is None
 
 def _find_next(xxx: dict[int,int], i: int):
     for k,v in sorted(xxx.items()):
@@ -177,9 +178,9 @@ def _rect_contains(r: tuple[int,int,int,int], p: tuple[int,int]):
 
 
 def cjust(s: str, w:int) -> str:
-    l = len(s)
-    h = (w-l) // 2
-    return ' '*h + s + ' '*(w-l-h)
+    size = len(s)
+    h = (w-size) // 2
+    return ' '*h + s + ' '*(w-size-h)
 
 
 def format_table(table:Table[Any], sep: str='|', pad: str=' ', just: Callable[[str,int], str] = cjust) -> str:
@@ -201,7 +202,7 @@ def format_boxed_table(table: Table[Any], pad: str=' ', just: Callable[[str,int]
     h_pad_width=len(pad)
     sep_width = 1
     v_sep_width = 1
-    l = h_pad_width+sep_width
+    total_sep_width = h_pad_width+sep_width
 
     for (r0,c0,r1,c1), content, content_size in _render(table, h_sep_width=sep_width, h_pad_width=h_pad_width, v_sep_width=v_sep_width):
         for r in range(r0, r1+1):
@@ -213,7 +214,7 @@ def format_boxed_table(table: Table[Any], pad: str=' ', just: Callable[[str,int]
 
         h,_w = content_size
         for r,line in enumerate(content, (r1-r0-1-h)//2):
-            cells[v_sep_width+r0+r, c0+l] = cjust(line, c1-c0-sep_width-sep_width)
+            cells[v_sep_width+r0+r, c0+total_sep_width] = cjust(line, c1-c0-sep_width-sep_width)
 
     final_w = max(c for _,c in bars) + 1
     final_h = max(r for r,_ in bars) + 1
@@ -277,8 +278,8 @@ def _render(table:Table[T], h_sep_width: int=1, h_pad_width: int=1, v_sep_width:
 def _limits_from_span_widths(colspan_widths: dict[tuple[int,int],int]) -> list[int]:
     ncol = max(b for _,b in colspan_widths)
     limits = [0] * (ncol+1)
-    for (a,b),l in sorted(colspan_widths.items()):
-        limits[b] = max(limits[b], limits[a] + l)
+    for (a,b),w in sorted(colspan_widths.items()):
+        limits[b] = max(limits[b], limits[a] + w)
 
     return limits
 

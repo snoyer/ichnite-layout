@@ -50,10 +50,10 @@ class Translator(Generic[T]):
                         return func(m)
             raise KeyError(x)
 
-        seen: Set[str] = set()
+        seen: set[str] = set()
         x = y
         try:
-            while not x in seen:
+            while x not in seen:
                 seen.add(x)
                 x = lookup1(x)
         except KeyError:

@@ -60,7 +60,7 @@ def format_dtproperty(k: str, v: Any):
         return f'{k} = {v.format_dt()};'
 
     if isinstance(v, bool):
-        if v == True:
+        if v is True:
             return f'{k};'
         else:
             return f'/* {k} = false */';
@@ -83,7 +83,7 @@ def format_dtnode(node: Node, depth: int=0, indentation: str='\t') -> Iterable[s
     name = node.name
     if node.label:
         name = f'{node.label}: {name}'
-    if node.address != None:
+    if node.address is not None:
         name += f'@{node.address:x}'
 
     if node.comment:
@@ -94,7 +94,7 @@ def format_dtnode(node: Node, depth: int=0, indentation: str='\t') -> Iterable[s
         yield indent(name + ' {')
 
     for name,value in node.properties.items():
-        if value != None:
+        if value is not None:
             yield from map(indent_more, format_dtproperty(name, value).splitlines())
 
     for child in node.children:

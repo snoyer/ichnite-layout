@@ -22,7 +22,7 @@ def main():
 
     args = parser.parse_args()
 
-    return codegen_main(args, partial(fix_keymap, reshape=args.reshape), customize_translator, default_key=Key.Empty())
+    return codegen_main(args, partial(combine_keymap, reshape=args.reshape), customize_translator, default_key=Key.Empty())
 
 def customize_translator(translator: Translator[T]) -> Translator[T]:
     if isinstance(translator, ZmkTranslator):
@@ -41,7 +41,7 @@ def customize_translator(translator: Translator[T]) -> Translator[T]:
         })
     return translator
 
-def fix_keymap(source_keymap: Keymap[str], reshape: Optional[str] = None):
+def combine_keymap(source_keymap: Keymap[str], reshape: Optional[str] = None):
     keymap = add_holdtaps(source_keymap)
     keymap = add_paths_from_titles(keymap)
     if reshape:

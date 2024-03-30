@@ -65,7 +65,7 @@ typedef enum {
 
 static td_state_t td_state;
 
-td_state_t update_td_state(const qk_tap_dance_state_t *state){
+td_state_t update_td_state(const tap_dance_state_t *state){
 	if(state->count == 1)
 		td_state = (state->interrupted || !state->pressed) ? TD_SINGLE_TAP : TD_SINGLE_HOLD;
 	else
@@ -79,7 +79,7 @@ typedef struct {
   uint16_t keycode;
 } tdlt_data;
 
-void tapdance_TDLT_finished(qk_tap_dance_state_t *state, void *user_data){
+void tapdance_TDLT_finished(tap_dance_state_t *state, void *user_data){
 	const tdlt_data *data = (tdlt_data*) user_data;
 	switch(update_td_state(state)){
 		case TD_SINGLE_TAP: register_code16(data->keycode); break;
@@ -89,7 +89,7 @@ void tapdance_TDLT_finished(qk_tap_dance_state_t *state, void *user_data){
 	}
 }
 
-void tapdance_TDLT_reset(qk_tap_dance_state_t *state, void *user_data){
+void tapdance_TDLT_reset(tap_dance_state_t *state, void *user_data){
 	const tdlt_data *data = (tdlt_data*) user_data;
 	switch(td_state){
 		case TD_SINGLE_TAP: unregister_code16(data->keycode); break;
@@ -104,7 +104,7 @@ void tapdance_TDLT_reset(qk_tap_dance_state_t *state, void *user_data){
 	.user_data = (void*)&((tdlt_data){ layer, keycode }), \
 }
 
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
 /*%- for lt in custom_LTs */
 	[/*= lt.identifier */] = ACTION_TAP_DANCE_LT(/*= lt.layer */, /*= lt.keycode */)
 	/*=- '' if loop.last else ',' */

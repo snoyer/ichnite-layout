@@ -24,14 +24,16 @@ def generate_zmk_code(
 
     def find_includes():
         dt_bindings = {
-            'kp': ['keys.h'],
-            'bt': ['bt.h'],
-            'out': ['outputs.h'],
+            'kp': ['<dt-bindings/zmk/keys.h>'],
+            'bt': ['<dt-bindings/zmk/bt.h>'],
+            'out': ['<dt-bindings/zmk/outputs.h>'],
+            'capslock_word': ['"behaviors/capslock.dtsi"'],
+            'base': ['"behaviors/base_layer.dtsi"'],
         }
         yield '<behaviors.dtsi>'
         for node in behavior_nodes:
             for v in dt_bindings.get(node.name, []):
-                yield f'<dt-bindings/zmk/{v}>'
+                yield v
 
     includes = sorted(set(find_includes()))
 
@@ -71,7 +73,8 @@ def zmk_translator_for_os(os: str):
         'PSCR': 'PRINTSCREEN',
         'SLOCK': 'SCROLLLOCK',
         'NLOCK': 'KP_NUMLOCK',
-        'PAUSE': 'PAUSE_BREAK',
+        'CLOCK': 'CAPSLOCK',
+        'BREAK': 'PAUSE_BREAK',
         'APP': 'K_APP',
         
         'PLAY': 'C_PLAY_PAUSE',
@@ -98,8 +101,8 @@ def zmk_translator_for_os(os: str):
         return Binding(bt_macro(int(m.group(1))))
     
     translator.register_translations({
-        'RESET': make_binding('reset'),
-        'BOOTL': make_binding('bootloader'),
+        'RESET': make_binding('sys_reset'),
+        'BOOTL': Binding(bootloader_tapdance()),
 
         r'BT(\d+)': make_bt,
         'BTCLR': make_binding('bt', 'BT_CLR'),
@@ -107,6 +110,7 @@ def zmk_translator_for_os(os: str):
 
         '___': make_binding('trans'),
         'XXX': make_binding('none'),
+        'CAPS': make_binding('capslock_word_mac' if os=='mac' else 'capslock_word'),
     })
 
     utf8_macros = {
@@ -215,7 +219,6 @@ def make_zmk_layers(
 
 HRM_NODE = Node('modtap', label='hrm', properties={
     'compatible': 'zmk,behavior-hold-tap',
-    'label': 'HOMEROWMOD',
     '#binding-cells': 2,
     'bindings': Raw('<&kp>, <&kp>'),
 })
@@ -293,7 +296,6 @@ def macro_node(identifier: str, *behaviors: Sequence[Binding], tap_ms: Optional[
 
     properties = {
         'compatible': 'zmk,behavior-macro',
-        'label': label or f'macro_{identifier}',
         '#binding-cells': 0,
         'bindings': NestedBindings(Bindings(b) for b in behaviors),
         'tap-ms': tap_ms,
@@ -311,7 +313,6 @@ def utf8_linux_macro_node(char: str) -> Node:
     keycodes = 'LC(LS(U))', *keycodes, 'SPACE'
     return macro_node(f'u{hexstr}_L',
         [make_binding('macro_tap'), *map(kp_binding, keycodes)],
-        label = f'Linux {char} macro',
         tap_ms=30,
         wait_ms=0,
     )
@@ -323,7 +324,6 @@ def utf8_mac_macro_node(char: str) -> Node:
         [make_binding('macro_press'), kp_binding('LALT')],
         [make_binding('macro_tap'), *map(kp_binding, keycodes)],
         [make_binding('macro_release'),kp_binding('LALT')],
-        label = f'Mac {char} macro',
         tap_ms=30,
         wait_ms=30,
     )
@@ -334,7 +334,6 @@ def utf8_win_macro_node(char: str) -> Node:
     keycodes = 'RALT', 'U', *keycodes, 'RET'
     return macro_node(f'u{hexstr}_W',
         [make_binding('macro_tap'), *map(kp_binding, keycodes)],
-        label = f'Wincompose {char} macro',
     )
 
 
@@ -352,13 +351,22 @@ def shiftmorph_node(default: str, shifted: str, zmk_keycodes: 'ZmkKeycodes') -> 
     return Node(f'{a.lower()}_{b.lower()}', label=f'{a.lower()}_{b.lower()}',
         properties={
             'compatible': 'zmk,behavior-mod-morph',
-            'label': f'shift-morph {a} {b}',
             '#binding-cells': 0,
             'bindings': Raw(f'<&kp {a}>, <&kp {b}>'),
             'mods': Raw('<(MOD_LSFT|MOD_RSFT)>'),
         },
     )
 
+
+def bootloader_tapdance() -> Node:
+    return Node('bl_td', label='bootl_td',
+        properties={
+            'compatible': "zmk,behavior-tap-dance",
+            '#binding-cells': 0,
+            'tapping-term-ms' : 200,
+            'bindings': Raw('<&trans>, <&bootloader>'),
+        },
+    )
 
 
 class ZmkKeycodes:
