@@ -1,3 +1,5 @@
+#include "behaviors/base_layer.dtsi"
+#include "behaviors/capslock.dtsi"
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
@@ -46,23 +48,23 @@
 			bindings = <
 			&kp Q        &kp W        &kp F         &kp P           &kp B            &none           &none           &kp J            &kp L           &kp U         &kp Y        &kp SQT
 			&hrm LGUI A  &hrm LALT R  &hrm LCTRL S  &hrm LSHFT T    &kp G            &kp INS         &kp MINUS       &kp M            &hrm LSHFT N    &hrm LCTRL E  &hrm LALT I  &hrm LGUI O
-			&kp Z        &kp X        &kp C         &kp D           &kp V            &kp CAPS        &kp EQUAL       &kp K            &kp H           &comma_semi   &dot_qmark   &fslh_bslh
+			&kp Z        &kp X        &kp C         &kp D           &kp V            &capslock_word  &kp EQUAL       &kp K            &kp H           &comma_semi   &dot_qmark   &fslh_bslh
 			&none        &none        &none         &lt MWH_lw ESC  &lt NAV_l SPACE  &lt SYS_lw TAB  &lt NUM_lw RET  &lt SYM_lw BSPC  &lt FUN_lw DEL  &none         &none        &none
 			>;
 		};
 		base_m {
 			bindings = <
-			&kp Q         &kp W        &kp F        &kp P          &kp B            &none          &none          &kp J           &kp L          &kp U        &kp Y        &kp SQT
-			&hrm LCTRL A  &hrm LALT R  &hrm LGUI S  &hrm LSHFT T   &kp G            &kp INS        &kp MINUS      &kp M           &hrm LSHFT N   &hrm LGUI E  &hrm LALT I  &hrm LCTRL O
-			&kp Z         &kp X        &kp C        &kp D          &kp V            &kp CAPS       &kp EQUAL      &kp K           &kp H          &comma_semi  &dot_qmark   &fslh_bslh
-			&none         &none        &none        &lt MWH_m ESC  &lt NAV_m SPACE  &lt SYS_m TAB  &lt NUM_m RET  &lt SYM_m BSPC  &lt FUN_m DEL  &none        &none        &none
+			&kp Q         &kp W        &kp F        &kp P          &kp B            &none               &none          &kp J           &kp L          &kp U        &kp Y        &kp SQT
+			&hrm LCTRL A  &hrm LALT R  &hrm LGUI S  &hrm LSHFT T   &kp G            &kp INS             &kp MINUS      &kp M           &hrm LSHFT N   &hrm LGUI E  &hrm LALT I  &hrm LCTRL O
+			&kp Z         &kp X        &kp C        &kp D          &kp V            &capslock_word_mac  &kp EQUAL      &kp K           &kp H          &comma_semi  &dot_qmark   &fslh_bslh
+			&none         &none        &none        &lt MWH_m ESC  &lt NAV_m SPACE  &lt SYS_m TAB       &lt NUM_m RET  &lt SYM_m BSPC  &lt FUN_m DEL  &none        &none        &none
 			>;
 		};
 		base_w {
 			bindings = <
 			&kp Q        &kp W        &kp F         &kp P           &kp B            &none           &none           &kp J            &kp L           &kp U         &kp Y        &kp SQT
 			&hrm LGUI A  &hrm LALT R  &hrm LCTRL S  &hrm LSHFT T    &kp G            &kp INS         &kp MINUS       &kp M            &hrm LSHFT N    &hrm LCTRL E  &hrm LALT I  &hrm LGUI O
-			&kp Z        &kp X        &kp C         &kp D           &kp V            &kp CAPS        &kp EQUAL       &kp K            &kp H           &comma_semi   &dot_qmark   &fslh_bslh
+			&kp Z        &kp X        &kp C         &kp D           &kp V            &capslock_word  &kp EQUAL       &kp K            &kp H           &comma_semi   &dot_qmark   &fslh_bslh
 			&none        &none        &none         &lt MWH_lw ESC  &lt NAV_w SPACE  &lt SYS_lw TAB  &lt NUM_lw RET  &lt SYM_lw BSPC  &lt FUN_lw DEL  &none         &none        &none
 			>;
 		};
@@ -148,26 +150,26 @@
 		┌───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┐
 		│  F1   │  F2   │  F3   │  F4   │  F5   │       │       │  F6   │  F7   │  F8   │  F9   │  F10  │
 		├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-		│  CMD  │  ALT  │ CTRL  │ SHIFT │ CAPS  │       │       │ PSCR  │  F4   │  F5   │  F6   │  F11  │
+		│  CMD  │  ALT  │ CTRL  │ SHIFT │ CLOCK │       │       │ PSCR  │  F4   │  F5   │  F6   │  F11  │
 		├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │ PSCR  │ SLOCK │ PAUSE │  INS  │       │       │       │  F1   │  F2   │  F3   │  F12  │
+		│       │ PSCR  │ SLOCK │ BREAK │  INS  │       │       │       │  F1   │  F2   │  F3   │  F12  │
 		├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
 		│       │       │       │ rCTRL │  APP  │       │  ▼FW  │       │  XXX  │       │       │       │
 		└───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┘ */
 		FUN_lw {
 			bindings = <
-			&kp F1    &kp F2     &kp F3     &kp F4       &kp F5     &none  &none   &kp F6     &kp F7  &kp F8  &kp F9  &kp F10
-			&kp LGUI  &kp LALT   &kp LCTRL  &kp LSHFT    &kp CAPS   &none  &none   &kp PSCRN  &kp F4  &kp F5  &kp F6  &kp F11
-			&none     &kp PSCRN  &kp SLCK   &kp C_PAUSE  &kp INS    &none  &none   &none      &kp F1  &kp F2  &kp F3  &kp F12
-			&none     &none      &none      &kp RCTRL    &kp K_APP  &none  &mo FW  &none      &none   &none   &none   &none
+			&kp F1    &kp F2     &kp F3     &kp F4           &kp F5     &none  &none   &kp F6     &kp F7  &kp F8  &kp F9  &kp F10
+			&kp LGUI  &kp LALT   &kp LCTRL  &kp LSHFT        &kp CAPS   &none  &none   &kp PSCRN  &kp F4  &kp F5  &kp F6  &kp F11
+			&none     &kp PSCRN  &kp SLCK   &kp PAUSE_BREAK  &kp INS    &none  &none   &none      &kp F1  &kp F2  &kp F3  &kp F12
+			&none     &none      &none      &kp RCTRL        &kp K_APP  &none  &mo FW  &none      &none   &none   &none   &none
 			>;
 		};
 		FUN_m {
 			bindings = <
-			&kp F1     &kp F2     &kp F3    &kp F4       &kp F5     &none  &none   &kp F6     &kp F7  &kp F8  &kp F9  &kp F10
-			&kp LCTRL  &kp LALT   &kp LGUI  &kp LSHFT    &kp CAPS   &none  &none   &kp PSCRN  &kp F4  &kp F5  &kp F6  &kp F11
-			&none      &kp PSCRN  &kp SLCK  &kp C_PAUSE  &kp INS    &none  &none   &none      &kp F1  &kp F2  &kp F3  &kp F12
-			&none      &none      &none     &kp RCTRL    &kp K_APP  &none  &mo FW  &none      &none   &none   &none   &none
+			&kp F1     &kp F2     &kp F3    &kp F4           &kp F5     &none  &none   &kp F6     &kp F7  &kp F8  &kp F9  &kp F10
+			&kp LCTRL  &kp LALT   &kp LGUI  &kp LSHFT        &kp CAPS   &none  &none   &kp PSCRN  &kp F4  &kp F5  &kp F6  &kp F11
+			&none      &kp PSCRN  &kp SLCK  &kp PAUSE_BREAK  &kp INS    &none  &none   &none      &kp F1  &kp F2  &kp F3  &kp F12
+			&none      &none      &none     &kp RCTRL        &kp K_APP  &none  &mo FW  &none      &none   &none   &none   &none
 			>;
 		};
 		/* Navigation (`NAV`)
@@ -258,104 +260,104 @@
 		};
 		/* Unicode Symbols (`UTF`) on `NAV>SYM`
 		┌───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┐
-		│       │       │   °   │   √   │       │       │       │       │   μ   │   Δ   │   ε   │       │
+		│   ≈   │       │       │   √   │   ∛   │       │       │       │   μ   │   Δ   │   ε   │       │
 		├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
 		│   ∞   │   €   │       │   ²   │   ³   │       │       │       │   π   │   φ   │   θ   │       │
 		├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-		│   ×   │       │   ≈   │   ≤   │   ≥   │       │       │   λ   │   α   │   β   │   ¿   │   ÷   │
+		│   ×   │       │   °   │   ≤   │   ≥   │       │       │   λ   │   α   │   β   │   ¿   │   ÷   │
 		├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
 		│       │       │       │   ±   │  XXX  │   ≠   │       │       │  XXX  │       │       │       │
 		└───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┘ */
 		UTF_l {
 			bindings = <
-			&none     &none     &u00b0_L  &u221a_L  &none     &none     &none  &none     &u03bc_L  &u0394_L  &u03b5_L  &none
+			&u2248_L  &none     &none     &u221a_L  &u221b_L  &none     &none  &none     &u03bc_L  &u0394_L  &u03b5_L  &none
 			&u221e_L  &u20ac_L  &none     &u00b2_L  &u00b3_L  &none     &none  &none     &u03c0_L  &u03c6_L  &u03b8_L  &none
-			&u00d7_L  &none     &u2248_L  &u2264_L  &u2265_L  &none     &none  &u03bb_L  &u03b1_L  &u03b2_L  &u00bf_L  &u00f7_L
+			&u00d7_L  &none     &u00b0_L  &u2264_L  &u2265_L  &none     &none  &u03bb_L  &u03b1_L  &u03b2_L  &u00bf_L  &u00f7_L
 			&none     &none     &none     &u00b1_L  &none     &u2260_L  &none  &none     &none     &none     &none     &none
 			>;
 		};
 		UTF_m {
 			bindings = <
-			&none     &none     &u00b0_M  &u221a_M  &none     &none     &none  &none     &u03bc_M  &u0394_M  &u03b5_M  &none
+			&u2248_M  &none     &none     &u221a_M  &u221b_M  &none     &none  &none     &u03bc_M  &u0394_M  &u03b5_M  &none
 			&u221e_M  &u20ac_M  &none     &u00b2_M  &u00b3_M  &none     &none  &none     &u03c0_M  &u03c6_M  &u03b8_M  &none
-			&u00d7_M  &none     &u2248_M  &u2264_M  &u2265_M  &none     &none  &u03bb_M  &u03b1_M  &u03b2_M  &u00bf_M  &u00f7_M
+			&u00d7_M  &none     &u00b0_M  &u2264_M  &u2265_M  &none     &none  &u03bb_M  &u03b1_M  &u03b2_M  &u00bf_M  &u00f7_M
 			&none     &none     &none     &u00b1_M  &none     &u2260_M  &none  &none     &none     &none     &none     &none
 			>;
 		};
 		UTF_w {
 			bindings = <
-			&none     &none     &u00b0_W  &u221a_W  &none     &none     &none  &none     &u03bc_W  &u0394_W  &u03b5_W  &none
+			&u2248_W  &none     &none     &u221a_W  &u221b_W  &none     &none  &none     &u03bc_W  &u0394_W  &u03b5_W  &none
 			&u221e_W  &u20ac_W  &none     &u00b2_W  &u00b3_W  &none     &none  &none     &u03c0_W  &u03c6_W  &u03b8_W  &none
-			&u00d7_W  &none     &u2248_W  &u2264_W  &u2265_W  &none     &none  &u03bb_W  &u03b1_W  &u03b2_W  &u00bf_W  &u00f7_W
+			&u00d7_W  &none     &u00b0_W  &u2264_W  &u2265_W  &none     &none  &u03bb_W  &u03b1_W  &u03b2_W  &u00bf_W  &u00f7_W
 			&none     &none     &none     &u00b1_W  &none     &u2260_W  &none  &none     &none     &none     &none     &none
 			>;
 		};
 		/* Firmware (`FW`) on `NUM+FUN` or `MWH+SYS` combo
 		┌───────┬───────┬───────┬────────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┐
-		│  BT1  │  BT2  │  BT3  │   BT4  │  BT5  │       │       │  USB  │       │       │       │ BTCLR │
+		│  BT1  │  BT2  │  BT3  │   BT4  │  BT5  │       │       │       │       │       │       │  USB  │
 		├───────┼───────┼───────┼────────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │ @win  │ @mac  │ @linux │       │ BTCLR │       │       │       │       │       │       │
+		│       │ @win  │ @mac  │ @linux │       │       │ BTCLR │ BTCLR │  BT4  │  BT5  │       │       │
 		├───────┼───────┼───────┼────────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │       │       │        │       │       │       │       │       │       │       │       │
+		│       │       │       │        │       │       │       │  USB  │  BT1  │  BT2  │  BT3  │       │
 		├───────┼───────┼───────┼────────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤
-		│       │       │       │  DEBUG │ RESET │ BOOTL │ BOOTL │ RESET │ DEBUG │       │       │       │
+		│       │       │       │        │ BOOTL │       │       │ BOOTL │       │       │       │       │
 		└───────┴───────┴───────┴────────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┘ */
 		FW {
 			bindings = <
-			&bt1   &bt2          &bt3          &bt4          &bt5    &none        &none        &out OUT_USB  &none  &none  &none  &bt BT_CLR
-			&none  &base base_w  &base base_m  &base base_l  &none   &bt BT_CLR   &none        &none         &none  &none  &none  &none
-			&none  &none         &none         &none         &none   &none        &none        &none         &none  &none  &none  &none
-			&none  &none         &none         &none         &reset  &bootloader  &bootloader  &reset        &none  &none  &none  &none
+			&bt1   &bt2          &bt3          &bt4          &bt5       &none  &none       &none         &none  &none  &none  &out OUT_USB
+			&none  &base base_w  &base base_m  &base base_l  &none      &none  &bt BT_CLR  &bt BT_CLR    &bt4   &bt5   &none  &none
+			&none  &none         &none         &none         &none      &none  &none       &out OUT_USB  &bt1   &bt2   &bt3   &none
+			&none  &none         &none         &none         &bootl_td  &none  &none       &bootl_td     &none  &none  &none  &none
 			>;
 		};
 	};
 	behaviors {
 		hrm: modtap {
 			compatible = "zmk,behavior-hold-tap";
-			label = "HOMEROWMOD";
 			#binding-cells = <2>;
 			bindings = <&kp>, <&kp>;
 		};
 		comma_semi: comma_semi {
 			compatible = "zmk,behavior-mod-morph";
-			label = "shift-morph COMMA SEMI";
 			#binding-cells = <0>;
 			bindings = <&kp COMMA>, <&kp SEMI>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
 		dot_qmark: dot_qmark {
 			compatible = "zmk,behavior-mod-morph";
-			label = "shift-morph DOT QMARK";
 			#binding-cells = <0>;
 			bindings = <&kp DOT>, <&kp QMARK>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
 		fslh_bslh: fslh_bslh {
 			compatible = "zmk,behavior-mod-morph";
-			label = "shift-morph FSLH BSLH";
 			#binding-cells = <0>;
 			bindings = <&kp FSLH>, <&kp BSLH>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
-		u00b0_L: u00b0_L {
+		u2248_L: u2248_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ° macro";
 			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N0 &kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N4 &kp N8 &kp SPACE>;
 			tap-ms = <30>;
 			wait-ms = <0>;
 		};
 		u221a_L: u221a_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux √ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N1 &kp A &kp SPACE>;
 			tap-ms = <30>;
 			wait-ms = <0>;
 		};
+		u221b_L: u221b_L {
+			compatible = "zmk,behavior-macro";
+			#binding-cells = <0>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N1 &kp B &kp SPACE>;
+			tap-ms = <30>;
+			wait-ms = <0>;
+		};
 		u03bc_L: u03bc_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux μ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp C &kp SPACE>;
 			tap-ms = <30>;
@@ -363,7 +365,6 @@
 		};
 		u0394_L: u0394_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux Δ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp N9 &kp N4 &kp SPACE>;
 			tap-ms = <30>;
@@ -371,7 +372,6 @@
 		};
 		u03b5_L: u03b5_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ε macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N5 &kp SPACE>;
 			tap-ms = <30>;
@@ -379,7 +379,6 @@
 		};
 		u221e_L: u221e_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ∞ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N1 &kp E &kp SPACE>;
 			tap-ms = <30>;
@@ -387,7 +386,6 @@
 		};
 		u20ac_L: u20ac_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux € macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N0 &kp A &kp C &kp SPACE>;
 			tap-ms = <30>;
@@ -395,7 +393,6 @@
 		};
 		u00b2_L: u00b2_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ² macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N2 &kp SPACE>;
 			tap-ms = <30>;
@@ -403,7 +400,6 @@
 		};
 		u00b3_L: u00b3_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ³ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N3 &kp SPACE>;
 			tap-ms = <30>;
@@ -411,7 +407,6 @@
 		};
 		u03c0_L: u03c0_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux π macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp C &kp N0 &kp SPACE>;
 			tap-ms = <30>;
@@ -419,7 +414,6 @@
 		};
 		u03c6_L: u03c6_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux φ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp C &kp N6 &kp SPACE>;
 			tap-ms = <30>;
@@ -427,7 +421,6 @@
 		};
 		u03b8_L: u03b8_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux θ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N8 &kp SPACE>;
 			tap-ms = <30>;
@@ -435,23 +428,20 @@
 		};
 		u00d7_L: u00d7_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux × macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp D &kp N7 &kp SPACE>;
 			tap-ms = <30>;
 			wait-ms = <0>;
 		};
-		u2248_L: u2248_L {
+		u00b0_L: u00b0_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ≈ macro";
 			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N4 &kp N8 &kp SPACE>;
+			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N0 &kp SPACE>;
 			tap-ms = <30>;
 			wait-ms = <0>;
 		};
 		u2264_L: u2264_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ≤ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N4 &kp SPACE>;
 			tap-ms = <30>;
@@ -459,7 +449,6 @@
 		};
 		u2265_L: u2265_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ≥ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N5 &kp SPACE>;
 			tap-ms = <30>;
@@ -467,7 +456,6 @@
 		};
 		u03bb_L: u03bb_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux λ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp B &kp SPACE>;
 			tap-ms = <30>;
@@ -475,7 +463,6 @@
 		};
 		u03b1_L: u03b1_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux α macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N1 &kp SPACE>;
 			tap-ms = <30>;
@@ -483,7 +470,6 @@
 		};
 		u03b2_L: u03b2_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux β macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N2 &kp SPACE>;
 			tap-ms = <30>;
@@ -491,7 +477,6 @@
 		};
 		u00bf_L: u00bf_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ¿ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp F &kp SPACE>;
 			tap-ms = <30>;
@@ -499,7 +484,6 @@
 		};
 		u00f7_L: u00f7_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ÷ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp F &kp N7 &kp SPACE>;
 			tap-ms = <30>;
@@ -507,7 +491,6 @@
 		};
 		u00b1_L: u00b1_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ± macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N1 &kp SPACE>;
 			tap-ms = <30>;
@@ -515,31 +498,34 @@
 		};
 		u2260_L: u2260_L {
 			compatible = "zmk,behavior-macro";
-			label = "Linux ≠ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N0 &kp SPACE>;
 			tap-ms = <30>;
 			wait-ms = <0>;
 		};
-		u00b0_M: u00b0_M {
+		u2248_M: u2248_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ° macro";
 			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N0>, <&macro_release &kp LALT>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N4 &kp N8>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
 			wait-ms = <30>;
 		};
 		u221a_M: u221a_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac √ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N1 &kp A>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
 			wait-ms = <30>;
 		};
+		u221b_M: u221b_M {
+			compatible = "zmk,behavior-macro";
+			#binding-cells = <0>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N1 &kp B>, <&macro_release &kp LALT>;
+			tap-ms = <30>;
+			wait-ms = <30>;
+		};
 		u03bc_M: u03bc_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac μ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp C>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -547,7 +533,6 @@
 		};
 		u0394_M: u0394_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac Δ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp N9 &kp N4>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -555,7 +540,6 @@
 		};
 		u03b5_M: u03b5_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ε macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N5>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -563,7 +547,6 @@
 		};
 		u221e_M: u221e_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ∞ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N1 &kp E>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -571,7 +554,6 @@
 		};
 		u20ac_M: u20ac_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac € macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N0 &kp A &kp C>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -579,7 +561,6 @@
 		};
 		u00b2_M: u00b2_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ² macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N2>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -587,7 +568,6 @@
 		};
 		u00b3_M: u00b3_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ³ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N3>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -595,7 +575,6 @@
 		};
 		u03c0_M: u03c0_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac π macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp C &kp N0>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -603,7 +582,6 @@
 		};
 		u03c6_M: u03c6_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac φ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp C &kp N6>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -611,7 +589,6 @@
 		};
 		u03b8_M: u03b8_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac θ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N8>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -619,23 +596,20 @@
 		};
 		u00d7_M: u00d7_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac × macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp D &kp N7>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
 			wait-ms = <30>;
 		};
-		u2248_M: u2248_M {
+		u00b0_M: u00b0_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ≈ macro";
 			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N4 &kp N8>, <&macro_release &kp LALT>;
+			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N0>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
 			wait-ms = <30>;
 		};
 		u2264_M: u2264_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ≤ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N4>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -643,7 +617,6 @@
 		};
 		u2265_M: u2265_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ≥ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N5>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -651,7 +624,6 @@
 		};
 		u03bb_M: u03bb_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac λ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp B>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -659,7 +631,6 @@
 		};
 		u03b1_M: u03b1_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac α macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N1>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -667,7 +638,6 @@
 		};
 		u03b2_M: u03b2_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac β macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N2>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -675,7 +645,6 @@
 		};
 		u00bf_M: u00bf_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ¿ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp F>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -683,7 +652,6 @@
 		};
 		u00f7_M: u00f7_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ÷ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp F &kp N7>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -691,7 +659,6 @@
 		};
 		u00b1_M: u00b1_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ± macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N1>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
@@ -699,179 +666,161 @@
 		};
 		u2260_M: u2260_M {
 			compatible = "zmk,behavior-macro";
-			label = "Mac ≠ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N0>, <&macro_release &kp LALT>;
 			tap-ms = <30>;
 			wait-ms = <30>;
 		};
-		u00b0_W: u00b0_W {
+		u2248_W: u2248_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ° macro";
 			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N0 &kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N4 &kp N8 &kp RET>;
 		};
 		u221a_W: u221a_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose √ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N1 &kp A &kp RET>;
 		};
+		u221b_W: u221b_W {
+			compatible = "zmk,behavior-macro";
+			#binding-cells = <0>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N1 &kp B &kp RET>;
+		};
 		u03bc_W: u03bc_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose μ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp C &kp RET>;
 		};
 		u0394_W: u0394_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose Δ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp N9 &kp N4 &kp RET>;
 		};
 		u03b5_W: u03b5_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ε macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N5 &kp RET>;
 		};
 		u221e_W: u221e_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ∞ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N1 &kp E &kp RET>;
 		};
 		u20ac_W: u20ac_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose € macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N0 &kp A &kp C &kp RET>;
 		};
 		u00b2_W: u00b2_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ² macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N2 &kp RET>;
 		};
 		u00b3_W: u00b3_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ³ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N3 &kp RET>;
 		};
 		u03c0_W: u03c0_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose π macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp C &kp N0 &kp RET>;
 		};
 		u03c6_W: u03c6_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose φ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp C &kp N6 &kp RET>;
 		};
 		u03b8_W: u03b8_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose θ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N8 &kp RET>;
 		};
 		u00d7_W: u00d7_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose × macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp D &kp N7 &kp RET>;
 		};
-		u2248_W: u2248_W {
+		u00b0_W: u00b0_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ≈ macro";
 			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N4 &kp N8 &kp RET>;
+			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N0 &kp RET>;
 		};
 		u2264_W: u2264_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ≤ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N4 &kp RET>;
 		};
 		u2265_W: u2265_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ≥ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N5 &kp RET>;
 		};
 		u03bb_W: u03bb_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose λ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp B &kp RET>;
 		};
 		u03b1_W: u03b1_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose α macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N1 &kp RET>;
 		};
 		u03b2_W: u03b2_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose β macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N2 &kp RET>;
 		};
 		u00bf_W: u00bf_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ¿ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp F &kp RET>;
 		};
 		u00f7_W: u00f7_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ÷ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp F &kp N7 &kp RET>;
 		};
 		u00b1_W: u00b1_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ± macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N1 &kp RET>;
 		};
 		u2260_W: u2260_W {
 			compatible = "zmk,behavior-macro";
-			label = "Wincompose ≠ macro";
 			#binding-cells = <0>;
 			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N0 &kp RET>;
 		};
 		bt1: bt1 {
 			compatible = "zmk,behavior-macro";
-			label = "macro_bt1";
 			#binding-cells = <0>;
 			bindings = <&bt BT_SEL 0>, <&out OUT_BLE>;
 		};
 		bt2: bt2 {
 			compatible = "zmk,behavior-macro";
-			label = "macro_bt2";
 			#binding-cells = <0>;
 			bindings = <&bt BT_SEL 1>, <&out OUT_BLE>;
 		};
 		bt3: bt3 {
 			compatible = "zmk,behavior-macro";
-			label = "macro_bt3";
 			#binding-cells = <0>;
 			bindings = <&bt BT_SEL 2>, <&out OUT_BLE>;
 		};
 		bt4: bt4 {
 			compatible = "zmk,behavior-macro";
-			label = "macro_bt4";
 			#binding-cells = <0>;
 			bindings = <&bt BT_SEL 3>, <&out OUT_BLE>;
 		};
 		bt5: bt5 {
 			compatible = "zmk,behavior-macro";
-			label = "macro_bt5";
 			#binding-cells = <0>;
 			bindings = <&bt BT_SEL 4>, <&out OUT_BLE>;
+		};
+		bootl_td: bl_td {
+			compatible = "zmk,behavior-tap-dance";
+			#binding-cells = <0>;
+			tapping-term-ms = <200>;
+			bindings = <&trans>, <&bootloader>;
 		};
 	};
 };

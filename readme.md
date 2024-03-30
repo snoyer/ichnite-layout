@@ -2,7 +2,7 @@
 
 An experimental 40/36 keys keyboard layout.
 
-![Layout overview](preview.png)
+![Layout overview](layout-preview.svg)
 
 Main features/goals:
 
@@ -90,8 +90,8 @@ Same as above but with keypad numbers.
 ### Function keys (`FUN`)
 ```
 |  F1   |  F2   |  F3   |  F4   |  F5   |                    |  F6   |  F7   |  F8   |  F9   |  F10  |
-|  CMD  |  ALT  | CTRL  | SHIFT | CAPS  |       |    |       | PSCR  |  F4   |  F5   |  F6   |  F11  |
-|       | PSCR  | SLOCK | PAUSE |  INS  |       |    |       |       |  F1   |  F2   |  F3   |  F12  |
+|  CMD  |  ALT  | CTRL  | SHIFT | CLOCK |       |    |       | PSCR  |  F4   |  F5   |  F6   |  F11  |
+|       | PSCR  | SLOCK | BREAK |  INS  |       |    |       |       |  F1   |  F2   |  F3   |  F12  |
 |               | rCTRL |  APP  |       |                    |       |       |  XXX  |               |
 ```
 - `F1`-`F9` in the same positions as respective digits in numerals layer
@@ -113,7 +113,7 @@ Same as above but with keypad numbers.
 - find next/previous on outer column
 - `undo`/`redo` over `backspace`/`enter`
 - redundant `enter` on outer column for one-hand access
-- redundant `;`, `?`, `\` in case implementation does not support custom shifting
+- redundant `;`, `?`, `\`, `"` in case implementation does not support custom shifting
 
 
 
@@ -132,14 +132,13 @@ Same as above but with keypad numbers.
 
 
 ### Mouse scrolling (`MWH`)
-
-Not convinced about full mouse emulation but one-hand scrolling could be useful.
 ```
 |       |       | WH_U  |       |       |                    |       |       |       |       |       |
 |       | WH_L  | WH_D  | WH_R  |       |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
 |       |       |       |       |       |       |    |       |       |       |       |       |       |
 |               |  XXX  |       |       |                    |       |       |       |               |
 ```
+- mouse scrolling over arrows
 
 
 
@@ -147,7 +146,7 @@ Not convinced about full mouse emulation but one-hand scrolling could be useful.
 
 For science?
 ```
-|   ≈   |       |       |   √   |       |                    |       |   μ   |   Δ   |   ε   |       |
+|   ≈   |       |       |   √   |   ∛   |                    |       |   μ   |   Δ   |   ε   |       |
 |   ∞   |   €   |       |   ²   |   ³   |       |    |       |       |   π   |   φ   |   θ   |       |
 |   ×   |       |   °   |   ≤   |   ≥   |       |    |       |   λ   |   α   |   β   |   ¿   |   ÷   |
 |               |   ±   |  XXX  |   ≠   |                    |       |       |  XXX  |               |
@@ -159,14 +158,13 @@ For science?
 
 Keep firmware stuff out of the way behind a combo that needs two fingers.
 ```
-|  BT1  |  BT2  |  BT3  |  BT4  |  BT5  |                    |  USB  |       |       |       | BTCLR |
-|       | @win  | @mac  |@linux |       | BTCLR |    |       |       |       |       |       |       |
-|       |       |       |       |       |       |    |       |       |       |       |       |       |
-|               | DEBUG | RESET | BOOTL |                    | BOOTL | RESET | DEBUG |               |
+|  BT1  |  BT2  |  BT3  |  BT4  |  BT5  |                    |       |       |       |       |  USB  |
+|       | @win  | @mac  |@linux |       |       |    | BTCLR | BTCLR |  BT4  |  BT5  |       |       |
+|       |       |       |       |       |       |    |       |  USB  |  BT1  |  BT2  |  BT3  |       |
+|               |       | BOOTL |       |                    |       | BOOTL |       |               |
 ```
-- `@linux`, `@mac`, `@win` keys should select the mode for OS-specific inputs (such as undo/redo actions or Unicode) according to implementation.
-- `BT*` should select bluetooth outputs, `USB` should select USB output
-
+- `@linux`, `@mac`, `@win` keys to select the mode for OS-specific inputs (such as undo/redo actions or Unicode)
+- Bluetooth output selection over corresponding `1`-`5` numerals, USB output over `0`
 
 
 ## OS specific macros

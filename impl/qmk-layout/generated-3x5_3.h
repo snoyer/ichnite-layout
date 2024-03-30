@@ -125,23 +125,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	┌───────┬───────┬───────┬───────┬───────┐ ┌───────┬───────┬───────┬───────┬───────┐
 	│  F1   │  F2   │  F3   │  F4   │  F5   │ │  F6   │  F7   │  F8   │  F9   │  F10  │
 	├───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
-	│  CMD  │  ALT  │ CTRL  │ SHIFT │ CAPS  │ │ PSCR  │  F4   │  F5   │  F6   │  F11  │
+	│  CMD  │  ALT  │ CTRL  │ SHIFT │ CLOCK │ │ PSCR  │  F4   │  F5   │  F6   │  F11  │
 	├───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
-	│       │ PSCR  │ SLOCK │ PAUSE │  INS  │ │       │  F1   │  F2   │  F3   │  F12  │
+	│       │ PSCR  │ SLOCK │ BREAK │  INS  │ │       │  F1   │  F2   │  F3   │  F12  │
 	└───────┴───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┴───────┘
 	                │ rCTRL │  APP  │       │ │  ▼FW  │       │  XXX  │                
 	                └───────┴───────┴───────┘ └───────┴───────┴───────┘                 */
 	[FUN_lw] = LAYOUT_split_3x5_3(
-		 KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7, KC_F8, KC_F9, KC_F10,
-		 KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, KC_CAPS,   KC_PSCR, KC_F4, KC_F5, KC_F6, KC_F11,
-		 KC_NO,   KC_PSCR, KC_SCRL, KC_BRK,  KC_INS,    KC_NO,   KC_F1, KC_F2, KC_F3, KC_F12,
-		                   KC_RCTL, KC_APP,  KC_NO,     MO(FW),  KC_NO, KC_NO
+		 KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_F6,   KC_F7, KC_F8, KC_F9, KC_F10,
+		 KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, KC_NO,    KC_PSCR, KC_F4, KC_F5, KC_F6, KC_F11,
+		 KC_NO,   KC_PSCR, KC_SCRL, KC_NO,   KC_INS,   KC_NO,   KC_F1, KC_F2, KC_F3, KC_F12,
+		                   KC_RCTL, KC_APP,  KC_NO,    MO(FW),  KC_NO, KC_NO
 	),
 	[FUN_m] = LAYOUT_split_3x5_3(
-		 KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,     KC_F6,   KC_F7, KC_F8, KC_F9, KC_F10,
-		 KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, KC_CAPS,   KC_PSCR, KC_F4, KC_F5, KC_F6, KC_F11,
-		 KC_NO,   KC_PSCR, KC_SCRL, KC_BRK,  KC_INS,    KC_NO,   KC_F1, KC_F2, KC_F3, KC_F12,
-		                   KC_RCTL, KC_APP,  KC_NO,     MO(FW),  KC_NO, KC_NO
+		 KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,    KC_F6,   KC_F7, KC_F8, KC_F9, KC_F10,
+		 KC_LCTL, KC_LALT, KC_LGUI, KC_LSFT, KC_NO,    KC_PSCR, KC_F4, KC_F5, KC_F6, KC_F11,
+		 KC_NO,   KC_PSCR, KC_SCRL, KC_NO,   KC_INS,   KC_NO,   KC_F1, KC_F2, KC_F3, KC_F12,
+		                   KC_RCTL, KC_APP,  KC_NO,    MO(FW),  KC_NO, KC_NO
 	),
 	/* Navigation (`NAV`)
 	┌───────┬───────┬───────┬───────┬───────┐ ┌───────┬───────────┬───────┬───────┬───────┐
@@ -211,35 +211,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	),
 	/* Unicode Symbols (`UTF`) on `NAV>SYM`
 	┌───────┬───────┬───────┬───────┬───────┐ ┌───────┬───────┬───────┬───────┬───────┐
-	│       │       │   °   │   √   │       │ │       │   μ   │   Δ   │   ε   │       │
+	│   ≈   │       │       │   √   │   ∛   │ │       │   μ   │   Δ   │   ε   │       │
 	├───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
 	│   ∞   │   €   │       │   ²   │   ³   │ │       │   π   │   φ   │   θ   │       │
 	├───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
-	│   ×   │       │   ≈   │   ≤   │   ≥   │ │   λ   │   α   │   β   │   ¿   │   ÷   │
+	│   ×   │       │   °   │   ≤   │   ≥   │ │   λ   │   α   │   β   │   ¿   │   ÷   │
 	└───────┴───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┴───────┘
 	                │   ±   │  XXX  │   ≠   │ │       │       │  XXX  │                
 	                └───────┴───────┴───────┘ └───────┴───────┴───────┘                 */
 	[UTF] = LAYOUT_split_3x5_3(
-		 KC_NO,      KC_NO,      UC(0x00b0), UC(0x221a), KC_NO,        KC_NO,      UC(0x03bc), UC(0x0394), UC(0x03b5), KC_NO,
+		 UC(0x2248), KC_NO,      KC_NO,      UC(0x221a), UC(0x221b),   KC_NO,      UC(0x03bc), UC(0x0394), UC(0x03b5), KC_NO,
 		 UC(0x221e), UC(0x20ac), KC_NO,      UC(0x00b2), UC(0x00b3),   KC_NO,      UC(0x03c0), UC(0x03c6), UC(0x03b8), KC_NO,
-		 UC(0x00d7), KC_NO,      UC(0x2248), UC(0x2264), UC(0x2265),   UC(0x03bb), UC(0x03b1), UC(0x03b2), UC(0x00bf), UC(0x00f7),
+		 UC(0x00d7), KC_NO,      UC(0x00b0), UC(0x2264), UC(0x2265),   UC(0x03bb), UC(0x03b1), UC(0x03b2), UC(0x00bf), UC(0x00f7),
 		                         UC(0x00b1), KC_NO,      UC(0x2260),   KC_NO,      KC_NO,      KC_NO
 	),
 	/* Firmware (`FW`) on `NUM+FUN` or `MWH+SYS` combo
 	┌───────┬───────┬───────┬────────┬───────┐ ┌───────┬───────┬───────┬───────┬───────┐
-	│  BT1  │  BT2  │  BT3  │   BT4  │  BT5  │ │  USB  │       │       │       │ BTCLR │
+	│  BT1  │  BT2  │  BT3  │   BT4  │  BT5  │ │       │       │       │       │  USB  │
 	├───────┼───────┼───────┼────────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
-	│       │ @win  │ @mac  │ @linux │       │ │       │       │       │       │       │
+	│       │ @win  │ @mac  │ @linux │       │ │ BTCLR │  BT4  │  BT5  │       │       │
 	├───────┼───────┼───────┼────────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
-	│       │       │       │        │       │ │       │       │       │       │       │
+	│       │       │       │        │       │ │  USB  │  BT1  │  BT2  │  BT3  │       │
 	└───────┴───────┼───────┼────────┼───────┤ ├───────┼───────┼───────┼───────┴───────┘
-	                │ DEBUG │  RESET │ BOOTL │ │ BOOTL │ RESET │ DEBUG │                
+	                │       │  BOOTL │       │ │       │ BOOTL │       │                
 	                └───────┴────────┴───────┘ └───────┴───────┴───────┘                 */
 	[FW] = LAYOUT_split_3x5_3(
-		 KC_NO, KC_NO,      KC_NO,      KC_NO,      KC_NO,    KC_NO,  KC_NO,   KC_NO,   KC_NO, KC_NO,
-		 KC_NO, TO(base_w), TO(base_m), TO(base_l), KC_NO,    KC_NO,  KC_NO,   KC_NO,   KC_NO, KC_NO,
-		 KC_NO, KC_NO,      KC_NO,      KC_NO,      KC_NO,    KC_NO,  KC_NO,   KC_NO,   KC_NO, KC_NO,
-		                    DB_TOGG,    QK_BOOT,    QK_RBT,   QK_RBT, QK_BOOT, DB_TOGG
+		 KC_NO, KC_NO,      KC_NO,      KC_NO,      KC_NO,   KC_NO, KC_NO,  KC_NO, KC_NO, KC_NO,
+		 KC_NO, TO(base_w), TO(base_m), TO(base_l), KC_NO,   KC_NO, KC_NO,  KC_NO, KC_NO, KC_NO,
+		 KC_NO, KC_NO,      KC_NO,      KC_NO,      KC_NO,   KC_NO, KC_NO,  KC_NO, KC_NO, KC_NO,
+		                    KC_NO,      QK_RBT,     KC_NO,   KC_NO, QK_RBT, KC_NO
 	)
 };
 
@@ -275,7 +275,7 @@ typedef enum {
 
 static td_state_t td_state;
 
-td_state_t update_td_state(const qk_tap_dance_state_t *state){
+td_state_t update_td_state(const tap_dance_state_t *state){
 	if(state->count == 1)
 		td_state = (state->interrupted || !state->pressed) ? TD_SINGLE_TAP : TD_SINGLE_HOLD;
 	else
@@ -289,7 +289,7 @@ typedef struct {
   uint16_t keycode;
 } tdlt_data;
 
-void tapdance_TDLT_finished(qk_tap_dance_state_t *state, void *user_data){
+void tapdance_TDLT_finished(tap_dance_state_t *state, void *user_data){
 	const tdlt_data *data = (tdlt_data*) user_data;
 	switch(update_td_state(state)){
 		case TD_SINGLE_TAP: register_code16(data->keycode); break;
@@ -299,7 +299,7 @@ void tapdance_TDLT_finished(qk_tap_dance_state_t *state, void *user_data){
 	}
 }
 
-void tapdance_TDLT_reset(qk_tap_dance_state_t *state, void *user_data){
+void tapdance_TDLT_reset(tap_dance_state_t *state, void *user_data){
 	const tdlt_data *data = (tdlt_data*) user_data;
 	switch(td_state){
 		case TD_SINGLE_TAP: unregister_code16(data->keycode); break;
@@ -314,7 +314,7 @@ void tapdance_TDLT_reset(qk_tap_dance_state_t *state, void *user_data){
 	.user_data = (void*)&((tdlt_data){ layer, keycode }), \
 }
 
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
 	[LT_UTF_LCTL_Z] = ACTION_TAP_DANCE_LT(UTF, LCTL(KC_Z)),
 	[LT_UTF_LGUI_Z] = ACTION_TAP_DANCE_LT(UTF, LGUI(KC_Z))
 };
