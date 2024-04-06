@@ -106,11 +106,11 @@ class Table(Generic[T]):
     def Shape(
         cls,
         shape: TableShape,
-        values: Mapping[tuple[int, int], T] | Iterable[T],
-        default: T,
-    ) -> "Table[T]":
+        values: Mapping[tuple[int, int], T2] | Iterable[T2],
+        default: T3,
+    ) -> "Table[T2 | T3]":
         if isinstance(values, Mapping):
-            values = cast(Mapping[tuple[int, int], T], values)
+            values = cast(Mapping[tuple[int, int], T2], values)
             return Table({k: values.get(k, default) for k in shape}, shape)
         else:
             return Table(dict(zip(shape, values)), shape)

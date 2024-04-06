@@ -66,9 +66,7 @@ class Keymap(Generic[T]):
         return cast(Keymap[T2], replace(self, layers=new_layers))
 
     @staticmethod
-    def From_tables(
-        layer_tables: Iterable[tuple[str, Table[str]]], f: Callable[[str], T]
-    ):
+    def From_tables(layer_tables: Iterable[tuple[str, Table[str]]]):
 
         def parse_layers():
             for i, (title, table) in enumerate(layer_tables):
@@ -92,8 +90,7 @@ class Keymap(Generic[T]):
 
         return Keymap(
             layers={
-                name: [f(table[k]) for k in final_shape]
-                for table, name, _title in layers
+                name: [table[k] for k in final_shape] for table, name, _title in layers
             },
             titles={name: title for _table, name, title in layers},
             table_shape=final_shape,
@@ -141,7 +138,7 @@ def join_layer_name(base_name: str, variations: Collection[str]):
 
 
 def keymap_from_md(lines: Iterable[str]):
-    return Keymap.From_tables(extract_tables_from_md(lines), str)
+    return Keymap.From_tables(extract_tables_from_md(lines))
 
 
 def extract_tables_from_md(
