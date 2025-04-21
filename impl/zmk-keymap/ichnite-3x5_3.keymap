@@ -2,6 +2,7 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/zmk/pointing.h>
 #include "behaviors/capslock.dtsi"
 #include "behaviors/base_layer.dtsi"
 
@@ -21,8 +22,8 @@
 #define NAV_w 13
 #define SYS_lw 14
 #define SYS_m 15
-#define MWH_lw 16
-#define MWH_m 17
+#define MOU_lw 16
+#define MOU_m 17
 #define UTF_l 18
 #define UTF_m 19
 #define UTF_w 20
@@ -42,14 +43,14 @@
 		├────────┼────────┼──────────┼────────────┼──────────┤ ├────────────┼───────────┼──────────┼────────┼────────┤
 		│    z   │    x   │     c    │      d     │     v    │ │      k     │     h     │    ,;    │   .?   │   /\   │
 		└────────┴────────┼──────────┼────────────┼──────────┤ ├────────────┼───────────┼──────────┼────────┴────────┘
-		                  │ ESC ▼MWH │ SPACE ▼NAV │ TAB ▼SYS │ │ ENTER ▼NUM │ BSPC ▼SYM │ DEL ▼FUN │                  
+		                  │ ESC ▼MOU │ SPACE ▼NAV │ TAB ▼SYS │ │ ENTER ▼NUM │ BSPC ▼SYM │ DEL ▼FUN │                  
 		                  └──────────┴────────────┴──────────┘ └────────────┴───────────┴──────────┘                   */
 		base_l {
 			bindings = <
 			&kp Q        &kp W        &kp F           &kp P            &kp B            &kp J             &kp L            &kp U           &kp Y        &kp SQT
 			&hrm LGUI A  &hrm LALT R  &hrm LCTRL S    &hrm LSHFT T     &kp G            &kp M             &hrm LSHFT N     &hrm LCTRL E    &hrm LALT I  &hrm LGUI O
 			&kp Z        &kp X        &kp C           &kp D            &kp V            &kp K             &kp H            &comma_semi     &dot_qmark   &fslh_bslh
-			                          &lt MWH_lw ESC  &lt NAV_l SPACE  &lt SYS_lw TAB   &lt NUM_lw ENTER  &lt SYM_lw BSPC  &lt FUN_lw DEL
+			                          &lt MOU_lw ESC  &lt NAV_l SPACE  &lt SYS_lw TAB   &lt NUM_lw ENTER  &lt SYM_lw BSPC  &lt FUN_lw DEL
 			>;
 			display-name = "linux";
 		};
@@ -58,7 +59,7 @@
 			&kp Q         &kp W        &kp F          &kp P            &kp B           &kp J            &kp L           &kp U          &kp Y        &kp SQT
 			&hrm LCTRL A  &hrm LALT R  &hrm LGUI S    &hrm LSHFT T     &kp G           &kp M            &hrm LSHFT N    &hrm LGUI E    &hrm LALT I  &hrm LCTRL O
 			&kp Z         &kp X        &kp C          &kp D            &kp V           &kp K            &kp H           &comma_semi    &dot_qmark   &fslh_bslh
-			                           &lt MWH_m ESC  &lt NAV_m SPACE  &lt SYS_m TAB   &lt NUM_m ENTER  &lt SYM_m BSPC  &lt FUN_m DEL
+			                           &lt MOU_m ESC  &lt NAV_m SPACE  &lt SYS_m TAB   &lt NUM_m ENTER  &lt SYM_m BSPC  &lt FUN_m DEL
 			>;
 			display-name = "mac";
 		};
@@ -67,7 +68,7 @@
 			&kp Q        &kp W        &kp F           &kp P            &kp B            &kp J             &kp L            &kp U           &kp Y        &kp SQT
 			&hrm LGUI A  &hrm LALT R  &hrm LCTRL S    &hrm LSHFT T     &kp G            &kp M             &hrm LSHFT N     &hrm LCTRL E    &hrm LALT I  &hrm LGUI O
 			&kp Z        &kp X        &kp C           &kp D            &kp V            &kp K             &kp H            &comma_semi     &dot_qmark   &fslh_bslh
-			                          &lt MWH_lw ESC  &lt NAV_w SPACE  &lt SYS_lw TAB   &lt NUM_lw ENTER  &lt SYM_lw BSPC  &lt FUN_lw DEL
+			                          &lt MOU_lw ESC  &lt NAV_w SPACE  &lt SYS_lw TAB   &lt NUM_lw ENTER  &lt SYM_lw BSPC  &lt FUN_lw DEL
 			>;
 			display-name = "win";
 		};
@@ -248,33 +249,33 @@
 			>;
 			display-name = "SYS";
 		};
-		/* Mouse scrolling (`MWH`)
+		/* Mouse Emulation (`MOU`)
 		┌───────┬───────┬───────┬───────┬───────┐ ┌───────┬───────┬───────┬───────┬───────┐
-		│       │       │ WH_U  │       │       │ │       │       │       │       │       │
+		│ MB_2  │       │ MM_U  │       │       │ │       │       │       │       │       │
 		├───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
-		│       │ WH_L  │ WH_D  │ WH_R  │       │ │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
+		│ MB_1  │ MM_L  │ MM_D  │ MM_R  │       │ │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
 		├───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
-		│       │       │       │       │       │ │       │       │       │       │       │
+		│ MB_3  │       │       │       │       │ │       │       │       │       │       │
 		└───────┴───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┴───────┘
 		                │  XXX  │       │  ▼FW  │ │       │       │       │                
 		                └───────┴───────┴───────┘ └───────┴───────┴───────┘                 */
-		MWH_lw {
+		MOU_lw {
 			bindings = <
-			&none  &none  &none  &none  &none        &none  &none      &none      &none     &none
-			&none  &none  &none  &none  &none        &none  &kp LSHFT  &kp LCTRL  &kp LALT  &kp LGUI
-			&none  &none  &none  &none  &none        &none  &none      &none      &none     &none
-			              &none  &none  &mo FW_lmw   &none  &none      &none
+			&mkp MB2  &none           &mmv MOVE_UP    &none            &none        &none  &none      &none      &none     &none
+			&mkp MB1  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &none        &none  &kp LSHFT  &kp LCTRL  &kp LALT  &kp LGUI
+			&mkp MB3  &none           &none           &none            &none        &none  &none      &none      &none     &none
+			                          &none           &none            &mo FW_lmw   &none  &none      &none
 			>;
-			display-name = "MWH";
+			display-name = "MOU";
 		};
-		MWH_m {
+		MOU_m {
 			bindings = <
-			&none  &none  &none  &none  &none        &none  &none      &none     &none     &none
-			&none  &none  &none  &none  &none        &none  &kp LSHFT  &kp LGUI  &kp LALT  &kp LCTRL
-			&none  &none  &none  &none  &none        &none  &none      &none     &none     &none
-			              &none  &none  &mo FW_lmw   &none  &none      &none
+			&mkp MB2  &none           &mmv MOVE_UP    &none            &none        &none  &none      &none     &none     &none
+			&mkp MB1  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_RIGHT  &none        &none  &kp LSHFT  &kp LGUI  &kp LALT  &kp LCTRL
+			&mkp MB3  &none           &none           &none            &none        &none  &none      &none     &none     &none
+			                          &none           &none            &mo FW_lmw   &none  &none      &none
 			>;
-			display-name = "MWH";
+			display-name = "MOU";
 		};
 		/* Unicode Symbols (`UTF`) on `NAV>SYM`
 		┌───────┬───────┬───────┬───────┬───────┐ ┌───────┬───────┬───────┬───────┬───────┐
@@ -313,11 +314,11 @@
 			>;
 			display-name = "UTF";
 		};
-		/* Firmware (`FW`) on `NUM+FUN` or `MWH+SYS` combo
+		/* Firmware (`FW`) on `NUM+FUN` or `MOU+SYS` combo
 		┌───────┬───────┬───────┬────────┬───────┐ ┌───────┬───────┬───────┬───────┬───────┐
 		│  BT1  │  BT2  │  BT3  │   BT4  │  BT5  │ │       │       │       │       │  USB  │
 		├───────┼───────┼───────┼────────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
-		│       │ @win  │ @mac  │ @linux │       │ │ BTCLR │  BT4  │  BT5  │       │       │
+		│       │ @win  │ @mac  │ @linux │       │ │       │  BT4  │  BT5  │       │       │
 		├───────┼───────┼───────┼────────┼───────┤ ├───────┼───────┼───────┼───────┼───────┤
 		│       │       │       │        │       │ │  USB  │  BT1  │  BT2  │  BT3  │       │
 		└───────┴───────┼───────┼────────┼───────┤ ├───────┼───────┼───────┼───────┴───────┘

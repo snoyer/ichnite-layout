@@ -20,8 +20,8 @@ enum layers {
 	NAV_m = 12,
 	SYS_lw = 13,
 	SYS_m = 14,
-	MWH_lw = 15,
-	MWH_m = 16,
+	MOU_lw = 15,
+	MOU_m = 16,
 	UTF_lmw = 17,
 	FW_lmw = 18
 };
@@ -35,25 +35,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	├────────┼────────┼──────────┼────────────┼──────────┼───────┤ ├───────┼────────────┼───────────┼──────────┼────────┼────────┤
 	│    z   │    x   │     c    │      d     │     v    │ CAPS  │ │   =   │      k     │     h     │    ,;    │   .?   │   /\   │
 	└────────┴────────┼──────────┼────────────┼──────────┼───────┘ └───────┼────────────┼───────────┼──────────┼────────┴────────┘
-	                  │ ESC ▼MWH │ SPACE ▼NAV │ TAB ▼SYS │                 │ ENTER ▼NUM │ BSPC ▼SYM │ DEL ▼FUN │                  
+	                  │ ESC ▼MOU │ SPACE ▼NAV │ TAB ▼SYS │                 │ ENTER ▼NUM │ BSPC ▼SYM │ DEL ▼FUN │                  
 	                  └──────────┴────────────┴──────────┘                 └────────────┴───────────┴──────────┘                   */
 	[base_l] = LAYOUT(
 		 KC_Q,         KC_W,         KC_F,              KC_P,              KC_B,                                  KC_J,              KC_L,               KC_U,              KC_Y,         KC_QUOT,
 		 LGUI_T(KC_A), LALT_T(KC_R), LCTL_T(KC_S),      LSFT_T(KC_T),      KC_G,              KC_INS,    KC_MINS, KC_M,              LSFT_T(KC_N),       LCTL_T(KC_E),      LALT_T(KC_I), LGUI_T(KC_O),
 		 KC_Z,         KC_X,         KC_C,              KC_D,              KC_V,              KC_CAPS,   KC_EQL,  KC_K,              KC_H,               KC_COMM,           KC_DOT,       KC_SLSH,
-		                             LT(MWH_lw,KC_ESC), LT(NAV_lw,KC_SPC), LT(SYS_lw,KC_TAB),                     LT(NUM_lw,KC_ENT), LT(SYM_lw,KC_BSPC), LT(FUN_lw,KC_DEL)
+		                             LT(MOU_lw,KC_ESC), LT(NAV_lw,KC_SPC), LT(SYS_lw,KC_TAB),                     LT(NUM_lw,KC_ENT), LT(SYM_lw,KC_BSPC), LT(FUN_lw,KC_DEL)
 	),
 	[base_m] = LAYOUT(
 		 KC_Q,         KC_W,         KC_F,             KC_P,             KC_B,                                 KC_J,             KC_L,              KC_U,             KC_Y,         KC_QUOT,
 		 LCTL_T(KC_A), LALT_T(KC_R), LGUI_T(KC_S),     LSFT_T(KC_T),     KC_G,             KC_INS,    KC_MINS, KC_M,             LSFT_T(KC_N),      LGUI_T(KC_E),     LALT_T(KC_I), LCTL_T(KC_O),
 		 KC_Z,         KC_X,         KC_C,             KC_D,             KC_V,             KC_CAPS,   KC_EQL,  KC_K,             KC_H,              KC_COMM,          KC_DOT,       KC_SLSH,
-		                             LT(MWH_m,KC_ESC), LT(NAV_m,KC_SPC), LT(SYS_m,KC_TAB),                     LT(NUM_m,KC_ENT), LT(SYM_m,KC_BSPC), LT(FUN_m,KC_DEL)
+		                             LT(MOU_m,KC_ESC), LT(NAV_m,KC_SPC), LT(SYS_m,KC_TAB),                     LT(NUM_m,KC_ENT), LT(SYM_m,KC_BSPC), LT(FUN_m,KC_DEL)
 	),
 	[base_w] = LAYOUT(
 		 KC_Q,         KC_W,         KC_F,              KC_P,              KC_B,                                  KC_J,              KC_L,               KC_U,              KC_Y,         KC_QUOT,
 		 LGUI_T(KC_A), LALT_T(KC_R), LCTL_T(KC_S),      LSFT_T(KC_T),      KC_G,              KC_INS,    KC_MINS, KC_M,              LSFT_T(KC_N),       LCTL_T(KC_E),      LALT_T(KC_I), LGUI_T(KC_O),
 		 KC_Z,         KC_X,         KC_C,              KC_D,              KC_V,              KC_CAPS,   KC_EQL,  KC_K,              KC_H,               KC_COMM,           KC_DOT,       KC_SLSH,
-		                             LT(MWH_lw,KC_ESC), LT(NAV_lw,KC_SPC), LT(SYS_lw,KC_TAB),                     LT(NUM_lw,KC_ENT), LT(SYM_lw,KC_BSPC), LT(FUN_lw,KC_DEL)
+		                             LT(MOU_lw,KC_ESC), LT(NAV_lw,KC_SPC), LT(SYS_lw,KC_TAB),                     LT(NUM_lw,KC_ENT), LT(SYM_lw,KC_BSPC), LT(FUN_lw,KC_DEL)
 	),
 	/* Symbols (`SYM`)
 	┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
@@ -187,27 +187,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		 KC_NO,   KC_MPRV, KC_MUTE,    KC_MNXT, KC_CALC, KC_F16,   KC_F18, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
 		                   MO(FW_lmw), KC_NO,   KC_NO,                     KC_NO, KC_NO,   KC_NO
 	),
-	/* Mouse scrolling (`MWH`)
+	/* Mouse Emulation (`MOU`)
 	┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
-	│       │       │ WH_U  │       │       │                 │       │       │       │       │       │
+	│ MB_2  │       │ MM_U  │       │       │                 │       │       │       │       │       │
 	├───────┼───────┼───────┼───────┼───────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
-	│       │ WH_L  │ WH_D  │ WH_R  │       │       │ │       │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
+	│ MB_1  │ MM_L  │ MM_D  │ MM_R  │       │       │ │       │       │ SHIFT │ CTRL  │  ALT  │  CMD  │
 	├───────┼───────┼───────┼───────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
-	│       │       │       │       │       │       │ │       │       │       │       │       │       │
+	│ MB_3  │       │       │       │       │       │ │       │       │       │       │       │       │
 	└───────┴───────┼───────┼───────┼───────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘
 	                │  XXX  │       │  ▼FW  │                 │       │       │       │                
 	                └───────┴───────┴───────┘                 └───────┴───────┴───────┘                 */
-	[MWH_lw] = LAYOUT(
-		 KC_NO, KC_NO,   KC_WH_U, KC_NO,   KC_NO,                      KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
-		 KC_NO, KC_WH_L, KC_WH_D, KC_WH_R, KC_NO,      KC_NO,   KC_NO, KC_NO, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI,
-		 KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,      KC_NO,   KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
-		                 KC_NO,   KC_NO,   MO(FW_lmw),                 KC_NO, KC_NO,   KC_NO
+	[MOU_lw] = LAYOUT(
+		 KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                      KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
+		 KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,      KC_NO,   KC_NO, KC_NO, KC_LSFT, KC_LCTL, KC_LALT, KC_LGUI,
+		 KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,      KC_NO,   KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
+		               KC_NO, KC_NO, MO(FW_lmw),                 KC_NO, KC_NO,   KC_NO
 	),
-	[MWH_m] = LAYOUT(
-		 KC_NO, KC_NO,   KC_WH_U, KC_NO,   KC_NO,                      KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
-		 KC_NO, KC_WH_L, KC_WH_D, KC_WH_R, KC_NO,      KC_NO,   KC_NO, KC_NO, KC_LSFT, KC_LGUI, KC_LALT, KC_LCTL,
-		 KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,      KC_NO,   KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
-		                 KC_NO,   KC_NO,   MO(FW_lmw),                 KC_NO, KC_NO,   KC_NO
+	[MOU_m] = LAYOUT(
+		 KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,                      KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
+		 KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,      KC_NO,   KC_NO, KC_NO, KC_LSFT, KC_LGUI, KC_LALT, KC_LCTL,
+		 KC_NO, KC_NO, KC_NO, KC_NO, KC_NO,      KC_NO,   KC_NO, KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,
+		               KC_NO, KC_NO, MO(FW_lmw),                 KC_NO, KC_NO,   KC_NO
 	),
 	/* Unicode Symbols (`UTF`) on `NAV>SYM`
 	┌───────┬───────┬───────┬───────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
@@ -225,11 +225,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		 UC(0x00d7), KC_NO,      UC(0x00b0), UC(0x2264), UC(0x2265), KC_NO,   KC_NO, UC(0x03bb), UC(0x03b1), UC(0x03b2), UC(0x00bf), UC(0x00f7),
 		                         UC(0x00b1), KC_NO,      UC(0x2260),                 KC_NO,      KC_NO,      KC_NO
 	),
-	/* Firmware (`FW`) on `NUM+FUN` or `MWH+SYS` combo
+	/* Firmware (`FW`) on `NUM+FUN` or `MOU+SYS` combo
 	┌───────┬───────┬───────┬────────┬───────┐                 ┌───────┬───────┬───────┬───────┬───────┐
 	│  BT1  │  BT2  │  BT3  │   BT4  │  BT5  │                 │       │       │       │       │  USB  │
 	├───────┼───────┼───────┼────────┼───────┼───────┐ ┌───────┼───────┼───────┼───────┼───────┼───────┤
-	│       │ @win  │ @mac  │ @linux │       │       │ │ BTCLR │ BTCLR │  BT4  │  BT5  │       │       │
+	│       │ @win  │ @mac  │ @linux │       │       │ │       │       │  BT4  │  BT5  │       │       │
 	├───────┼───────┼───────┼────────┼───────┼───────┤ ├───────┼───────┼───────┼───────┼───────┼───────┤
 	│       │       │       │        │       │       │ │       │  USB  │  BT1  │  BT2  │  BT3  │       │
 	└───────┴───────┼───────┼────────┼───────┼───────┘ └───────┼───────┼───────┼───────┼───────┴───────┘

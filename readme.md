@@ -41,7 +41,7 @@ Except for quote key in place of semi-colon key (as semicolon and colon are rema
 |       |       |       |       |       |                    |       |       |       |       |       |
 |  CMD  |  ALT  | CTRL  | SHIFT |       |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
 |       |       |       |       |       |       |    |       |       |       |       |       |       |
-|               |  MWH  |  NAV  |  SYS  |                    |  NUM  |  SYM  |  FUN  |               |
+|               |  MOU  |  NAV  |  SYS  |                    |  NUM  |  SYM  |  FUN  |               |
 ```
 
 
@@ -131,14 +131,15 @@ Same as above but with keypad numbers.
 
 
 
-### Mouse scrolling (`MWH`)
+### Mouse Emulation (`MOU`)
 ```
-|       |       | WH_U  |       |       |                    |       |       |       |       |       |
-|       | WH_L  | WH_D  | WH_R  |       |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
-|       |       |       |       |       |       |    |       |       |       |       |       |       |
+| MB_2  |       | MM_U  |       |       |                    |       |       |       |       |       |
+| MB_1  | MM_L  | MM_D  | MM_R  |       |       |    |       |       | SHIFT | CTRL  |  ALT  |  CMD  |
+| MB_3  |       |       |       |       |       |    |       |       |       |       |       |       |
 |               |  XXX  |       |       |                    |       |       |       |               |
 ```
-- mouse scrolling over arrows
+- mouse mouvement over arrows
+- mouse click on outer column
 
 
 
@@ -154,12 +155,12 @@ For science?
 
 
 
-### Firmware (`FW`) on `NUM+FUN` or `MWH+SYS` combo
+### Firmware (`FW`) on `NUM+FUN` or `MOU+SYS` combo
 
 Keep firmware stuff out of the way behind a combo that needs two fingers.
 ```
 |  BT1  |  BT2  |  BT3  |  BT4  |  BT5  |                    |       |       |       |       |  USB  |
-|       | @win  | @mac  |@linux |       |       |    | BTCLR | BTCLR |  BT4  |  BT5  |       |       |
+|       | @win  | @mac  |@linux |       |       |    |       |       |  BT4  |  BT5  |       |       |
 |       |       |       |       |       |       |    |       |  USB  |  BT1  |  BT2  |  BT3  |       |
 |               |       | BOOTL |       |                    |       | BOOTL |       |               |
 ```
