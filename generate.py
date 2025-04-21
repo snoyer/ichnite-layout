@@ -1,137 +1,187 @@
-from functools import partial
 import re
-from dataclasses import replace
-from operator import __not__
-from typing import Mapping, Optional, Sequence, TypeVar, cast
+import sys
+from argparse import ArgumentParser, Namespace
+from typing import Callable, Iterable, TextIO, TypeVar
+
+from codegen.qmk import CustomShift, QmkBinding, QmkKey, generate_qmk_layout_code
+from codegen.source import ALT_LAYOUTS, keymap_from_md
+from codegen.zmk import (
+    Binding,
+    bootloader_binding,
+    bt_binding,
+    generate_zmk_keymap_code,
+    shiftmorph_binding,
+    utf8_linux_macro_binding,
+    utf8_mac_macro_binding,
+    utf8_win_macro_binding,
+)
 
 
-from codegen.__main__ import argument_parser
-from codegen.__main__ import main as codegen_main
-from codegen.asciitables import Table
-from codegen.qmk import CustomShift, QmkTranslator
-from codegen.source import MODIFIERS_RE, Keymap, Key
-from codegen.translation import Translator
-from codegen.zmk import Binding, ZmkTranslator, kp_binding, shiftmorph_node
+def argument_parser():
+    parser = ArgumentParser(
+        description="generate ZMK/QMK keymap code from markdown tables"
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-T = TypeVar('T')
+    parser.add_argument("readme", metavar="README.MD", help="readme markdown filename")
+    parser.add_argument("output", metavar="OUTPUT", help="output keymap filename")
+    parser.add_argument(
+        "--reshape",
+        dest="reshape",
+        help="alternative layout to reshape to",
+        choices=ALT_LAYOUTS.keys(),
+    )
+    zmk = subparsers.add_parser("ZMK", help="create a ZMK keymap")
+    zmk.add_argument(
+        "--transform",
+        default="default_transform",
+        metavar="NAME",
+        help="matrix transform name",
+    )
 
-def main():
-    parser = argument_parser()
-    parser.add_argument('--reshape', dest='reshape',
-        help='alternative layout to reshape to', choices=ALT_LAYOUTS.keys())
+    qmk = subparsers.add_parser("QMK", help="create a QMK layout")
+    qmk.add_argument(
+        "--layout", default="LAYOUT", metavar="NAME", help="layout macro name"
+    )
 
-    args = parser.parse_args()
-
-    return codegen_main(args, partial(combine_keymap, reshape=args.reshape), customize_translator, default_key=Key.Empty())
-
-def customize_translator(translator: Translator[T]) -> Translator[T]:
-    if isinstance(translator, ZmkTranslator):
-        translator.register_translations({
-            '\'"': kp_binding(translator.native_keycodes["'"]),
-            ',;' : Binding(shiftmorph_node(',', ';', translator.native_keycodes)),
-            '.?' : Binding(shiftmorph_node('.', '?', translator.native_keycodes)),
-            '/\\': Binding(shiftmorph_node('/', '\\', translator.native_keycodes)),
-        })
-    elif isinstance(translator, QmkTranslator):
-        translator.register_translations({
-            '\'"': CustomShift('KC_QUOT', 'KC_DQUO'),
-            ',;' : CustomShift('KC_COMM', 'KC_SCLN'),
-            '.?' : CustomShift('KC_DOT', 'KC_QUES'),
-            '/\\': CustomShift('KC_SLSH', 'KC_BSLS'),
-        })
-    return translator
-
-def combine_keymap(source_keymap: Keymap[str], reshape: Optional[str] = None):
-    keymap = add_holdtaps(source_keymap)
-    keymap = add_paths_from_titles(keymap)
-    if reshape:
-        src = Table.Parse(ALT_LAYOUTS['source'])
-        dst = Table.Parse(ALT_LAYOUTS[reshape]).remove_cells(__not__)
-        keymap = keymap.reshape(src, dst, Key.Empty())
-    return keymap
+    return parser
 
 
-def add_holdtaps(txt_keymap: Keymap[str], holdtap_table_name: str='hold-tap', mods_on_all_layers: bool=False):
-    def make_taphold(tap: str, hold: str, layers: bool=True, mods: bool=True):
-        if hold:
-            if hold in txt_keymap.layers:
-                if layers:
-                    return Key(hold=hold, tap=tap)
-            elif re.match(MODIFIERS_RE, hold):
-                if mods and tap != hold:
-                    return Key(hold=hold, tap=tap)
-            else:
-                raise ValueError(f'hold-tap key ie neither layer-tap or mod-tap: {hold}')
+T = TypeVar("T")
 
-        return Key(tap=tap)
 
-    if holdtap_table_name in txt_keymap.layers:
-        taphold = txt_keymap.layers.pop(holdtap_table_name)
-        def new_layers():
-            for i, (name, keys) in enumerate(txt_keymap.layers.items()):
-                first = i==0
-                f = partial(make_taphold, layers=first, mods=first or mods_on_all_layers)
-                yield name, list(map(f, keys, taphold))
-        keymap = replace(txt_keymap, layers=dict(new_layers()))
+def main(args: Namespace):
+    keymap, titles, multi_os_layers = keymap_from_md(
+        open(args.readme), reshape=args.reshape
+    )
+    if args.command == "ZMK":
+        code = generate_zmk_keymap_code(
+            keymap,
+            titles,
+            multi_os_layers,
+            transform_name=args.transform,
+            aliases_for_os=zmk_aliases_for_os,
+            extra_includes=(
+                "behaviors/capslock.dtsi",
+                "behaviors/base_layer.dtsi",
+            ),
+        )
+    elif args.command == "QMK":
+        code = [
+            generate_qmk_layout_code(
+                keymap,
+                titles,
+                multi_os_layers,
+                layout_name=args.layout,
+                aliases_for_os=qmk_aliases_for_os,
+            )
+        ]
     else:
-        keymap = txt_keymap
+        raise ValueError(f"invalid command: {args.command}")
 
-    return cast(Keymap[Key], keymap)
-
-
-def add_paths_from_titles(keymap: Keymap[Key]):
-    def parse_paths(title: str):
-        for code in re.findall(r'`([^`]+)`', title):
-            if m := re.match(r'([\w+]+)(?:([>,])|([+&]))([\w+]+)', code):
-                a, _, f2, b = m.groups()
-                yield [str(a), str(b)]
-                if f2:
-                    yield [str(b), str(a)]
-            else:
-                yield [str(code)]
-
-    paths_by_id = {name:list(parse_paths(title)) for name,title in keymap.titles.items()}
-    print(f'{paths_by_id = }')
-    return add_paths(keymap, paths_by_id)
+    if args.output == "-":
+        print_line(code)
+    else:
+        with open(args.output, "w") as f:
+            print_line(code, f)
 
 
-def add_paths(keymap: Keymap[Key], paths_by_id: Mapping[str, Sequence[Sequence[str]]]):
-    layertaps = {i:x.hold for i,x in enumerate(keymap.layers['base']) if x.hold in keymap.layers}
+def zmk_aliases_for_os(
+    os: str,
+) -> dict[str, str | Binding | Callable[[re.Match[str]], str | Binding]]:
+    return {
+        "'\"": "SQT",
+        # "'\"": shiftmorph_binding("'", '"'),
+        ",;": shiftmorph_binding(",", ";"),
+        ".?": shiftmorph_binding(".", "?"),
+        "/\\": shiftmorph_binding("/", "\\"),
+        "XXX": Binding("none"),
+        "___": Binding("trans"),
+        "RESET": Binding("sys_reset"),
+        "BOOTL": bootloader_binding(),
+        "USB": Binding("out", "OUT_USB"),
+        #
+        "NLOCK": "KP_NUM",
+        "CLOCK": "CLCK",
+        "SLOCK": "SLCK",
+        "BREAK": "PAUSE_BREAK",
+        "APP": "K_APP",
+        "PSCR": "PSCRN",
+        "PLAY": "C_PLAY_PAUSE",
+        "STOP": "C_STOP",
+        "PAUSE": "C_PAUSE",
+        "PREV": "C_PREV",
+        "NEXT": "C_NEXT",
+        "FFW": "C_FF",
+        "RWD": "C_RW",
+        "MUTE": "C_MUTE",
+        "VOL+": "C_VOL_UP",
+        "VOL-": "C_VOL_DN",
+        "BRI+": "C_BRI_UP",
+        "BRI-": "C_BRI_DN",
+        "MYCOMP": "C_AL_MY_COMPUTER",
+        "WWW": "C_AL_WWW",
+        "CALC": "C_AL_CALCULATOR",
+        #
+        r"BT(\d+)": lambda m: bt_binding(int(m.group(1))),
+        r"@(.+)": lambda m: Binding("base", m.group(1)),
+        r"([\u0080-\uffff])$": lambda m: {
+            "linux": utf8_linux_macro_binding,
+            "mac": utf8_mac_macro_binding,
+            "win": utf8_win_macro_binding,
+        }[os](m.group(1)),
+        "CAPS": Binding("capslock_word_mac" if os == "mac" else "capslock_word"),
+        #
+        "MM_U": Binding("mmv", "MOVE_UP"),
+        "MM_D": Binding("mmv", "MOVE_DOWN"),
+        "MM_L": Binding("mmv", "MOVE_LEFT"),
+        "MM_R": Binding("mmv", "MOVE_RIGHT"),
+        "MB_1": Binding("mkp", "MB1"),
+        "MB_2": Binding("mkp", "MB2"),
+        "MB_3": Binding("mkp", "MB3"),
+    }
 
-    for layer_name, cells in keymap.layers.items():
-        for path in paths_by_id.get(layer_name, []):
-            for src, dst in zip(path, path[1:]):
-                cells = keymap.layers[src]
-                for i,layer in layertaps.items():
-                    if layer == dst:
-                        cells[i].hold = layer_name
 
-    return keymap
+def qmk_aliases_for_os(
+    os: str,
+) -> dict[str, str | QmkBinding | Callable[[re.Match[str]], str | QmkBinding]]:
+    return {
+        "PLAY": "MPLY",
+        "STOP": "MSTP",
+        "MUTE": "MUTE",
+        "PREV": "MPRV",
+        "NEXT": "MNXT",
+        "FFW": "MFFD",
+        "RWD": "MRWD",
+        "VOL+": "VOLU",
+        "VOL-": "VOLD",
+        "BRI+": "BRIU",
+        "BRI-": "BRID",
+        "PG_UP": "PGUP",
+        "PG_DN": "PGDOWN",
+        "SLOCK": "KC_SCRL",
+        "NLOCK": "KC_NUM_LOCK",
+        "MYCOMP": "MYCM",
+        "CALC": "CALC",
+        "WWW": "WHOM",
+        "RESET": "QK_BOOT",
+        "BOOTL": "QK_REBOOT",
+        "DEBUG": "DB_TOGG",
+        "XXXXX": "XXX",
+        r"([\u0080-\uffff])$": lambda m: QmkKey("UC", "0x%04x" % ord(m.group(1))),
+        "'\"": CustomShift("KC_QUOT", "KC_DQUO"),
+        ",;": CustomShift("KC_COMM", "KC_SCLN"),
+        ".?": CustomShift("KC_DOT", "KC_QUES"),
+        "/\\": CustomShift("KC_SLSH", "KC_BSLS"),
+    }
 
 
-ALT_LAYOUTS = {
-    'source': r'''
-    |a|b|c|d|e|     |E|D|C|B|A|
-    |f|g|h|i|j|k| |K|J|I|H|G|F|
-    |l|m|n|o|p|q| |Q|P|O|N|M|L|
-    |   |r|s|t|     |T|S|R|   |
-    ''',
-
-    'split3x5+3': r'''
-    |a|b|c|d|e| |E|D|C|B|A|
-    |f|g|h|i|j| |J|I|H|G|F|
-    |l|m|n|o|p| |P|O|N|M|L|
-    |   |r|s|t| |T|S|R|   |
-    ''',
-    
-    'ortho4x12': r'''
-    |a|b|c|d|e|-|-|E|D|C|B|A|
-    |f|g|h|i|j|k|K|J|I|H|G|F|
-    |l|m|n|o|p|q|Q|P|O|N|M|L|
-    |-|-|-|r|s|t|T|S|R|-|-|-|
-    ''',
-}
+def print_line(lines: Iterable[str], f: TextIO = sys.stdout):
+    for line in lines:
+        f.write(line)
+        f.write("\n")
+    f.flush()
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    exit(main(argument_parser().parse_args()))

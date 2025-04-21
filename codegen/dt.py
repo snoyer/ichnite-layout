@@ -13,8 +13,8 @@ class Node:
     address: Optional[int] = None
     comment: Optional[str] = None
 
-    def format_dt(self):
-        return "\n".join(format_dtnode(self))
+    def format_dt(self, indent: str = "\t"):
+        return "\n".join(format_dtnode(self, indentation=indent))
 
     def __iadd__(self, node: Union[NodeOrComment, Iterable[NodeOrComment]]):
         if isinstance(node, (Node, Comment)):
@@ -66,7 +66,6 @@ def format_value(v: Any):
 
 
 def format_dtproperty(k: str, v: Any):
-
     if hasattr(v, "format_dt"):
         return f"{k} = {v.format_dt()};"
 
@@ -81,7 +80,7 @@ def format_dtproperty(k: str, v: Any):
 
     if isinstance(v, Sequence):
         v = cast(Sequence[Any], v)
-        return f'{k} = <{" ".join(map(format_value, v))}>;'
+        return f"{k} = <{' '.join(map(format_value, v))}>;"
 
     return f"{k} = {format_value(v)};"
 

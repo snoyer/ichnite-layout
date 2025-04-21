@@ -1,76 +1,73 @@
+from __future__ import annotations
+
 import logging
 import re
 from dataclasses import dataclass, replace
 from itertools import chain, groupby
 from os.path import abspath, dirname
 from os.path import join as path_join
-from typing import Callable, Optional, Union
+from typing import Callable, Iterable, Mapping, Optional, Union
 
 from jinja2 import Environment, FileSystemLoader
 
-from .asciitables import Table, format_table
-from .source import Key, Keymap, format_layer, split_layer_name, split_mods
-from .translation import Translator
+from .asciitables import Table, cjust, format_boxed_table, format_table
+from .source import (
+    Key,
+    Keymap,
+    LayerName,
+    join_layer_name,
+    split_mods,
+)
+from .zmk import LayerBase
 
 logger = logging.getLogger(__name__)
 
 
-def qmk_translator_for_os(os: str):
-    translator = QmkTranslator(QmkKeycodes())
-
-    translator.register_aliases(
-        {
-            "PLAY": "MPLY",
-            "STOP": "MSTP",
-            "MUTE": "MUTE",
-            "PREV": "MPRV",
-            "NEXT": "MNXT",
-            "FFW": "MFFD",
-            "RWD": "MRWD",
-            "VOL+": "VOLU",
-            "VOL-": "VOLD",
-            "BRI+": "BRIU",
-            "BRI-": "BRID",
-            "PG_UP": "PGUP",
-            "PG_DN": "PGDOWN",
-            "SLOCK": "KC_SCRL",
-            "NLOCK": "KC_NUM_LOCK",
-            "MYCOMP": "MYCM",
-            "CALC": "CALC",
-            "WWW": "WHOM",
-            "RESET": "QK_BOOT",
-            "BOOTL": "QK_REBOOT",
-            "DEBUG": "DB_TOGG",
-            "XXXXX": "XXX",
-        }
-    )
-
-    def unicode_binding(m: re.Match[str]):
-        return QmkKey("UC", "0x%04x" % ord(m.group(1)))
-
-    translator.register_translations(
-        {
-            r"([\u0080-\uffff])$": unicode_binding,
-        }
-    )
-
-    return translator
-
-
-def generate_qmk_code(
-    translated_layers: dict[str, list["QmkBinding"]],
-    source_keymap: Keymap[Key],
+def generate_qmk_layout_code(
+    keymap: Keymap[str, Key],
+    titles: Mapping[str, str],
+    multi_os_layers: Iterable[tuple[tuple[str, str], list[Key]]],
+    *,
     layout_name: Optional[str] = "LAYOUT",
-    uc_modes_by_base: Optional[dict[str, str]] = None,
+    aliases_for_os: Callable[
+        [str], dict[str, str | QmkBinding | Callable[[re.Match[str]], str | QmkBinding]]
+    ]
+    | None = None,
 ) -> str:
-    table_shape = source_keymap.table_shape
+    binding_layers = [
+        Layer(
+            join_layer_name(source_layer, [os]),
+            list(
+                map(
+                    BindingTranslator(
+                        aliases_for_os(os) if callable(aliases_for_os) else {}
+                    ),
+                    keys,
+                )
+            ),
+            source_layer,
+        )
+        for (source_layer, os), keys in multi_os_layers
+    ]
 
-    def format_qmk_layer(name: str, bindings: list[QmkBinding]) -> str:
+    base_name = binding_layers[0].source_layer
+    uc_modes_by_base = {
+        Layer.Shorten_name(join_layer_name(base_name, ["mac"])): "UNICODE_MODE_MACOS",
+        Layer.Shorten_name(
+            join_layer_name(base_name, ["linux"])
+        ): "UNICODE_MODE_WINDOWS",
+        Layer.Shorten_name(join_layer_name(base_name, ["win"])): "UNICODE_MODE_LINUX",
+    }
+
+    binding_layers = [
+        layer.rename_layers_in_bindings(layer.Shorten_name)
+        for layer in Layer.Deduplicate(binding_layers, exceptions=("base",))
+    ]
+
+    def format_qmk_layer(layer: Layer, with_comment: bool = True) -> str:
         bindings_str = format_table(
             Table.Shape(
-                table_shape,
-                [f"{QmkTranslator.map_layer_names(fix_c_name, s)}," for s in bindings],
-                "",
+                keymap.table_shape, [f"{binding}," for binding in layer.bindings], ""
             ),
             sep=" ",
             pad="",
@@ -82,22 +79,30 @@ def generate_qmk_code(
             ),
             "\t",
         )
-        return f"[{fix_c_name(name)}] = {layout_name}(\n{args}\n)"
+        if with_comment:
+            table = Table.Shape(
+                keymap.table_shape, keymap.layers[layer.source_layer], ""
+            )
+            formatted = format_boxed_table(
+                table.map_contents(lambda x: cjust(str(x).strip(), 5))
+            )
+            comment = f"/* {titles[layer.source_layer]}\n{formatted} */\n"
+        else:
+            comment = ""
+
+        return f"{comment}[{fix_c_name(layer.name)}] = {layout_name}(\n{args}\n)"
 
     def make_layer_blocks():
-        for src, layers in groupby(
-            translated_layers.items(), key=lambda kv: split_layer_name(kv[0])[0]
+        for _source_layer, layers in groupby(
+            binding_layers, key=lambda layer: layer.source_layer
         ):
-            table = Table.Shape(table_shape, source_keymap.layers[src], "")
-            first_layer, *next_layers = layers
-            comment = source_keymap.titles[src] + "\n" + format_layer(table)
-            yield fix_c_name(first_layer[0]), f"/* {comment} */\n" + format_qmk_layer(
-                *first_layer
-            )
-            for name, bindings in next_layers:
-                yield fix_c_name(name), format_qmk_layer(name, bindings)
+            for i, layer in enumerate(layers):
+                yield (
+                    fix_c_name(layer.name),
+                    format_qmk_layer(layer, with_comment=i == 0),
+                )
 
-    all_keycodes = set(filter(None, chain.from_iterable(translated_layers.values())))
+    all_keycodes = set(chain.from_iterable(layer.bindings for layer in binding_layers))
     customLTs = set(k for k in all_keycodes if isinstance(k, CustomLT))
     customShifts = set(k for k in all_keycodes if isinstance(k, CustomShift))
 
@@ -195,69 +200,14 @@ class CustomLT(QmkLT):
 QmkBinding = Union[QmkKey, QmkLT, QmkMO, QmkTO, CustomShift]
 
 
-class QmkTranslator(Translator[QmkBinding]):
-    def __init__(self, qmk_keycodes: "QmkKeycodes"):
-        super().__init__()
-        self.native_keycodes = qmk_keycodes
-
-    def translate(self, key: Key, is_layer_name: Callable[[str], bool]) -> QmkBinding:
-        def f(s: str):
-            t = self._alias_lookup(s)
-            try:
-                return self.native_keycodes[t]
-            except KeyError:
-                return t
-
-        def g(s: str):
-            t = self._alias_lookup(s)
-            try:
-                return self._translation_lookup(t)
-            except KeyError:
-                try:
-                    return QmkKey(self.native_keycodes[t])
-                except KeyError:
-                    logger.warning(f"not implemented {t!r}")
-                    return QmkKey("KC_NO")
-
-        if key.hold:
-            if is_layer_name(key.hold):
-                layer = key.hold
-                if key.tap:
-                    tap = g(key.tap)
-                    if isinstance(tap, QmkKey):
-                        if not self.native_keycodes.is_simple_keycode(tap.value):
-                            return CustomLT(layer, tap.value)
-                        else:
-                            return QmkLT(layer, tap.value)
-                else:
-                    return QmkMO(layer)
-
-                raise ValueError(f"cannot make LT for {layer}, {key.tap}")
-
-            hold = f(key.hold)
-            if re.match(r"KC_[LR]?(GUI|ALT|CTR?L|SH?I?FT)", hold):
-                if key.tap:
-                    tap = g(key.tap)
-                    if isinstance(tap, QmkKey):
-                        return QmkModtap(self.native_keycodes.MODTAPS[hold], tap.value)
-                    raise ValueError(f"cannot nodtap for {hold}, {tap}")
-                else:
-                    return QmkKey(hold)
-
-        if key.tap and is_layer_name(key.tap.removeprefix("@")):
-            return QmkTO(key.tap.removeprefix("@"))
-
-        if key.tap and not key.hold:
-            return g(key.tap)
-
-        return QmkKey("KC_NO")
-
+@dataclass
+class Layer(LayerBase[QmkBinding]):
     @classmethod
-    def map_layer_names(
-        cls, f: Callable[[str], str], binding: QmkBinding
-    ) -> QmkBinding:
+    def Rename_layer_in_binding(
+        cls, binding: QmkBinding, rename_func: Callable[[str], str]
+    ):
         if isinstance(binding, (QmkMO, QmkLT, QmkTO)):
-            return replace(binding, layer=f(binding.layer))
+            return replace(binding, layer=rename_func(binding.layer))
         else:
             return binding
 
@@ -354,3 +304,104 @@ class QmkKeycodes:
 
     def __getitem__(self, k: str) -> str:
         return self.lookup(k)
+
+
+QMK_KEYCODES = QmkKeycodes()
+
+
+class BindingTranslator:
+    def __init__(
+        self,
+        aliases: Mapping[
+            str, str | QmkBinding | Callable[[re.Match[str]], str | QmkBinding]
+        ],
+    ) -> None:
+        self.aliases: dict[str, str | QmkBinding] = {}
+        self.callable_aliases: dict[
+            re.Pattern[str], Callable[[re.Match[str]], str | QmkBinding]
+        ] = {}
+        for k, v in aliases.items():
+            if callable(v):
+                self.callable_aliases[re.compile(k)] = v
+            else:
+                self.aliases[k] = v
+
+    def __call__(self, key: Key):
+        def f(s: str):
+            t = self.follow_aliases(s)
+            try:
+                return QMK_KEYCODES[t]
+            except KeyError:
+                return t
+
+        def g(s: str):
+            t = self.follow_aliases(s)
+            if isinstance(t, QmkBinding):
+                return t
+            else:
+                try:
+                    return QmkKey(QMK_KEYCODES[t])
+                except KeyError:
+                    logger.warning(f"not implemented {t!r}")
+                    return QmkKey("KC_NO")
+
+        if key.hold:
+            if isinstance(key.hold, LayerName):
+                layer = key.hold
+                if key.tap:
+                    tap = g(key.tap)
+                    if isinstance(tap, QmkKey):
+                        if not QMK_KEYCODES.is_simple_keycode(tap.value):
+                            return CustomLT(layer, tap.value)
+                        else:
+                            return QmkLT(layer, tap.value)
+                else:
+                    return QmkMO(layer)
+
+                raise ValueError(f"cannot make LT for {layer}, {key.tap}")
+
+            hold = f(key.hold)
+            if re.match(r"KC_[LR]?(GUI|ALT|CTR?L|SH?I?FT)", hold):
+                if key.tap:
+                    tap = g(key.tap)
+                    if isinstance(tap, QmkKey):
+                        return QmkModtap(QMK_KEYCODES.MODTAPS[hold], tap.value)
+                    raise ValueError(f"cannot nodtap for {hold}, {tap}")
+                else:
+                    return QmkKey(hold)
+
+        if key.tap and isinstance(key.tap.removeprefix("@"), LayerName):
+            return QmkTO(key.tap.removeprefix("@"))
+
+        if key.tap and not key.hold:
+            return g(key.tap)
+
+        return QmkKey("KC_NO")
+
+    def follow_aliases(self, txt: str):
+        seen: set[str] = set()
+        while txt not in seen:
+            try:
+                found = self.aliases[txt]
+            except KeyError:
+                for k, v in self.callable_aliases.items():
+                    if m := k.match(txt):
+                        found = v(m)
+                        break
+                else:
+                    break
+
+            if isinstance(found, QmkBinding):
+                return found
+            else:
+                seen.add(found)
+                txt = found
+                break
+        return txt
+
+    def translate_binding(self, txt: str):
+        found = self.follow_aliases(txt)
+        if isinstance(found, QmkBinding):
+            return found
+        else:
+            return QmkKey(QMK_KEYCODES.lookup(found))
