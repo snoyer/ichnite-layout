@@ -1,13 +1,13 @@
-from dataclasses import dataclass, field
-from typing import Any, Iterable, Optional, Sequence, Union, cast
+from __future__ import annotations
 
-NodeOrComment = Union["Node", "Comment"]
+from dataclasses import dataclass, field
+from typing import Any, Iterable, Optional, Sequence, cast
 
 
 @dataclass
 class Node:
     name: str
-    children: list[NodeOrComment] = field(default_factory=list)
+    children: list[Node | Comment | Raw] = field(default_factory=list)
     properties: dict[str, Any] = field(default_factory=dict)
     label: Optional[str] = None
     address: Optional[int] = None
@@ -16,8 +16,8 @@ class Node:
     def format_dt(self, indent: str = "\t"):
         return "\n".join(format_dtnode(self, indentation=indent))
 
-    def __iadd__(self, node: Union[NodeOrComment, Iterable[NodeOrComment]]):
-        if isinstance(node, (Node, Comment)):
+    def __iadd__(self, node: Node | Comment | Raw | Iterable[Node | Comment | Raw]):
+        if isinstance(node, (Node, Comment, Raw)):
             self.children.append(node)
         else:
             try:
@@ -112,6 +112,9 @@ def format_dtnode(node: Node, depth: int = 0, indentation: str = "\t") -> Iterab
     for child in node.children:
         if isinstance(child, Node):
             yield from format_dtnode(child, depth + 1, indentation=indentation)
+        elif isinstance(child, Raw):
+            comment_lines = str(child).splitlines()
+            yield from map(indent_more, comment_lines)
         else:
             comment_lines = f"/* {child} */".splitlines()
             yield from map(indent_more, comment_lines)

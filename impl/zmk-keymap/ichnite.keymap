@@ -358,462 +358,54 @@
 			bindings = <&kp FSLH>, <&kp BSLH>;
 			mods = <(MOD_LSFT|MOD_RSFT)>;
 		};
-		u2248_L: u2248_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N4 &kp N8 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u221a_L: u221a_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N1 &kp A &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u221b_L: u221b_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N1 &kp B &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u03bc_L: u03bc_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp C &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u0394_L: u0394_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp N9 &kp N4 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u03b5_L: u03b5_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N5 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u221e_L: u221e_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N1 &kp E &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u20ac_L: u20ac_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N0 &kp A &kp C &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u00b2_L: u00b2_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N2 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u00b3_L: u00b3_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N3 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u03c0_L: u03c0_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp C &kp N0 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u03c6_L: u03c6_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp C &kp N6 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u03b8_L: u03b8_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N8 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u00d7_L: u00d7_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp D &kp N7 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u00b0_L: u00b0_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N0 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u2264_L: u2264_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N4 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u2265_L: u2265_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N5 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u03bb_L: u03bb_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp B &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u03b1_L: u03b1_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N1 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u03b2_L: u03b2_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N3 &kp B &kp N2 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u00bf_L: u00bf_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp F &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u00f7_L: u00f7_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp F &kp N7 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u00b1_L: u00b1_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N0 &kp N0 &kp B &kp N1 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u2260_L: u2260_L {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp LC(LS(U)) &kp N2 &kp N2 &kp N6 &kp N0 &kp SPACE>;
-			tap-ms = <30>;
-			wait-ms = <0>;
-		};
-		u2248_M: u2248_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N4 &kp N8>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u221a_M: u221a_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N1 &kp A>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u221b_M: u221b_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N1 &kp B>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u03bc_M: u03bc_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp C>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u0394_M: u0394_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp N9 &kp N4>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u03b5_M: u03b5_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N5>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u221e_M: u221e_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N1 &kp E>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u20ac_M: u20ac_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N0 &kp A &kp C>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u00b2_M: u00b2_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N2>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u00b3_M: u00b3_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N3>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u03c0_M: u03c0_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp C &kp N0>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u03c6_M: u03c6_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp C &kp N6>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u03b8_M: u03b8_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N8>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u00d7_M: u00d7_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp D &kp N7>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u00b0_M: u00b0_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N0>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u2264_M: u2264_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N4>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u2265_M: u2265_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N5>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u03bb_M: u03bb_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp B>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u03b1_M: u03b1_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N1>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u03b2_M: u03b2_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N3 &kp B &kp N2>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u00bf_M: u00bf_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp F>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u00f7_M: u00f7_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp F &kp N7>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u00b1_M: u00b1_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N0 &kp N0 &kp B &kp N1>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u2260_M: u2260_M {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_press &kp LALT>, <&macro_tap &kp N2 &kp N2 &kp N6 &kp N0>, <&macro_release &kp LALT>;
-			tap-ms = <30>;
-			wait-ms = <30>;
-		};
-		u2248_W: u2248_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N4 &kp N8 &kp RET>;
-		};
-		u221a_W: u221a_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N1 &kp A &kp RET>;
-		};
-		u221b_W: u221b_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N1 &kp B &kp RET>;
-		};
-		u03bc_W: u03bc_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp C &kp RET>;
-		};
-		u0394_W: u0394_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp N9 &kp N4 &kp RET>;
-		};
-		u03b5_W: u03b5_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N5 &kp RET>;
-		};
-		u221e_W: u221e_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N1 &kp E &kp RET>;
-		};
-		u20ac_W: u20ac_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N0 &kp A &kp C &kp RET>;
-		};
-		u00b2_W: u00b2_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N2 &kp RET>;
-		};
-		u00b3_W: u00b3_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N3 &kp RET>;
-		};
-		u03c0_W: u03c0_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp C &kp N0 &kp RET>;
-		};
-		u03c6_W: u03c6_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp C &kp N6 &kp RET>;
-		};
-		u03b8_W: u03b8_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N8 &kp RET>;
-		};
-		u00d7_W: u00d7_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp D &kp N7 &kp RET>;
-		};
-		u00b0_W: u00b0_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N0 &kp RET>;
-		};
-		u2264_W: u2264_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N4 &kp RET>;
-		};
-		u2265_W: u2265_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N5 &kp RET>;
-		};
-		u03bb_W: u03bb_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp B &kp RET>;
-		};
-		u03b1_W: u03b1_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N1 &kp RET>;
-		};
-		u03b2_W: u03b2_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N3 &kp B &kp N2 &kp RET>;
-		};
-		u00bf_W: u00bf_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp F &kp RET>;
-		};
-		u00f7_W: u00f7_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp F &kp N7 &kp RET>;
-		};
-		u00b1_W: u00b1_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N0 &kp N0 &kp B &kp N1 &kp RET>;
-		};
-		u2260_W: u2260_W {
-			compatible = "zmk,behavior-macro";
-			#binding-cells = <0>;
-			bindings = <&macro_tap &kp RALT &kp U &kp N2 &kp N2 &kp N6 &kp N0 &kp RET>;
-		};
+		
+		#define _F(x) x
+		#define _KP(x) x
+		#define _BINDING_CELLS _F(#)binding-cells
+		#define UTF8_MACROS(name, C1, C2, C3, C4) \
+		    name##_L: name##_L { \
+		        compatible = "zmk,behavior-macro"; \
+		        _BINDING_CELLS = <0>; \
+		        bindings = <&macro_tap &kp LC(LS(U)) &kp C1 &kp C1 &kp C3 &kp C4 &kp SPACE>; \
+		        tap-ms = <30>; \
+		        wait-ms = <0>; \
+		    }; \
+		    name##_M: name##_M { \
+		        compatible = "zmk,behavior-macro"; \
+		        _BINDING_CELLS = <0>; \
+		        bindings = <&macro_press &kp LALT>, <&macro_tap &kp C1 &kp C1 &kp C3 &kp C4>, <&macro_release &kp LALT>; \
+		        tap-ms = <30>; \
+		        wait-ms = <30>; \
+		    }; \
+		    name##_W: name##_W { \
+		        compatible = "zmk,behavior-macro"; \
+		        _BINDING_CELLS = <0>; \
+		        bindings = <&macro_tap &kp RALT &kp U &kp C1 &kp C1 &kp C3 &kp C4 &kp RET> ; \
+		    };
+		UTF8_MACROS(u2248 /* ≈ */, N2, N2, N4, N8)
+		UTF8_MACROS(u221a /* √ */, N2, N2, N1, A)
+		UTF8_MACROS(u221b /* ∛ */, N2, N2, N1, B)
+		UTF8_MACROS(u03bc /* μ */, N0, N3, B, C)
+		UTF8_MACROS(u0394 /* Δ */, N0, N3, N9, N4)
+		UTF8_MACROS(u03b5 /* ε */, N0, N3, B, N5)
+		UTF8_MACROS(u221e /* ∞ */, N2, N2, N1, E)
+		UTF8_MACROS(u20ac /* € */, N2, N0, A, C)
+		UTF8_MACROS(u00b2 /* ² */, N0, N0, B, N2)
+		UTF8_MACROS(u00b3 /* ³ */, N0, N0, B, N3)
+		UTF8_MACROS(u03c0 /* π */, N0, N3, C, N0)
+		UTF8_MACROS(u03c6 /* φ */, N0, N3, C, N6)
+		UTF8_MACROS(u03b8 /* θ */, N0, N3, B, N8)
+		UTF8_MACROS(u00d7 /* × */, N0, N0, D, N7)
+		UTF8_MACROS(u00b0 /* ° */, N0, N0, B, N0)
+		UTF8_MACROS(u2264 /* ≤ */, N2, N2, N6, N4)
+		UTF8_MACROS(u2265 /* ≥ */, N2, N2, N6, N5)
+		UTF8_MACROS(u03bb /* λ */, N0, N3, B, B)
+		UTF8_MACROS(u03b1 /* α */, N0, N3, B, N1)
+		UTF8_MACROS(u03b2 /* β */, N0, N3, B, N2)
+		UTF8_MACROS(u00bf /* ¿ */, N0, N0, B, F)
+		UTF8_MACROS(u00f7 /* ÷ */, N0, N0, F, N7)
+		UTF8_MACROS(u00b1 /* ± */, N0, N0, B, N1)
+		UTF8_MACROS(u2260 /* ≠ */, N2, N2, N6, N0)
 		btsel: btsel {
 			compatible = "zmk,behavior-macro-one-param";
 			#binding-cells = <1>;

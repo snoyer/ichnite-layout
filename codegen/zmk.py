@@ -9,6 +9,7 @@ from typing import (
     Generic,
     Iterable,
     Iterator,
+    Literal,
     Mapping,
     Optional,
     Self,
@@ -421,39 +422,52 @@ def macro_binding(
     )
 
 
-def utf8_linux_macro_binding(char: str) -> Binding:
+MACRO_MACRO = Raw(r"""
+#define _F(x) x
+#define _KP(x) x
+#define _BINDING_CELLS _F(#)binding-cells
+#define UTF8_MACROS(name, C1, C2, C3, C4) \
+    name##_L: name##_L { \
+        compatible = "zmk,behavior-macro"; \
+        _BINDING_CELLS = <0>; \
+        bindings = <&macro_tap &kp LC(LS(U)) &kp C1 &kp C1 &kp C3 &kp C4 &kp SPACE>; \
+        tap-ms = <30>; \
+        wait-ms = <0>; \
+    }; \
+    name##_M: name##_M { \
+        compatible = "zmk,behavior-macro"; \
+        _BINDING_CELLS = <0>; \
+        bindings = <&macro_press &kp LALT>, <&macro_tap &kp C1 &kp C1 &kp C3 &kp C4>, <&macro_release &kp LALT>; \
+        tap-ms = <30>; \
+        wait-ms = <30>; \
+    }; \
+    name##_W: name##_W { \
+        compatible = "zmk,behavior-macro"; \
+        _BINDING_CELLS = <0>; \
+        bindings = <&macro_tap &kp RALT &kp U &kp C1 &kp C1 &kp C3 &kp C4 &kp RET> ; \
+    };
+""")
+
+
+def utf8_macro_binding(char: str, os: Literal["L", "M", "W"]) -> Binding:
     hexstr = "%04x" % ord(char)
     keycodes = [d.upper() if d in "abcdef" else f"N{d}" for d in hexstr]
-    keycodes = "LC(LS(U))", *keycodes, "SPACE"
-    return macro_binding(
-        f"u{hexstr}_L",
-        [Binding("macro_tap"), *map(kp_binding, keycodes)],
-        tap_ms=30,
-        wait_ms=0,
+    params = ", ".join([f"u{hexstr} /* {char} */", *keycodes])
+    return Binding(
+        f"u{hexstr}_{os}", behavior_nodes=(MACRO_MACRO, Raw(f"UTF8_MACROS({params})"))
     )
+
+
+def utf8_linux_macro_binding(char: str):
+    return utf8_macro_binding(char, "L")
 
 
 def utf8_mac_macro_binding(char: str) -> Binding:
-    hexstr = "%04x" % ord(char)
-    keycodes = [d.upper() if d in "abcdef" else f"N{d}" for d in hexstr]
-    return macro_binding(
-        f"u{hexstr}_M",
-        [Binding("macro_press"), kp_binding("LALT")],
-        [Binding("macro_tap"), *map(kp_binding, keycodes)],
-        [Binding("macro_release"), kp_binding("LALT")],
-        tap_ms=30,
-        wait_ms=30,
-    )
+    return utf8_macro_binding(char, "M")
 
 
 def utf8_win_macro_binding(char: str) -> Binding:
-    hexstr = "%04x" % ord(char)
-    keycodes = [d.upper() if d in "abcdef" else f"N{d}" for d in hexstr]
-    keycodes = "RALT", "U", *keycodes, "RET"
-    return macro_binding(
-        f"u{hexstr}_W",
-        [Binding("macro_tap"), *map(kp_binding, keycodes)],
-    )
+    return utf8_macro_binding(char, "W")
 
 
 HRM_NODE = Node(
@@ -481,7 +495,7 @@ class Binding:
     param1: Optional[str] = None
     param2: Optional[str] = None
     includes: tuple[str, ...] = ()
-    behavior_nodes: tuple[Node, ...] = ()
+    behavior_nodes: tuple[Node | Comment | Raw, ...] = ()
 
     def format_dt(self):
         return " ".join(
@@ -502,7 +516,8 @@ class Binding:
             yield from re.findall(r"\W&(\w+)\W", node.format_dt())
 
         for node in self.behavior_nodes:
-            yield from f(node)
+            if isinstance(node, Node):
+                yield from f(node)
 
 
 @dataclass
